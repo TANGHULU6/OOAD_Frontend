@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Button, Modal, Form, Select, message } from 'antd';
-import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
+import { PlusOutlined } from '@ant-design/icons';
 
 const { Option } = Select;
 

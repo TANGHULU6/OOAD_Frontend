@@ -62,20 +62,20 @@
   {
     name: 'Notify Table',
     icon: 'table',
-    path: '/new',
-    component: '@/pages/layouts/Newpage',
+    path: '/Notification',
+    component: '@/pages/Notification/Notification',
   },
   {
     name: 'CourseOverview',
     icon: 'table',
-    path: '/test',
+    path: '/CourseOverview',
     component: '@/pages/CourseOverview',
   },
   {
     name: 'Test',
     icon: 'table',
-    path: '/test',
-    component: '@/pages/CourseOverview',
+    path: '/NotificationContent',
+    component: '@/pages/Notification/NotificationContent',
   },
   {
     path: '/',

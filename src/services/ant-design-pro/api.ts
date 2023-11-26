@@ -83,3 +83,62 @@ export async function removeRule(options?: { [key: string]: any }) {
     ...(options || {}),
   });
 }
+// 获取课程详情
+export async function getCourseDetail(courseId: number, options?: { [key: string]: any }) {
+  return request<API.CourseDetail>(`/api/course/${courseId}`, {
+    method: 'GET',
+    ...(options || {}),
+  });
+}
+
+// 任命教师助理
+export async function appointTA(courseId: number, taId: number, options?: { [key: string]: any }) {
+  return request<API.TAResponse>(`/api/course/add/ta`, {
+    method: 'POST',
+    data: { courseId, taId },
+    ...(options || {}),
+  });
+}
+
+// 免职教师助理
+export async function dismissTA(courseId: number, taId: number, options?: { [key: string]: any }) {
+  return request<API.TAResponse>(`/api/course/remove/ta`, {
+    method: 'POST',
+    data: { courseId, taId },
+    ...(options || {}),
+  });
+}
+
+// 添加学生
+export async function addStudent(courseId: number, studentId: number, options?: { [key: string]: any }) {
+  return request<API.StudentResponse>(`/api/course/add/student`, {
+    method: 'POST',
+    data: { courseId, studentId },
+    ...(options || {}),
+  });
+}
+
+// 移除学生
+export async function removeStudent(courseId: number, studentId: number, options?: { [key: string]: any }) {
+  return request<API.StudentResponse>(`/api/course/remove/student`, {
+    method: 'POST',
+    data: { courseId, studentId },
+    ...(options || {}),
+  });
+}
+
+// 获取所有教师
+export async function getAllTeachers(options?: { [key: string]: any }) {
+  return request<API.TeacherList>(`/api/user/listAllTeacherName`, {
+    method: 'GET',
+    ...(options || {}),
+  });
+}
+
+// 获取所有学生
+export async function getAllStudents(options?: { [key: string]: any }) {
+  return request<API.StudentList>(`/api/user/listAllStudentName`, {
+    method: 'GET',
+    ...(options || {}),
+  });
+}
