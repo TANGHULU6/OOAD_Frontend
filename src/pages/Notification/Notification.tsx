@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Button, Modal, Form, Input, List, message } from 'antd';
 import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
+import { getCourseNotifications, deleteCourseNotification } from '@/services/ant-design-pro/api'; // Update the import path as necessary
 
 // 假设的通知类型
 interface Notification {
@@ -14,16 +15,12 @@ const CourseNotifications: React.FC = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [form] = Form.useForm();
 
-    // 假设的 API 路径
-    const notificationsApi = '/api/course/notification/list';
-
     // 获取通知列表
     useEffect(() => {
         const fetchNotifications = async () => {
             try {
-                // 替换为您的 API 调用
-                const response = await fetch(notificationsApi);
-                const data = await response.json();
+                // Update with the correct parameters if needed
+                const data = await getCourseNotifications();
                 setNotifications(data);
             } catch (error) {
                 message.error('获取通知失败');
@@ -35,47 +32,29 @@ const CourseNotifications: React.FC = () => {
     const handleAddNotification = () => {
         form
             .validateFields()
-            .then(values => {
-                // 这里应该是一个 API 请求来添加通知
-                // 假设 addNotification() 是一个添加通知的函数
-                const addNotification = async () => {
-                    try {
-                        // 替换为您的 API 调用
-                        await fetch(notificationsApi, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify(values),
-                        });
-                        message.success('通知发布成功');
-                    } catch (error) {
-                        message.error('发布失败');
-                    }
-                };
-                addNotification();
+            .then(async (values) => {
+                try {
+                    await addNotification(values); // Adjust the parameters as needed
+                    message.success('通知发布成功');
+                } catch (error) {
+                    message.error('发布失败');
+                }
                 setIsModalVisible(false);
+                form.resetFields();
             })
             .catch(info => {
                 console.log('Validate Failed:', info);
             });
     };
 
-    const handleDeleteNotification = (id: number) => {
-        // 这里应该是一个 API 请求来删除通知
-        // 假设 deleteNotification() 是一个删除通知的函数
-        const deleteNotification = async () => {
-            try {
-                // 替换为您的 API 调用
-                await fetch(`${notificationsApi}/${id}`, {
-                    method: 'DELETE',
-                });
-                message.success('通知已删除');
-            } catch (error) {
-                message.error('删除失败');
-            }
-        };
-        deleteNotification();
+    const handleDeleteNotification = async (id: number) => {
+        try {
+            await deleteNotification(id); // Adjust the parameters as needed
+            message.success('通知已删除');
+            setNotifications(notifications.filter(notification => notification.id !== id));
+        } catch (error) {
+            message.error('删除失败');
+        }
     };
 
     return (

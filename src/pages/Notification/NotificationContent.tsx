@@ -2,13 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Card, Spin, message } from 'antd';
 
-// 重命名接口以避免冲突
+// Updated interface to include new fields
 interface INotificationDetail {
     id: number;
     title: string;
     message: string;
     senderName: string;
     sendTime: string;
+    courseName?: string;     // Optional fields for courseName and projectName
+    projectName?: string;
+    isRead: boolean;         // isRead field
 }
 
 const NotificationDetail: React.FC = () => {
@@ -16,10 +19,8 @@ const NotificationDetail: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(true);
     const { notificationId } = useParams<{ notificationId: string }>();
 
-    // 假设的 API 路径
     const notificationDetailApi = `/api/notification/${notificationId}`;
 
-    // 获取通知详细信息
     useEffect(() => {
         const fetchNotificationDetail = async () => {
             setLoading(true);
@@ -33,6 +34,7 @@ const NotificationDetail: React.FC = () => {
                 setLoading(false);
             }
         };
+
         fetchNotificationDetail();
     }, [notificationId]);
 
@@ -46,6 +48,9 @@ const NotificationDetail: React.FC = () => {
             <p>{notification?.message}</p>
             <p>发送者: {notification?.senderName}</p>
             <p>发送时间: {notification?.sendTime}</p>
+            {notification?.courseName && <p>课程名称: {notification?.courseName}</p>}
+            {notification?.projectName && <p>项目名称: {notification?.projectName}</p>}
+            <p>已读状态: {notification?.isRead ? '已读' : '未读'}</p>
         </Card>
     );
 };

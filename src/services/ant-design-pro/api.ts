@@ -180,3 +180,17 @@ export async function getAllStudents(options?: { [key: string]: any }) {
     ...(options || {}),
   });
 }
+export async function getCourseNotifications(courseId: number, options?: { [key: string]: any }) {
+  return request<API.NoticeIconList>(`/api/course/notification/list`, {
+    method: 'GET',
+    params: { courseId }, // Passing courseId as a query parameter
+    ...(options || {}),
+  });
+}
+export async function deleteCourseNotification(notificationId: number, options?: { [key: string]: any }) {
+  return request<boolean>('/api/course/notification/delete', {
+    method: 'POST',
+    data: { notificationId }, // Sending notificationId in the request body
+    ...(options || {}),
+  });
+}
