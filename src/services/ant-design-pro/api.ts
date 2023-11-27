@@ -83,10 +83,48 @@ export async function removeRule(options?: { [key: string]: any }) {
     ...(options || {}),
   });
 }
+// 获取课程列表
+export async function getCourseList(options?: { [key: string]: any }) {
+  return request<API.CourseList>('/api/course/list', {
+    method: 'GET',
+    ...(options || {}),
+  });
+}
+// 更新课程信息
+export async function updateCourse(params: { id: number; courseName: string; teacherId: number; taIdList: number[] }, options?: { [key: string]: any }) {
+  return request<boolean>('/api/course/update', {
+    method: 'POST',
+    data: {
+      ...params
+    },
+    ...(options || {}),
+  });
+}
+// 删除课程
+export async function removeCourse(params: { id: number }, options?: { [key: string]: any }) {
+  return request<boolean>('/api/course/delete', {
+    method: 'POST',
+    data: {
+      ...params
+    },
+    ...(options || {}),
+  });
+}
+// 创建新课程
+export async function addCourse(params: { courseName: string; teacherId: number; taIdList: number[] }, options?: { [key: string]: any }) {
+  return request<{ courseId: bigint }>('/api/course/insert', {
+    method: 'POST',
+    data: {
+      ...params
+    },
+    ...(options || {}),
+  });
+}
 // 获取课程详情
 export async function getCourseDetail(courseId: number, options?: { [key: string]: any }) {
-  return request<API.CourseDetail>(`/api/course/${courseId}`, {
+  return request<API.CourseDetail>('/api/course', {
     method: 'GET',
+    params: { courseId }, // 将 courseId 作为查询参数传递
     ...(options || {}),
   });
 }

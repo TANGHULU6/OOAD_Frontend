@@ -57,7 +57,7 @@
     name: 'Course List',
     icon: 'table',
     path: '/list',
-    component: './TableList',
+    component: './TableList/courselist',
   },
   {
     name: 'Notify Table',
@@ -69,7 +69,7 @@
     name: 'CourseOverview',
     icon: 'table',
     path: '/CourseOverview',
-    component: '@/pages/CourseOverview',
+    component: '@/pages/courseOverview/CourseOverview',
   },
   {
     name: 'Test',

@@ -4,6 +4,12 @@ import { PlusOutlined } from '@ant-design/icons';
 
 const { Option } = Select;
 
+import {
+  getCourseDetail, // 获取课程详情
+  getAllTeachers, // 获取所有教师
+  getAllStudents // 获取所有学生
+} from '@/services/ant-design-pro/api';
+
 // 假设的课程信息类型
 interface Course {
   id: number;
@@ -27,10 +33,6 @@ const CourseOverview: React.FC = () => {
   const [teachers, setTeachers] = useState<User[]>([]);
   const [students, setStudents] = useState<User[]>([]);
 
-  // 假设的 API 路径
-  const courseApi = '/api/course';
-  const teacherApi = '/api/user/listAllTeacherName';
-  const studentApi = '/api/user/listAllStudentName';
 
   // 获取课程信息
   useEffect(() => {
@@ -39,7 +41,7 @@ const CourseOverview: React.FC = () => {
     const fetchCourse = async () => {
       try {
         // 替换为您的 API 调用
-        const response = await fetch(courseApi);
+        const response = await fetch(getCourseDetail());
         const data = await response.json();
         setCourse(data);
       } catch (error) {
@@ -54,7 +56,7 @@ const CourseOverview: React.FC = () => {
     const fetchTeachers = async () => {
       try {
         // 替换为您的 API 调用
-        const response = await fetch(teacherApi);
+        const response = await fetch(getAllTeachers());
         const data = await response.json();
         setTeachers(data);
       } catch (error) {
@@ -69,7 +71,7 @@ const CourseOverview: React.FC = () => {
     const fetchStudents = async () => {
       try {
         // 替换为您的 API 调用
-        const response = await fetch(studentApi);
+        const response = await fetch(getAllStudents);
         const data = await response.json();
         setStudents(data);
       } catch (error) {
@@ -88,7 +90,7 @@ const CourseOverview: React.FC = () => {
         const updateCourse = async () => {
           try {
             // 替换为您的 API 调用
-            await fetch(courseApi, {
+            await fetch(getCourseDetail(), {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
