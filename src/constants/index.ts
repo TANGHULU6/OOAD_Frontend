@@ -1,2 +1,1 @@
-export const SYSTEM_LOGO = "https://tse3-mm.cn.bing.net/th/id/OIP-C.2fDPdcTmZHFTxMAyKUYcwQHaHv?pid=ImgDet&rs=1"
-
+export const SYSTEM_LOGO = "https://pic.616pic.com/ys_img/00/05/09/8LfaQcDrWd.jpg"

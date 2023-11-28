@@ -8,6 +8,30 @@ export default [
       { component: '404' },
     ],
   },
+  {
+    name: 'Course List',
+    icon: 'table',
+    path: '/list',
+    component: './TableList/courselist',
+  },
+  {
+    name: 'Notify Table',
+    icon: 'table',
+    path: '/Notification',
+    component: '@/pages/Notification/Notification',
+  },
+  {
+    name: 'CourseOverview',
+    icon: 'table',
+    path: '/CourseOverview',
+    component: '@/pages/courseOverview/CourseOverview',
+  },
+  {
+    name: 'Test',
+    icon: 'table',
+    path: '/NotificationContent',
+    component: '@/pages/Notification/NotificationContent',
+  },
   { path: '/welcome', name: '欢迎', icon: 'smile', component: './Welcome' },
   {
     path: '/admin',
@@ -18,6 +42,23 @@ export default [
     routes: [
       { path: '/admin/sub-page', name: '二级管理页', icon: 'smile', component: './Welcome' },
       { component: './404' },
+    ],
+  },
+  {
+    path: '/admin',
+    name: 'teacher',
+    icon: 'crown',
+    access: 'canTeacher',
+    routes: [
+      {
+        path: '/admin/sub-page',
+        name: 'sub-page',
+        icon: 'smile',
+        component: './Welcome',
+      },
+      {
+        component: './404',
+      },
     ],
   },
   {

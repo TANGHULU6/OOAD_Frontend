@@ -55,7 +55,7 @@ const Register: React.FC = () => {
           }}
         >
           <Tabs activeKey={type} onChange={setType}>
-            <Tabs.TabPane key="account" tab={'账号密码注册'}/>
+            <Tabs.TabPane key="account" tab={'学工号密码注册'}/>
           </Tabs>
           {type === 'account' && (
             <>
@@ -65,11 +65,25 @@ const Register: React.FC = () => {
                   size: 'large',
                   prefix: <UserOutlined className={styles.prefixIcon}/>,
                 }}
-                placeholder={'请输入账号'}
+                placeholder={'请输入学工号'}
                 rules={[
                   {
                     required: true,
-                    message: '账号是必填项！',
+                    message: '学工号是必填项！',
+                  },
+                ]}
+              />
+              <ProFormText
+                name="username"
+                fieldProps={{
+                  size: 'large',
+                  prefix: <UserOutlined className={styles.prefixIcon}/>,
+                }}
+                placeholder={'请输入真实姓名'}
+                rules={[
+                  {
+                    required: true,
+                    message: '姓名是必填项！',
                   },
                 ]}
               />
