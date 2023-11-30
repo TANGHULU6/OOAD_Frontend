@@ -15,6 +15,12 @@ export default [
     component: './TableList/courselist',
   },
   {
+    name: 'Course List canAdmin',
+    icon: 'table',
+    path: '/list1',
+    component: './TableList1',
+  },
+  {
     name: 'Notify Table',
     icon: 'table',
     path: '/Notification',
