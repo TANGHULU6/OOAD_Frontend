@@ -10,16 +10,40 @@ export async function currentUser(options?: { [key: string]: any }) {
 }
 
 /** 退出登录接口 POST /api/user/logout */
-export async function outLogin(options?: { [key: string]: any }) {
+export async function logout(options?: { [key: string]: any }) {
   return request<API.BaseResponse<number>>('/api/user/logout', {
     method: 'POST',
     ...(options || {}),
   });
 }
 
-/** 登录接口 POST /api/user/login */
-export async function login(body: API.LoginParams, options?: { [key: string]: any }) {
+/** 学工号密码登录接口 POST /api/user/login */
+export async function login(body: any, options?: { [key: string]: any }) {
   return request<API.BaseResponse<API.LoginResult>>('/api/user/login', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 请求邮箱验证码接口 POST /api/user/login/mail/send */
+export async function loginMailSend(body: any, options?: { [key: string]: any }) {
+  return request<API.BaseResponse<boolean>>('/api/user/login/mail/send', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'text/plain',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 邮箱验证码登录接口 POST /api/user/login/mail/check */
+export async function loginMailCheck(body: any, options?: { [key: string]: any }) {
+  return request<API.BaseResponse<boolean>>('/api/user/login/mail/check', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

@@ -28,6 +28,11 @@ declare namespace API {
     userPassword?: string;
   };
 
+  type LoginWithMailParams = {
+    mailAddress?: string;
+    verificationCode?: string;
+  };
+
   type LoginResult = {
     id?: bigint;
     userAccount?: string;

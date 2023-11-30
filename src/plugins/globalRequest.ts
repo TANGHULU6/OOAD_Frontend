@@ -96,13 +96,12 @@ const request = extend({
  */
 request.interceptors.response.use(async (response, options): Promise<any> => {
   const res = await response.clone().json()
-  if (res.code === 0) {
+  if (res.code === 20000) {
     if (res.description && res.description !== '' && res.description !== '成功') {
       message.success(res.description)
     }
     return res.data;
-  }
-  if (res.code === 40100) {
+  } else if (res.code === 40100) {
     message.error('请先登录')
     history.replace({
       pathname: '/user/login',
@@ -112,6 +111,7 @@ request.interceptors.response.use(async (response, options): Promise<any> => {
     })
   } else {
     message.error(res.description)
+    // return null
   }
   return res.data
 });
