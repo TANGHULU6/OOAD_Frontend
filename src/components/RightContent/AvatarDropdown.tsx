@@ -68,28 +68,80 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
     return loading;
   }
 
-  const menuHeaderDropdown = (
-    <Menu className={styles.menu} selectedKeys={[]} onClick={onMenuClick}>
-      {menu && (
-        <Menu.Item key="center">
-          <UserOutlined />
-          个人中心
-        </Menu.Item>
-      )}
-      {menu && (
-        <Menu.Item key="settings">
-          <SettingOutlined />
-          个人设置
-        </Menu.Item>
-      )}
-      {menu && <Menu.Divider />}
+//   const menuHeaderDropdown = (
+//     <Menu className={styles.menu} selectedKeys={[]} onClick={onMenuClick}>
+//       {menu && (
+//         <Menu.Item key="center">
+//           <UserOutlined />
+//           个人中心
+//         </Menu.Item>
+//       )}
+//       {menu && (
+//         <Menu.Item key="settings">
+//           <SettingOutlined />
+//           个人设置
+//         </Menu.Item>
+//       )}
+//       {menu && <Menu.Divider />}
+//
+//       <Menu.Item key="logout">
+//         <LogoutOutlined />
+//         退出登录
+//       </Menu.Item>
+//     </Menu>
+//   );
+//   return (
+//     <HeaderDropdown overlay={menuHeaderDropdown}>
+//       <span className={`${styles.action} ${styles.account}`}>
+//         <Avatar size="small" className={styles.avatar} src={currentUser.avatar} alt="avatar" />
+//         <span className={`${styles.name} anticon`}>{currentUser.name}</span>
+//       </span>
+//     </HeaderDropdown>
+//   );
+// };
+  const menuItems: ItemType[] = [
+    ...(menu
+      ? [
+        {
+          key: 'center',
+          icon: <UserOutlined />,
+          label: '个人中心',
+        },
+        {
+          key: 'settings',
+          icon: <SettingOutlined />,
+          label: '个人设置',
+        },
+        {
+          type: 'divider' as const,
+        },
+      ]
+      : [
+        {
+          key: 'center',
+          icon: <UserOutlined />,
+          label: '个人中心',
+        },
+        {
+          key: 'settings',
+          icon: <SettingOutlined />,
+          label: '个人设置',
+        },
+        {
+          type: 'divider' as const,
+        },
+      ]),
+    {
+      key: 'logout',
+      icon: <LogoutOutlined />,
+      label: '退出登录',
+    },
+  ];
 
-      <Menu.Item key="logout">
-        <LogoutOutlined />
-        退出登录
-      </Menu.Item>
-    </Menu>
+  const menuHeaderDropdown = (
+    <Menu className={styles.menu} selectedKeys={[]} onClick={onMenuClick} items={menuItems} />
   );
+
   return (
     <HeaderDropdown overlay={menuHeaderDropdown}>
       <span className={`${styles.action} ${styles.account}`}>
