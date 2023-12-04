@@ -1,12 +1,13 @@
 import React, { useCallback } from 'react';
 import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
-import { Avatar, Menu, Spin } from 'antd';
+import {Avatar, Divider, Menu, Spin} from 'antd';
 import { history, useModel } from 'umi';
 import { stringify } from 'querystring';
 import HeaderDropdown from '../HeaderDropdown';
 import styles from './index.less';
 import { logout } from '@/services/ant-design-pro/api';
 import type { MenuInfo } from 'rc-menu/lib/interface';
+import {ItemType} from "antd/es/menu/hooks/useItems";
 
 export type GlobalHeaderRightProps = {
   menu?: boolean;
@@ -64,7 +65,7 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
 
   const { currentUser } = initialState;
 
-  if (!currentUser || !currentUser.name) {
+  if (!currentUser || !currentUser.username) {
     return loading;
   }
 
@@ -144,10 +145,13 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
 
   return (
     <HeaderDropdown overlay={menuHeaderDropdown}>
-      <span className={`${styles.action} ${styles.account}`}>
-        <Avatar size="small" className={styles.avatar} src={currentUser.avatar} alt="avatar" />
-        <span className={`${styles.name} anticon`}>{currentUser.name}</span>
-      </span>
+        <span className={`${styles.action} ${styles.account}`}>
+          <Avatar src={currentUser.avatarUrl} style={{ fontSize: 18 }} size="default" className={styles.avatar}>
+            {currentUser.username?.charAt(0)}
+          </Avatar>
+          <Divider type="vertical" />
+          <span className={`${styles.name} anticon`}>{name}</span>
+        </span>
     </HeaderDropdown>
   );
 };

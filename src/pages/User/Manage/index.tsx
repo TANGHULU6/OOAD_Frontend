@@ -9,9 +9,10 @@ import {
   ProFormTimePicker,
   ProTable
 } from '@ant-design/pro-components';
-import {Button, message, Modal} from 'antd';
+import {Avatar, Button, message, Modal} from 'antd';
 import {useRef, useState} from 'react';
 import {deleteUser, insertUser, listUsersByParams, updateUser} from "@/services/ant-design-pro/api";
+import styles from '@/components/RightContent/index.less';
 
 export const waitTimePromise = async (time: number = 100) => {
   return new Promise((resolve) => {
@@ -26,6 +27,25 @@ export const waitTime = async (time: number = 100) => {
 };
 
 const columns: ProColumns<API.CurrentUser>[] = [
+  {
+    title: 'Avatar',
+    dataIndex: 'avatarUrl',
+    render: (_, currentUser) => {
+      return (
+        <a href={currentUser.avatarUrl} target="_blank" rel="noopener noreferrer" key="view">
+          <Avatar
+            style={{ fontSize: 24 }}
+            src={currentUser.avatarUrl}
+            size="large"
+            className={styles.avatar}
+          >
+            {currentUser.username?.charAt(0)}
+          </Avatar>
+        </a>
+      );
+    },
+    hideInSearch: true,
+  },
   {
     dataIndex: 'id',
     valueType: 'indexBorder',
@@ -84,16 +104,26 @@ const columns: ProColumns<API.CurrentUser>[] = [
     dataIndex: 'email',
   },
   {
-    title: 'Start Time',
-    dataIndex: 'startTime',
+    title: '创建时间',
+    dataIndex: 'createTime',
+    valueType: 'dateTime',
+    sorter: true,
     hideInSearch: true,
-    valueType: 'time',
+    editable: false
   },
   {
-    title: 'End Time',
-    dataIndex: 'endTime',
-    hideInSearch: true,
-    valueType: 'time',
+    title: '创建时间',
+    dataIndex: 'createTime',
+    valueType: "dateTimeRange",
+    hideInTable: true,
+    search: {
+      transform: (value) => {
+        return {
+          startTime: value[0],
+          endTime: value[1],
+        };
+      },
+    },
   },
   {
     title: 'operation',
