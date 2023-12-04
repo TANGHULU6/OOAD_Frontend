@@ -11,7 +11,7 @@ import {useModel} from "@@/plugin-model/useModel";
 import {ProFormCaptcha} from "@ant-design/pro-form";
 
 const Login: React.FC = () => {
-  const [setUserLoginState] = useState<API.LoginResult>({});
+  // const [setUserLoginState] = useState<API.LoginResult>({});
   const [type, setType] = useState<string>('account');
   const {initialState, setInitialState} = useModel('@@initialState');
   const formRef = useRef<FormInstance>();
@@ -47,9 +47,8 @@ const Login: React.FC = () => {
         const {redirect} = query as {
           redirect: string;
         };
-        history.push(redirect || '/');
-        // @ts-ignore
-        setUserLoginState(data);
+        history.push(redirect || '/welcome');
+        // setUserLoginState(data);
         return;
       }
     } catch (error) {

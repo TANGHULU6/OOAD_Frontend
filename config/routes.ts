@@ -5,8 +5,14 @@ export default [
     routes: [
       { path: '/user/login', name: '登录', component: './User/Login' },
       { path: '/user/register', name: '注册', component: './User/Register' },
-      { component: '404' },
     ],
+  },
+  {
+    name: '用户管理',
+    access: 'canAdmin',
+    icon: 'crown',
+    path: '/user-manage',
+    component: './User/Manage',
   },
   {
     name: 'Course List',

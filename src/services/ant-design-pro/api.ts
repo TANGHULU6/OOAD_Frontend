@@ -65,6 +65,51 @@ export async function register(body: API.RegisterParams, options?: { [key: strin
   });
 }
 
+/** 根据条件列举用户 GET /api/user/listByParams */
+export async function listUsersByParams(param: API.SearchParams, options?: { [key: string]: any }) {
+  return request<API.BaseResponse<API.CurrentUser[]>>('/api/user/listByParams', {
+    method: 'GET',
+    params: param,
+    ...(options || {}),
+  });
+}
+
+/** 新增用户 POST /api/user/insert */
+export async function insertUser(body: API.CurrentUser, options?: { [key: string]: any }) {
+  return request<API.BaseResponse<boolean>>('/api/user/insert', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 修改用户 POST /api/user/update */
+export async function updateUser(body: API.CurrentUser, options?: { [key: string]: any }) {
+  return request<API.BaseResponse<boolean>>('/api/user/update', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 删除用户 POST /api/user/delete */
+export async function deleteUser(body?: bigint, options?: { [key: string]: any }) {
+  return request<API.BaseResponse<boolean>>('/api/user/delete', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
 /** 此处后端没有提供注释 GET /api/notices */
 export async function getNotices(options?: { [key: string]: any }) {
   return request<API.NoticeIconList>('/api/notices', {

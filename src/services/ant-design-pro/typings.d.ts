@@ -12,7 +12,8 @@ declare namespace API {
   type CurrentUser = {
     id?: bigint;
     userAccount?: string;
-    userRole?: number;
+    username?: string;
+    userRole: number;
     age?: number;
     gender?: number;
     email?: string;
@@ -55,6 +56,20 @@ declare namespace API {
   };
 
   type RegisterResult = bigint;
+
+  type SearchParams = {
+    id?: bigint;
+    userAccount?: string;
+    username?: string;
+    userRole?: number;
+    age?: number;
+    gender?: number;
+    email?: string;
+    startTime?: Date;
+    endTime?: Date;
+    current: number;
+    pageSize: number;
+  };
 
   type PageParams = {
     current?: number;
