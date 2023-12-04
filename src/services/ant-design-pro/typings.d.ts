@@ -10,7 +10,7 @@ declare namespace API {
   }
 
   type CurrentUser = {
-    id?: bigint;
+    id: bigint;
     userAccount?: string;
     username?: string;
     userRole: number;
