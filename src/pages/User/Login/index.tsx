@@ -98,7 +98,7 @@ const Login: React.FC = () => {
                   size: 'large',
                   prefix: <LockOutlined className={styles.prefixIcon}/>,
                 }}
-                placeholder={'请输入密码'}
+                placeholder={'请输入密码 (初始密码与学工号相同)'}
                 rules={[
                   {
                     required: true,

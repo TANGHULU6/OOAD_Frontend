@@ -76,7 +76,7 @@ export async function listUsersByParams(param: API.SearchParams, options?: { [ke
 
 /** 新增用户 POST /api/user/insert */
 export async function insertUser(body: API.CurrentUser, options?: { [key: string]: any }) {
-  return request<API.BaseResponse<boolean>>('/api/user/insert', {
+  return request<API.BaseResponse<bigint>>('/api/user/insert', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
