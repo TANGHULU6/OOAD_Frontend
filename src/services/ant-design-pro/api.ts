@@ -112,11 +112,36 @@ export async function deleteUser(body?: bigint, options?: { [key: string]: any }
 
 /** 此处后端没有提供注释 GET /api/notices */
 export async function getNotices(options?: { [key: string]: any }) {
-  return request<API.NoticeIconList>('/api/notices', {
-    method: 'GET',
-    ...(options || {}),
-  });
+  console.log('Fetching notices with options:', options);
+  try {
+    const response = await request('/api/notification/list', {
+      method: 'GET',
+      ...(options || {}),
+    });
+    console.log('Notices received:', response);
+
+    // 格式化响应数据
+    const formattedResponse = {
+      data: response.map(item => ({
+        id: item.id.toString(), // 确保 id 是字符串
+        title: item.title, // 使用响应中的 title
+        type: 'notification', // 示例类型，根据需要更改
+        datetime: item.createTime || '未知时间', // 使用 createTime 或提供默认值
+        // 添加或转换其他需要的字段
+        // 如 description, status, avatar 等
+      })),
+      total: response.length, // 总数为响应数组的长度
+      success: true, // 假设请求总是成功的
+    };
+
+    console.log('Formatted response:', formattedResponse);
+    return formattedResponse;
+  } catch (error) {
+    console.error('Error fetching notices:', error);
+    throw error;  // 可以选择重新抛出错误
+  }
 }
+
 
 /** 获取规则列表 GET /api/rule */
 export async function rule(
@@ -258,10 +283,9 @@ export async function getAllStudents(options?: { [key: string]: any }) {
     ...(options || {}),
   });
 }
-export async function getCourseNotifications(courseId: number, options?: { [key: string]: any }) {
+export async function getCourseNotifications(options?: { [key: string]: any }) {
   return request<API.NoticeIconList>(`/api/course/notification/list`, {
     method: 'GET',
-    params: { courseId }, // Passing courseId as a query parameter
     ...(options || {}),
   });
 }

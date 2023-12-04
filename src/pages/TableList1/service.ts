@@ -3,54 +3,62 @@
 import { request } from 'umi';
 import { TableListItem } from './data';
 
-/** 获取规则列表 GET /api/rule */
-export async function rule(
-  params: {
-    // query
-    /** 当前的页码 */
-    current?: number;
-    /** 页面的容量 */
-    pageSize?: number;
-  },
-  options?: { [key: string]: any },
-) {
-  return request<{
-    data: TableListItem[];
-    /** 列表的内容总数 */
-    total?: number;
-    success?: boolean;
-  }>('/api/rule', {
+// export async function getCourseList(
+//     params: {
+//       current?: number;
+//       pageSize?: number;
+//     },
+//     options?: { [key: string]: any },
+// ) {
+//   return request<{
+//     data: TableListItem[];
+//     total?: number;
+//     success?: boolean;
+//   }>('/api/course/list', {  // 更新 API 端点
+//     method: 'GET',
+//     params: {
+//       ...params,
+//     },
+//     ...(options || {}),
+//   });
+// }
+export async function getCourseList(params: { current?: number; pageSize?: number; }, options?: { [key: string]: any }) {
+  const response = await request('/api/course/list', {
     method: 'GET',
-    params: {
-      ...params,
-    },
+    params: { ...params },
     ...(options || {}),
   });
+  console.log(response)
+  // 检查 API 返回的 code 是否表示成功
+  const success = response.code === 20000;
+
+  // 转换数据格式以适应 ProTable
+  return {
+    data: response,
+    total: response.length, // 假设所有数据都在当前页返回
+    success: true,
+  };
 }
 
-/** 新建规则 PUT /api/rule */
-export async function updateRule(data: { [key: string]: any }, options?: { [key: string]: any }) {
-  return request<TableListItem>('/api/rule', {
-    data,
-    method: 'PUT',
-    ...(options || {}),
-  });
-}
-
-/** 新建规则 POST /api/rule */
-export async function addRule(data: { [key: string]: any }, options?: { [key: string]: any }) {
-  return request<TableListItem>('/api/rule', {
+export async function addCourse(data: { [key: string]: any }, options?: { [key: string]: any }) {
+  return request<TableListItem>('/api/course/insert', {  // 更新 API 端点
     data,
     method: 'POST',
     ...(options || {}),
   });
 }
-
-/** 删除规则 DELETE /api/rule */
-export async function removeRule(data: { key: number[] }, options?: { [key: string]: any }) {
-  return request<Record<string, any>>('/api/rule', {
+export async function updateCourse(data: { [key: string]: any }, options?: { [key: string]: any }) {
+  return request<TableListItem>('/api/course/update', {  // 更新 API 端点
     data,
-    method: 'DELETE',
+    method: 'POST', // 根据实际情况可能需要更改请求方法
     ...(options || {}),
   });
 }
+export async function removeCourse(data: { id: number[] }, options?: { [key: string]: any }) {
+  return request<boolean>('/api/course/delete', {
+    method: 'POST',
+    data,
+    ...(options || {}),
+  });
+}
+
