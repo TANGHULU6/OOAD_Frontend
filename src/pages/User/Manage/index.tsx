@@ -27,6 +27,25 @@ export const waitTime = async (time: number = 100) => {
 
 const columns: ProColumns<API.CurrentUser>[] = [
   {
+    title: 'Avatar',
+    dataIndex: 'avatarUrl',
+    render: (_, currentUser) => {
+      return (
+        <a href={currentUser.avatarUrl} target="_blank" rel="noopener noreferrer" key="view">
+          <Avatar
+            style={{ fontSize: 24 }}
+            src={currentUser.avatarUrl}
+            size="large"
+            className={styles.avatar}
+          >
+            {currentUser.userAccount?.charAt(0)}
+          </Avatar>
+        </a>
+      );
+    },
+    hideInSearch: true,
+  },
+  {
     dataIndex: 'id',
     valueType: 'indexBorder',
     width: 48,
