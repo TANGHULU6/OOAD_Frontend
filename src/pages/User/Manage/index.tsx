@@ -12,6 +12,7 @@ import {
 import {Button, message, Modal} from 'antd';
 import {useRef, useState} from 'react';
 import {deleteUser, insertUser, listUsersByParams, updateUser} from "@/services/ant-design-pro/api";
+import styles from '@/components/RightContent/index.less';
 
 export const waitTimePromise = async (time: number = 100) => {
   return new Promise((resolve) => {
