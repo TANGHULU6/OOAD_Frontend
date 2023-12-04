@@ -84,16 +84,26 @@ const columns: ProColumns<API.CurrentUser>[] = [
     dataIndex: 'email',
   },
   {
-    title: 'Start Time',
-    dataIndex: 'startTime',
+    title: '创建时间',
+    dataIndex: 'createTime',
+    valueType: 'dateTime',
+    sorter: true,
     hideInSearch: true,
-    valueType: 'time',
+    editable: false
   },
   {
-    title: 'End Time',
-    dataIndex: 'endTime',
-    hideInSearch: true,
-    valueType: 'time',
+    title: '创建时间',
+    dataIndex: 'createTime',
+    valueType: "dateTimeRange",
+    hideInTable: true,
+    search: {
+      transform: (value) => {
+        return {
+          startTime: value[0],
+          endTime: value[1],
+        };
+      },
+    },
   },
   {
     title: 'operation',
