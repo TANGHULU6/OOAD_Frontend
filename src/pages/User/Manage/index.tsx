@@ -9,7 +9,7 @@ import {
   ProFormTimePicker,
   ProTable
 } from '@ant-design/pro-components';
-import {Button, message, Modal} from 'antd';
+import {Avatar, Button, message, Modal} from 'antd';
 import {useRef, useState} from 'react';
 import {deleteUser, insertUser, listUsersByParams, updateUser} from "@/services/ant-design-pro/api";
 import styles from '@/components/RightContent/index.less';
@@ -39,7 +39,7 @@ const columns: ProColumns<API.CurrentUser>[] = [
             size="large"
             className={styles.avatar}
           >
-            {currentUser.userAccount?.charAt(0)}
+            {currentUser.username?.charAt(0)}
           </Avatar>
         </a>
       );
