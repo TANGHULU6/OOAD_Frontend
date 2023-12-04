@@ -258,10 +258,9 @@ export async function getAllStudents(options?: { [key: string]: any }) {
     ...(options || {}),
   });
 }
-export async function getCourseNotifications(courseId: number, options?: { [key: string]: any }) {
+export async function getCourseNotifications(options?: { [key: string]: any }) {
   return request<API.NoticeIconList>(`/api/course/notification/list`, {
     method: 'GET',
-    params: { courseId }, // Passing courseId as a query parameter
     ...(options || {}),
   });
 }

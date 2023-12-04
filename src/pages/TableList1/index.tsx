@@ -9,56 +9,8 @@ import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
 
 import UpdateForm from './components/UpdateForm';
-import { rule, addRule, updateRule, removeRule } from './service';
+import { getCourseList, addCourse, updateCourse, removeCourse } from './service';
 import type { TableListItem, TableListPagination } from './data';
-
-const handleAdd = async (fields: TableListItem) => {
-    const hide = message.loading('Adding...');
-    try {
-        await addRule({ ...fields });
-        hide();
-        message.success('Added successfully');
-        return true;
-    } catch (error) {
-        hide();
-        message.error('Failed to add, please try again!');
-        return false;
-    }
-};
-
-const handleUpdate = async (fields: Partial<TableListItem>, currentRow?: TableListItem) => {
-    const hide = message.loading('Updating...');
-    try {
-        await updateRule({
-            ...currentRow,
-            ...fields,
-        });
-        hide();
-        message.success('Updated successfully');
-        return true;
-    } catch (error) {
-        hide();
-        message.error('Failed to update, please try again!');
-        return false;
-    }
-};
-
-const handleRemove = async (selectedRows: TableListItem[]) => {
-    const hide = message.loading('Deleting...');
-    if (!selectedRows) return true;
-    try {
-        await removeRule({
-            key: selectedRows.map((row) => row.key),
-        });
-        hide();
-        message.success('Deleted successfully');
-        return true;
-    } catch (error) {
-        hide();
-        message.error('Failed to delete, please try again!');
-        return false;
-    }
-};
 
 const CourseList: React.FC = () => {
     const [createModalVisible, handleModalVisible] = useState<boolean>(false);
@@ -68,10 +20,59 @@ const CourseList: React.FC = () => {
     const [currentRow, setCurrentRow] = useState<TableListItem>();
     const [selectedRowsState, setSelectedRows] = useState<TableListItem[]>([]);
 
+    const handleAdd = async (fields: TableListItem) => {
+        const hide = message.loading('Adding...');
+        try {
+            await addCourse({ ...fields });
+            hide();
+            message.success('Added successfully');
+            return true;
+        } catch (error) {
+            hide();
+            message.error('Failed to add, please try again!');
+            return false;
+        }
+    };
+
+    const handleUpdate = async (fields: Partial<TableListItem>, currentRow?: TableListItem) => {
+        const hide = message.loading('Updating...');
+        try {
+            await updateCourse({
+                ...currentRow,
+                ...fields,
+            });
+            hide();
+            message.success('Updated successfully');
+            return true;
+        } catch (error) {
+            hide();
+            message.error('Failed to update, please try again!');
+            return false;
+        }
+    };
+
+    const handleRemove = async (selectedRows: TableListItem[]) => {
+        const hide = message.loading('Deleting...');
+        if (!selectedRows) return true;
+        try {
+            await removeCourse({
+                id: selectedRows.map((row) => row.id),
+            });
+            hide();
+            message.success('Deleted successfully');
+            return true;
+        } catch (error) {
+            hide();
+            message.error('Failed to delete, please try again!');
+            return false;
+        }
+    };
+
+
     const columns: ProColumns<TableListItem>[] = [
         {
-            title: 'Name',
-            dataIndex: 'name',
+            title: 'Course Name',
+            dataIndex: 'courseName',
             render: (dom, entity) => {
                 return <a onClick={() => { setCurrentRow(entity); setShowDetail(true); }}>{dom}</a>;
             },
@@ -93,7 +94,7 @@ const CourseList: React.FC = () => {
             <ProTable<TableListItem, TableListPagination>
                 headerTitle="Course List"
                 actionRef={actionRef}
-                rowKey="key"
+                rowKey="id"
                 search={{
                     labelWidth: 120,
                 }}
@@ -102,7 +103,7 @@ const CourseList: React.FC = () => {
                         <PlusOutlined /> New Course
                     </Button>,
                 ]}
-                request={rule}
+                request={getCourseList}
                 columns={columns}
                 rowSelection={{
                     onChange: (_, selectedRows) => setSelectedRows(selectedRows),
@@ -122,8 +123,8 @@ const CourseList: React.FC = () => {
                     }
                 }}
             >
-                <ProFormText name="name" label="Course Name" rules={[{ required: true, message: 'Course name is required' }]} />
-                <ProFormTextArea name="desc" label="Description" />
+                <ProFormText name="courseName" label="Course Name" rules={[{ required: true, message: 'Course name is required' }]} />
+                <ProFormTextArea name="description" label="Description" />
             </ModalForm>
 
             <UpdateForm
@@ -146,12 +147,12 @@ const CourseList: React.FC = () => {
                 onClose={() => { setCurrentRow(undefined); setShowDetail(false); }}
                 closable={false}
             >
-                {currentRow?.name && (
+                {currentRow?.id && (
                     <ProDescriptions<TableListItem>
                         column={2}
-                        title={currentRow?.name}
+                        title={currentRow?.id}
                         request={async () => ({ data: currentRow || {} })}
-                        params={{ id: currentRow?.name }}
+                        params={{ id: currentRow?.id }}
                         columns={columns as ProDescriptionsItemProps<TableListItem>[]}
                     />
                 )}

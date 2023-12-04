@@ -3,9 +3,9 @@ import { Card, Table } from 'antd';
 
 import {
     getCourseList,
-    addCourse,
-    updateCourse,
-    removeCourse
+    // addCourse,
+    // updateCourse,
+    // removeCourse
 } from '@/services/ant-design-pro/api';
 
 const CourseOverview: React.FC = () => {
