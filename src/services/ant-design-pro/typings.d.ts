@@ -181,12 +181,11 @@ declare namespace API {
 
   // 课程详细信息类型
   type CourseDetail = {
-    id: number;
-    name: string;
-    teacher: Teacher; // 假设教师信息是完整的对象
-    teachingAssistants: Teacher[]; // 假设助教信息是教师对象的数组
-    students: Student[]; // 假设学生信息是学生对象的数组
-    creationTime: string;
-    // 可以添加其他课程相关字段
+    courseName: string;           // Name of the course
+    teacherName: string;          // Name of the teacher
+    taNameList: (string | null)[]; // List of teaching assistant names, which may include null
+    studentNum: number;           // Number of students
+    createTime: string;           // Creation time of the course
+    // Add other fields if necessary
   };
 }
