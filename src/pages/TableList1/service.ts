@@ -28,15 +28,15 @@ export async function getCourseList(params: { current?: number; pageSize?: numbe
     params: { ...params },
     ...(options || {}),
   });
-
+  console.log(response)
   // 检查 API 返回的 code 是否表示成功
   const success = response.code === 20000;
 
   // 转换数据格式以适应 ProTable
   return {
-    data: response.data,
-    total: response.data.length, // 假设所有数据都在当前页返回
-    success: success,
+    data: response,
+    total: response.length, // 假设所有数据都在当前页返回
+    success: true,
   };
 }
 
