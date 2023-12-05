@@ -9,18 +9,19 @@ import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
 
 import UpdateForm from './components/UpdateForm';
-import { getCourseList, addCourse, updateCourse, removeCourse } from './service';
-import type { TableListItem, TableListPagination } from './data';
+import { getCourseList, addCourse, updateCourse, removeCourse } from '@/services/ant-design-pro/api';
+import CourseListItem = API.CourseListItem;
+
 
 const CourseList: React.FC = () => {
     const [createModalVisible, handleModalVisible] = useState<boolean>(false);
     const [updateModalVisible, handleUpdateModalVisible] = useState<boolean>(false);
     const [showDetail, setShowDetail] = useState<boolean>(false);
     const actionRef = useRef<ActionType>();
-    const [currentRow, setCurrentRow] = useState<TableListItem>();
-    const [selectedRowsState, setSelectedRows] = useState<TableListItem[]>([]);
+    const [currentRow, setCurrentRow] = useState<CourseListItem>();
+    const [selectedRowsState, setSelectedRows] = useState<CourseListItem[]>([]);
 
-    const handleAdd = async (fields: TableListItem) => {
+    const handleAdd = async (fields: CourseListItem) => {
         const hide = message.loading('Adding...');
         try {
             await addCourse({ ...fields });
@@ -34,7 +35,7 @@ const CourseList: React.FC = () => {
         }
     };
 
-    const handleUpdate = async (fields: Partial<TableListItem>, currentRow?: TableListItem) => {
+    const handleUpdate = async (fields: Partial<CourseListItem>, currentRow?: CourseListItem) => {
         const hide = message.loading('Updating...');
         try {
             await updateCourse({
@@ -51,7 +52,7 @@ const CourseList: React.FC = () => {
         }
     };
 
-    const handleRemove = async (selectedRows: TableListItem[]) => {
+    const handleRemove = async (selectedRows: CourseListItem[]) => {
         const hide = message.loading('Deleting...');
         if (!selectedRows) return true;
         try {
@@ -70,7 +71,7 @@ const CourseList: React.FC = () => {
     };
 
 
-    const columns: ProColumns<TableListItem>[] = [
+    const columns: ProColumns<CourseListItem>[] = [
         {
             title: 'Course Name',
             dataIndex: 'courseName',
@@ -92,7 +93,7 @@ const CourseList: React.FC = () => {
 
     return (
         <PageContainer>
-            <ProTable<TableListItem, TableListPagination>
+            <ProTable<CourseListItem, CourseListPagination>
                 headerTitle="Course List"
                 actionRef={actionRef}
                 rowKey="id"
@@ -117,7 +118,7 @@ const CourseList: React.FC = () => {
                 visible={createModalVisible}
                 onVisibleChange={handleModalVisible}
                 onFinish={async (value) => {
-                    const success = await handleAdd(value as TableListItem);
+                    const success = await handleAdd(value as CourseListItem);
                     if (success) {
                         handleModalVisible(false);
                         actionRef.current?.reload();
@@ -149,12 +150,12 @@ const CourseList: React.FC = () => {
                 closable={false}
             >
                 {currentRow?.id && (
-                    <ProDescriptions<TableListItem>
+                    <ProDescriptions<CourseListItem>
                         column={2}
                         title={currentRow?.id}
                         request={async () => ({ data: currentRow || {} })}
                         params={{ id: currentRow?.id }}
-                        columns={columns as ProDescriptionsItemProps<TableListItem>[]}
+                        columns={columns as ProDescriptionsItemProps<CourseListItem>[]}
                     />
                 )}
             </Drawer>
