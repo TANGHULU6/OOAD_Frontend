@@ -10,8 +10,20 @@ import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
 
 import UpdateForm from './components/UpdateForm';
 import { getCourseList, addCourse, updateCourse, removeCourse } from '@/services/ant-design-pro/api';
-import CourseListItem = API.CourseListItem;
 
+export type CourseListItem = {
+    id: number;
+    courseName: string;
+    teacherId?: number | null;
+    isDeleted?: boolean | null;
+    createTime?: Date | null;
+    updateTime?: Date | null;
+};
+export type CourseListPagination = {
+    total: number;
+    pageSize: number;
+    current: number;
+};
 
 const CourseList: React.FC = () => {
     const [createModalVisible, handleModalVisible] = useState<boolean>(false);

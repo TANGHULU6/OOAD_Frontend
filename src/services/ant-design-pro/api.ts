@@ -285,15 +285,13 @@ export async function getCourseList(options?: { [key: string]: any }) {
   });
 }
 /** 更新课程信息 */
-export async function updateCourse(params: { id: number; courseName: string; teacherId: number; taIdList: number[] }, options?: { [key: string]: any }) {
+export async function updateCourse(body: API.CourseList, options?: { [key: string]: any }) {
   return request<API.BaseResponse<boolean>>('/api/course/update', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    data: {
-      ...params
-    },
+    data: body,
     ...(options || {}),
   });
 }
@@ -311,15 +309,13 @@ export async function removeCourse(body?: bigint, options?: { [key: string]: any
 }
 
 /** 创建新课程 */
-export async function addCourse(params: { courseName: string; teacherId: number; taIdList: number[] }, options?: { [key: string]: any }) {
+export async function addCourse(body: API.CourseList, options?: { [key: string]: any }) {
   return request<API.BaseResponse<bigint>>('/api/course/insert', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    data: {
-      ...params
-    },
+    data: body,
     ...(options || {}),
   });
 }

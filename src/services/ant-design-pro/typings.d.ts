@@ -205,7 +205,7 @@ declare namespace API {
     createTime: string;           // Creation time of the course
     // Add other fields if necessary
   };
-  export type CourseListItem = {
+  export type CourseList = {
     id: number;
     courseName: string;
     teacherId?: number | null;
@@ -221,7 +221,7 @@ declare namespace API {
   };
 
   export type CourseListData = {
-    list: CourseListItem[];
+    list: CourseList[];
     pagination: Partial<CourseListPagination>;
   };
 
