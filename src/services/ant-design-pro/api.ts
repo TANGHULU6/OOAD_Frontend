@@ -284,36 +284,46 @@ export async function getCourseList(options?: { [key: string]: any }) {
     ...(options || {}),
   });
 }
-// 更新课程信息
+/** 更新课程信息 */
 export async function updateCourse(params: { id: number; courseName: string; teacherId: number; taIdList: number[] }, options?: { [key: string]: any }) {
-  return request<boolean>('/api/course/update', {
+  return request<API.BaseResponse<boolean>>('/api/course/update', {
     method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
     data: {
       ...params
     },
     ...(options || {}),
   });
 }
-// 删除课程
-export async function removeCourse(params: { id: number }, options?: { [key: string]: any }) {
-  return request<boolean>('/api/course/delete', {
+
+/** 删除课程 */
+export async function removeCourse(body?: bigint, options?: { [key: string]: any }) {
+  return request<API.BaseResponse<boolean>>('/api/course/delete', {
     method: 'POST',
-    data: {
-      ...params
+    headers: {
+      'Content-Type': 'application/json',
     },
+    data: body,
     ...(options || {}),
   });
 }
-// 创建新课程
+
+/** 创建新课程 */
 export async function addCourse(params: { courseName: string; teacherId: number; taIdList: number[] }, options?: { [key: string]: any }) {
-  return request<{ courseId: bigint }>('/api/course/insert', {
+  return request<API.BaseResponse<bigint>>('/api/course/insert', {
     method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
     data: {
       ...params
     },
     ...(options || {}),
   });
 }
+
 // 获取课程详情
 export async function getCourseDetail(courseId: number, options?: { [key: string]: any }) {
   return request<API.CourseDetail>('/api/course', {
@@ -325,8 +335,11 @@ export async function getCourseDetail(courseId: number, options?: { [key: string
 
 // 任命教师助理
 export async function appointTA(courseId: number, taId: number, options?: { [key: string]: any }) {
-  return request<API.TAResponse>(`/api/course/add/ta`, {
+  return request<API.BaseResponse<API.TAResponse>>(`/api/course/add/ta`, {
     method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
     data: { courseId, taId },
     ...(options || {}),
   });
@@ -334,8 +347,11 @@ export async function appointTA(courseId: number, taId: number, options?: { [key
 
 // 免职教师助理
 export async function dismissTA(courseId: number, taId: number, options?: { [key: string]: any }) {
-  return request<API.TAResponse>(`/api/course/remove/ta`, {
+  return request<API.BaseResponse<API.TAResponse>>(`/api/course/remove/ta`, {
     method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
     data: { courseId, taId },
     ...(options || {}),
   });
@@ -343,8 +359,11 @@ export async function dismissTA(courseId: number, taId: number, options?: { [key
 
 // 添加学生
 export async function addStudent(courseId: number, studentId: number, options?: { [key: string]: any }) {
-  return request<API.StudentResponse>(`/api/course/add/student`, {
+  return request<API.BaseResponse<API.StudentResponse>>(`/api/course/add/student`, {
     method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
     data: { courseId, studentId },
     ...(options || {}),
   });
@@ -352,8 +371,11 @@ export async function addStudent(courseId: number, studentId: number, options?: 
 
 // 移除学生
 export async function removeStudent(courseId: number, studentId: number, options?: { [key: string]: any }) {
-  return request<API.StudentResponse>(`/api/course/remove/student`, {
+  return request<API.BaseResponse<API.StudentResponse>>(`/api/course/remove/student`, {
     method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
     data: { courseId, studentId },
     ...(options || {}),
   });
@@ -380,10 +402,14 @@ export async function getCourseNotifications(options?: { [key: string]: any }) {
     ...(options || {}),
   });
 }
+// 删除课程通知
 export async function deleteCourseNotification(notificationId: number, options?: { [key: string]: any }) {
-  return request<boolean>('/api/course/notification/delete', {
+  return request<API.BaseResponse<boolean>>('/api/course/notification/delete', {
     method: 'POST',
-    data: { notificationId }, // Sending notificationId in the request body
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: { notificationId },
     ...(options || {}),
   });
 }
