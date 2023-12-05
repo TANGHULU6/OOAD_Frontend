@@ -179,7 +179,7 @@ export default () => {
         // @ts-ignore
         request={async (params = {}, sort, filter) => {
           // console.log(sort, filter);
-          await waitTime(2000);
+          // await waitTime(2000);
           // @ts-ignore
           const userList = await listUsersByParams(params);
           return {
@@ -344,7 +344,7 @@ export default () => {
           rules={[
             {
               required: true,
-              message: '请输入性别!',
+              message: '请选择性别!',
             },
           ]}
           options={[

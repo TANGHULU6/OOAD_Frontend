@@ -79,6 +79,15 @@ declare namespace API {
     endDeadline?: Date
   }
 
+  type AssignmentList = {
+    id: bigint
+    title: string
+    description?: string
+    startTime?: Date
+    endTime?: Date
+    assignmentType: number
+  }
+
   type PageParams = {
     current?: number;
     pageSize?: number;

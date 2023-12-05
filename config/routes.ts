@@ -16,9 +16,15 @@ export default [
   },
   {
     name: '项目列表',
-    icon: 'table',
+    icon: 'profile',
     path: '/project/list',
     component: './Project/List',
+  },
+  {
+    name: '作业列表',
+    icon: 'form',
+    path: '/assignment/list',
+    component: './Assignment/List',
   },
   {
     name: 'Course List',
@@ -51,34 +57,34 @@ export default [
   //   component: '@/pages/Notification/NotificationContent',
   // },
   { path: '/welcome', name: '欢迎', icon: 'smile', component: './Welcome' },
-  {
-    path: '/admin',
-    name: '管理页',
-    icon: 'crown',
-    access: 'canAdmin',
-    component: './Admin',
-    routes: [
-      { path: '/admin/sub-page', name: '二级管理页', icon: 'smile', component: './Welcome' },
-      { component: './404' },
-    ],
-  },
-  {
-    path: '/admin',
-    name: 'teacher',
-    icon: 'crown',
-    access: 'canTeacher',
-    routes: [
-      {
-        path: '/admin/sub-page',
-        name: 'sub-page',
-        icon: 'smile',
-        component: './Welcome',
-      },
-      {
-        component: './404',
-      },
-    ],
-  },
+  // {
+  //   path: '/admin',
+  //   name: '管理页',
+  //   icon: 'crown',
+  //   access: 'canAdmin',
+  //   component: './Admin',
+  //   routes: [
+  //     { path: '/admin/sub-page', name: '二级管理页', icon: 'smile', component: './Welcome' },
+  //     { component: './404' },
+  //   ],
+  // },
+  // {
+  //   path: '/admin',
+  //   name: 'teacher',
+  //   icon: 'crown',
+  //   access: 'canTeacher',
+  //   routes: [
+  //     {
+  //       path: '/admin/sub-page',
+  //       name: 'sub-page',
+  //       icon: 'smile',
+  //       component: './Welcome',
+  //     },
+  //     {
+  //       component: './404',
+  //     },
+  //   ],
+  // },
   {
     path: '/dashboard',
     name: 'dashboard',

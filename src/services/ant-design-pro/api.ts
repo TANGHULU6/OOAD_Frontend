@@ -110,7 +110,52 @@ export async function deleteUser(body?: bigint, options?: { [key: string]: any }
   });
 }
 
-/** 根据用户身份及课程id列举用户 GET /api/project/list */
+/** 根据课程id列举作业 GET /api/assignment/list */
+export async function listAssignments(courseId: bigint, options?: { [key: string]: any }) {
+  return request<API.BaseResponse<API.AssignmentList[]>>('/api/assignment/list', {
+    method: 'GET',
+    params: {courseId},
+    ...(options || {}),
+  });
+}
+
+/** 新增作业 POST /api/assignment/insert */
+export async function insertAssignment(body: API.AssignmentList, options?: { [key: string]: any }) {
+  return request<API.BaseResponse<bigint>>('/api/assignment/insert', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 修改作业信息 POST /api/assignment/update */
+export async function updateAssignment(body: API.AssignmentList, options?: { [key: string]: any }) {
+  return request<API.BaseResponse<boolean>>('/api/assignment/update', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 删除作业 POST /api/assignment/delete */
+export async function deleteAssignment(body?: bigint, options?: { [key: string]: any }) {
+  return request<API.BaseResponse<boolean>>('/api/assignment/delete', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 根据用户身份及课程id列举项目 GET /api/project/list */
 export async function listProjects(courseId: bigint, options?: { [key: string]: any }) {
   return request<API.BaseResponse<API.ProjectList[]>>('/api/project/list', {
     method: 'GET',
@@ -119,7 +164,7 @@ export async function listProjects(courseId: bigint, options?: { [key: string]: 
   });
 }
 
-/** 新增用户 POST /api/project/insert */
+/** 新增项目 POST /api/project/insert */
 export async function insertProject(body: API.ProjectList, options?: { [key: string]: any }) {
   return request<API.BaseResponse<bigint>>('/api/project/insert', {
     method: 'POST',

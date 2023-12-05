@@ -1,9 +1,9 @@
 import {PlusOutlined} from '@ant-design/icons';
-import {ActionType, ModalForm, PageContainer, ProFormDateTimePicker, ProFormText, ProTable} from '@ant-design/pro-components';
+import {ActionType, ModalForm, PageContainer, ProFormDateTimePicker, ProFormSelect, ProFormText, ProTable} from '@ant-design/pro-components';
 import {Button, message, Modal} from 'antd';
 import {useRef, useState} from 'react';
 import {history, useAccess} from 'umi';
-import {deleteProject, insertProject, listProjects, updateProject} from "@/services/ant-design-pro/api";
+import {deleteAssignment, insertAssignment, listAssignments, updateAssignment} from "@/services/ant-design-pro/api";
 
 export const waitTimePromise = async (time: number = 100) => {
   return new Promise((resolve) => {
@@ -23,7 +23,7 @@ export default () => {
   const access = useAccess();
   return (
     <PageContainer>
-      <ProTable<API.ProjectList>
+      <ProTable<API.AssignmentList>
         columns={[
           {
             dataIndex: 'id',
@@ -32,25 +32,38 @@ export default () => {
             hideInTable: true,
           },
           {
-            title: '项目名称',
-            dataIndex: 'projectName',
+            title: '标题',
+            dataIndex: 'title',
             sorter: true,
           },
           {
-            title: '项目描述',
+            title: '作业描述',
             dataIndex: 'description',
           },
           {
-            title: '组队截止时间',
-            dataIndex: 'groupDeadline',
+            title: '开始时间',
+            dataIndex: 'startTime',
             valueType: 'dateTime',
             sorter: true,
           },
           {
-            title: '项目截止时间',
-            dataIndex: 'endDeadline',
+            title: '截止时间',
+            dataIndex: 'endTime',
             valueType: 'dateTime',
             sorter: true,
+          },
+          {
+            title: '类型',
+            dataIndex: 'assignmentType',
+            valueType: 'select',
+            valueEnum: {
+              0: {
+                text: '个人作业'
+              },
+              1: {
+                text: '小组作业'
+              }
+            }
           },
           {
             title: '操作',
@@ -61,7 +74,7 @@ export default () => {
                 key="view"
                 onClick={() => {
                   // 这里添加你的查看详情逻辑，比如跳转到详情页面
-                  history.push(`/project-page/${record.id}`);
+                  history.push(`/assignment-page/${record.id}`);
                 }}
               >
                 查看
@@ -79,13 +92,13 @@ export default () => {
                 style={{color: 'red'}}
                 onClick={() => {
                   Modal.confirm({
-                    title: '删除项目',
-                    content: '确定删除该项目吗？',
+                    title: '删除作业',
+                    content: '确定删除该作业吗？',
                     okText: '确认',
                     cancelText: '取消',
                     onOk: async () => {
                       try {
-                        const result = await deleteProject(record.id);
+                        const result = await deleteAssignment(record.id);
                         // @ts-ignore
                         if (result && result === true) {
                           message.success("删除成功！")
@@ -114,9 +127,9 @@ export default () => {
         request={async (params = {}, sort, filter) => {
           // console.log(sort, filter);
           // await waitTime(2000);
-          const projectList = await listProjects(1n);
+          const assignmentList = await listAssignments(1n);
           return {
-            data: projectList
+            data: assignmentList
           }
         }}
 
@@ -124,7 +137,7 @@ export default () => {
           type: 'single',
           onSave: async (key, record, originRow, newLineConfig) => {
             try {
-              const result = await updateProject(record);
+              const result = await updateAssignment(record);
               // @ts-ignore
               if (result && result === true) {
                 message.success("保存成功！")
@@ -140,7 +153,7 @@ export default () => {
           },
           onDelete: async (key, row) => {
             try {
-              const result = await deleteProject(row.id);
+              const result = await deleteAssignment(row.id);
               // @ts-ignore
               if (result && result === true) {
                 message.success("删除成功！")
@@ -167,7 +180,7 @@ export default () => {
         search={false}
         pagination={false}
         dateFormatter="string"
-        headerTitle="项目列表"
+        headerTitle="作业列表"
         toolBarRender={() => [
           access.canTA && <Button
             key="button"
@@ -183,14 +196,14 @@ export default () => {
       />
 
       <ModalForm
-        title="添加项目"
+        title="发布作业"
         width="400px"
         visible={createModalVisible}
         onVisibleChange={handleModalVisible}
         onFinish={async (value) => {
           console.log(value)
           try {
-            const result = await insertProject(value as API.ProjectList);
+            const result = await insertAssignment(value as API.AssignmentList);
             // @ts-ignore
             if (result) {
               message.success("添加成功！")
@@ -206,42 +219,63 @@ export default () => {
         }}
       >
         <ProFormText
-          name="projectName"
-          label="项目名称"
+          name="title"
+          label="作业名称"
           rules={[
             {
               required: true,
-              message: '请输入项目名称!',
+              message: '请输入作业名称!',
             },
           ]}
           width="md"
         />
         <ProFormText
           name="description"
-          label="项目描述"
+          label="作业描述"
           width="md"
         />
         <ProFormDateTimePicker
-          name="groupDeadline"
-          label="组队截止时间"
+          name="startTime"
+          label="作业开始时间"
           rules={[
             {
               required: true,
-              message: '请选择组队截止时间!',
+              message: '请选择作业开始时间!',
             },
           ]}
           width="md"
         />
         <ProFormDateTimePicker
-          name="endDeadline"
-          label="项目截止时间"
+          name="endTime"
+          label="作业截止时间"
           rules={[
             {
               required: true,
-              message: '请选择项目截止时间!',
+              message: '请选择作业截止时间!',
             },
           ]}
           width="md"
+        />
+        <ProFormSelect
+            name="assignmentType"
+            label="作业类型"
+            rules={[
+              {
+                required: true,
+                message: '请选择作业类型!',
+              },
+            ]}
+            options={[
+              {
+                label: '个人作业',
+                value: 0,
+              },
+              {
+                label: '小组作业',
+                value: 1,
+              },
+            ]}
+            width="md"
         />
       </ModalForm>
     </PageContainer>
