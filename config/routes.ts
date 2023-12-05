@@ -36,7 +36,7 @@ export default [
     name: 'Course List canAdmin',
     icon: 'table',
     path: '/list2',
-    component: './Course/index',
+    component: './Course/index1',
   },
   // {
   //   name: 'Notify Table',
