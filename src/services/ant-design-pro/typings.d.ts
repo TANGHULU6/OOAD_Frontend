@@ -206,7 +206,7 @@ declare namespace API {
     // Add other fields if necessary
   };
   export type CourseList = {
-    id: number;
+    id: bigint;
     courseName: string;
     teacherId?: number | null;
     isDeleted?: boolean | null;

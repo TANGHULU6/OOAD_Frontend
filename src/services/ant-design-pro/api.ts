@@ -278,7 +278,7 @@ export async function removeRule(options?: { [key: string]: any }) {
   });
 }
 // 获取课程列表
-export async function getCourseList(options?: { [key: string]: any }) {
+export async function listCourses(options?: { [key: string]: any }) {
   return request<API.CourseList>('/api/course/list', {
     method: 'GET',
     ...(options || {}),
@@ -297,7 +297,7 @@ export async function updateCourse(body: API.CourseList, options?: { [key: strin
 }
 
 /** 删除课程 */
-export async function removeCourse(body?: bigint, options?: { [key: string]: any }) {
+export async function deleteCourse(body?: bigint, options?: { [key: string]: any }) {
   return request<API.BaseResponse<boolean>>('/api/course/delete', {
     method: 'POST',
     headers: {
@@ -309,7 +309,7 @@ export async function removeCourse(body?: bigint, options?: { [key: string]: any
 }
 
 /** 创建新课程 */
-export async function addCourse(body: API.CourseList, options?: { [key: string]: any }) {
+export async function insertCourse(body: API.CourseList, options?: { [key: string]: any }) {
   return request<API.BaseResponse<bigint>>('/api/course/insert', {
     method: 'POST',
     headers: {

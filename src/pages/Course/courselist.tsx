@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, Table } from 'antd';
 
 import {
-    getCourseList,
+    listCourses,
     // addCourse,
     // updateCourse,
     // removeCourse
@@ -13,7 +13,7 @@ const CourseOverview: React.FC = () => {
 
     useEffect(() => {
         const fetchCourses = async () => {
-            const response = await getCourseList();
+            const response = await listCourses();
             setCourses(response);
         };
 

@@ -30,13 +30,13 @@ export default [
     name: 'Course List',
     icon: 'table',
     path: '/list',
-    component: './TableList/courselist',
+    component: './Course/courselist',
   },
   {
     name: 'Course List canAdmin',
     icon: 'table',
     path: '/list1',
-    component: './TableList1',
+    component: './Course/index',
   },
   // {
   //   name: 'Notify Table',
