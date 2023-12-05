@@ -15,6 +15,12 @@ export default [
     component: './User/Manage',
   },
   {
+    name: '项目列表',
+    icon: 'table',
+    path: '/project/list',
+    component: './Project/List',
+  },
+  {
     name: 'Course List',
     icon: 'table',
     path: '/list',

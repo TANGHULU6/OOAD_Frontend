@@ -138,7 +138,7 @@ const columns: ProColumns<API.CurrentUser>[] = [
         style={{color: 'red'}}
         onClick={() => {
           Modal.confirm({
-            title: '删除会议',
+            title: '删除用户',
             content: '确定删除该用户吗？',
             okText: '确认',
             cancelText: '取消',
@@ -178,11 +178,12 @@ export default () => {
         cardBordered
         // @ts-ignore
         request={async (params = {}, sort, filter) => {
-          console.log(sort, filter);
+          // console.log(sort, filter);
           await waitTime(2000);
-          const roomList = await listUsersByParams(params);
+          // @ts-ignore
+          const userList = await listUsersByParams(params);
           return {
-            data: roomList
+            data: userList
           }
         }}
         editable={{
@@ -230,7 +231,7 @@ export default () => {
         }}
         pagination={false}
         dateFormatter="string"
-        headerTitle="会议列表"
+        headerTitle="用户列表"
         toolBarRender={() => [
           <Button
             key="button"

@@ -110,6 +110,51 @@ export async function deleteUser(body?: bigint, options?: { [key: string]: any }
   });
 }
 
+/** 根据用户身份及课程id列举用户 GET /api/project/list */
+export async function listProjects(courseId: bigint, options?: { [key: string]: any }) {
+  return request<API.BaseResponse<API.ProjectList[]>>('/api/project/list', {
+    method: 'GET',
+    params: {courseId},
+    ...(options || {}),
+  });
+}
+
+/** 新增用户 POST /api/project/insert */
+export async function insertProject(body: API.ProjectList, options?: { [key: string]: any }) {
+  return request<API.BaseResponse<bigint>>('/api/project/insert', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 修改项目信息 POST /api/project/update */
+export async function updateProject(body: API.ProjectList, options?: { [key: string]: any }) {
+  return request<API.BaseResponse<boolean>>('/api/project/update', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 删除项目 POST /api/project/delete */
+export async function deleteProject(body?: bigint, options?: { [key: string]: any }) {
+  return request<API.BaseResponse<boolean>>('/api/project/delete', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
 /** 此处后端没有提供注释 GET /api/notices */
 export async function getNotices(options?: { [key: string]: any }) {
   console.log('Fetching notices with options:', options);
@@ -122,6 +167,7 @@ export async function getNotices(options?: { [key: string]: any }) {
 
     // 格式化响应数据
     const formattedResponse = {
+      // @ts-ignore
       data: response.map(item => ({
         id: item.id.toString(), // 确保 id 是字符串
         title: item.title, // 使用响应中的 title

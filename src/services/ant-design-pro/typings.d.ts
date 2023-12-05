@@ -71,6 +71,14 @@ declare namespace API {
     pageSize: number;
   };
 
+  type ProjectList = {
+    id: bigint
+    projectName: string
+    description?: string
+    groupDeadline?: Date
+    endDeadline?: Date
+  }
+
   type PageParams = {
     current?: number;
     pageSize?: number;
