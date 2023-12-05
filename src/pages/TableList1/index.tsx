@@ -55,6 +55,7 @@ const CourseList: React.FC = () => {
         const hide = message.loading('Deleting...');
         if (!selectedRows) return true;
         try {
+            console.log(selectedRows.map((row) => row.id))
             await removeCourse({
                 id: selectedRows.map((row) => row.id),
             });
