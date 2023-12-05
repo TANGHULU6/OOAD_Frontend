@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom'; // 引入 useParams
 import { Card, Button, Modal, Form, Select, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 

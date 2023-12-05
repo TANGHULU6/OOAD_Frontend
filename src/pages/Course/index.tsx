@@ -51,7 +51,7 @@ export default () => {
                             >
                                 查看
                             </a>,
-                            access.canTA && <a
+                            access.canAdmin && <a
                                 key="editable"
                                 onClick={() => {
                                     action?.startEditable?.(record.id.toString());
@@ -59,7 +59,7 @@ export default () => {
                             >
                                 编辑
                             </a>,
-                            access.canTA && <a
+                            access.canAdmin && <a
                                 key={"delete"}
                                 style={{color: 'red'}}
                                 onClick={() => {
@@ -71,7 +71,7 @@ export default () => {
                                         onOk: async () => {
                                             try {
                                                 const result = await deleteCourse(record.id);
-                                                if (result === true) {
+                                                if (result && result === true) {
                                                     message.success("删除成功！")
                                                     action?.reload()
                                                     return Promise.resolve()
@@ -92,46 +92,74 @@ export default () => {
                     },
                 ]}
                 actionRef={actionRef}
-                // ... other ProTable configurations
+                cardBordered
+                // Other ProTable configurations
                 request={async (params = {}, sort, filter) => {
-                    // Adjust the request logic to fetch course data
+                    // Implement the logic to fetch course data
                     const courseList = await listCourses();
                     return {
                         data: courseList
                     }
                 }}
                 editable={{
-                    // Adjust the editable logic for courses
-                    // ...
+                    type: 'single',
+                    onSave: async (key, record, originRow, newLineConfig) => {
+                        try {
+                            const result = await updateCourse(record);
+                            if (result && result === true) {
+                                message.success("保存成功！");
+                                actionRef.current?.reload();
+                                return Promise.resolve();
+                            } else {
+                                throw new Error();
+                            }
+                        } catch (error) {
+                            message.error('保存失败，请重试！');
+                            return Promise.reject();
+                        }
+                    },
+                    onDelete: async (key, row) => {
+                        try {
+                            const result = await deleteCourse(row.id);
+                            if (result && result === true) {
+                                message.success("删除成功！");
+                                actionRef.current?.reload();
+                                return Promise.resolve();
+                            } else {
+                                throw new Error();
+                            }
+                        } catch (error) {
+                            message.error('删除失败，请重试！');
+                            return Promise.reject();
+                        }
+                    }
                 }}
                 // ... other configurations
             />
 
             <ModalForm
                 title="添加课程"
-                // ... other configurations for ModalForm
+                width="400px"
+                visible={createModalVisible}
+                onVisibleChange={handleModalVisible}
                 onFinish={async (value) => {
+                    console.log(value)
                     try {
                         const result = await insertCourse(value as API.CourseList);
                         if (result) {
-                            message.success("添加成功！")
-                            actionRef.current?.reload()
-                            return true
+                            message.success("添加成功！");
+                            actionRef.current?.reload();
+                            return true;
                         } else {
                             throw new Error();
                         }
                     } catch (error) {
                         message.error('添加失败，请重试！');
-                        return true
+                        return true;
                     }
                 }}
             >
-                <ProFormText
-                    name="courseName"
-                    label="课程名称"
-                    // ... other field configurations
-                />
-                // Add other course-specific fields as necessary
+                // Define form fields for course creation
             </ModalForm>
         </PageContainer>
     );

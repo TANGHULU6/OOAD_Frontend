@@ -178,10 +178,6 @@ declare namespace API {
     // ... 其他学生相关属性 ...
   };
 
-  // 其他必要的类型声明，如课程列表、教师列表等
-  type CourseList = Course[];
-  type TeacherList = Teacher[];
-  type StudentList = Student[];
   // 教师助理响应类型
   type TAResponse = {
     success: boolean;
@@ -208,32 +204,9 @@ declare namespace API {
   export type CourseList = {
     id: bigint;
     courseName: string;
-    teacherId?: number | null;
-    isDeleted?: boolean | null;
-    createTime?: Date | null;
-    updateTime?: Date | null;
-  };
-
-  export type CourseListPagination = {
-    total: number;
-    pageSize: number;
-    current: number;
-  };
-
-  export type CourseListData = {
-    list: CourseList[];
-    pagination: Partial<CourseListPagination>;
-  };
-
-// 根据需要调整 CourseListParams
-  export type CourseListParams = {
-    courseName?: string;
     teacherId?: number;
-    pageSize?: number;
-    currentPage?: number;
-    // 添加其他可能的查询参数
-    filter?: Record<string, any[]>;
-    sorter?: Record<string, any>;
+    isDeleted?: boolean;
+    createTime?: Date;
+    updateTime?: Date;
   };
-
 }

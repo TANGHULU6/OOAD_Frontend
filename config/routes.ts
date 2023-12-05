@@ -35,7 +35,7 @@ export default [
   {
     name: 'Course List canAdmin',
     icon: 'table',
-    path: '/list1',
+    path: '/list2',
     component: './Course/index',
   },
   // {
