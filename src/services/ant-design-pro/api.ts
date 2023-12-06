@@ -322,7 +322,7 @@ export async function insertCourse(body: API.CourseList, options?: { [key: strin
 
 // 获取课程详情
 export async function getCourseDetail(courseId: number, options?: { [key: string]: any }) {
-  return request<API.CourseDetail>('/api/course', {
+  return request<API.BaseResponse<API.CourseDetail>>('/api/course', {
     method: 'GET',
     params: { courseId }, // 将 courseId 作为查询参数传递
     ...(options || {}),

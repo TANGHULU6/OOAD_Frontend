@@ -74,7 +74,7 @@ export default () => {
                                 key="view"
                                 onClick={() => {
                                     // 这里添加你的查看详情逻辑，比如跳转到详情页面
-                                    history.push(`/Course-page/${record.id}`);
+                                    history.push(`/CourseOverview/${record.id}`);
                                 }}
                             >
                                 查看
