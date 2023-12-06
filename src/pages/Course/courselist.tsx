@@ -22,33 +22,14 @@ const CourseOverview: React.FC = () => {
 
     const columns = [
         {
+            title: '课程ID',
+            dataIndex: 'id',
+            key: 'id',
+        },
+        {
             title: '课程名称',
             dataIndex: 'courseName',
             key: 'courseName',
-        },
-        {
-            title: '任课教师ID',
-            dataIndex: 'teacherId',
-            key: 'teacherId',
-            render: (text: number | null) => text === null ? '—' : text.toString(), // Explicitly declare type of text
-        },
-        {
-            title: '是否已删除',
-            dataIndex: 'isDeleted',
-            key: 'isDeleted',
-            render: (text: boolean | null) => text === null ? '—' : text.toString(), // Explicitly declare type of text
-        },
-        {
-            title: '创建时间',
-            dataIndex: 'createTime',
-            key: 'createTime',
-            render: (text: string | null) => text || '—', // Explicitly declare type of text
-        },
-        {
-            title: '更新时间',
-            dataIndex: 'updateTime',
-            key: 'updateTime',
-            render: (text: string | null) => text || '—', // Explicitly declare type of text
         },
         // Add more columns as needed
     ];

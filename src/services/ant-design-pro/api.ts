@@ -1,6 +1,7 @@
 /* eslint-disable */
 import request from '@/plugins/globalRequest';
 
+
 /** 获取当前的用户 GET /api/user/current */
 export async function currentUser(options?: { [key: string]: any }) {
   return request<API.BaseResponse<API.CurrentUser>>('/api/user/current', {
@@ -324,6 +325,9 @@ export async function insertCourse(body: API.CourseList, options?: { [key: strin
 export async function getCourseDetail(courseId: number, options?: { [key: string]: any }) {
   return request<API.BaseResponse<API.CourseDetail>>('/api/course', {
     method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
     params: { courseId }, // 将 courseId 作为查询参数传递
     ...(options || {}),
   });
@@ -331,7 +335,7 @@ export async function getCourseDetail(courseId: number, options?: { [key: string
 
 // 任命教师助理
 export async function appointTA(courseId: number, taId: number, options?: { [key: string]: any }) {
-  return request<API.BaseResponse<API.TAResponse>>(`/api/course/add/ta`, {
+  return request<API.TAResponse>(`/api/course/add/ta`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

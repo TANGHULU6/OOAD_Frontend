@@ -193,7 +193,7 @@ declare namespace API {
   };
 
   // 课程详细信息类型
-  type CourseDetail = {
+  export type CourseDetail = {
     courseName: string;           // Name of the course
     teacherName: string;          // Name of the teacher
     taNameList: (string | null)[]; // List of teaching assistant names, which may include null

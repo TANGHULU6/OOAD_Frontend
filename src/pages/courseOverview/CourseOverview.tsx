@@ -6,10 +6,9 @@ import { PlusOutlined } from '@ant-design/icons';
 // const { Option } = Select;
 
 import { getCourseDetail } from '@/services/ant-design-pro/api';
-import CourseDetail = API.CourseDetail;
 
 const CourseOverview: React.FC = () => {
-    const [course, setCourse] = useState<CourseDetail | null>(null);
+    let [course, setCourse] = useState<API.CourseDetail | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
     // const [form] = Form.useForm();
@@ -19,14 +18,15 @@ const CourseOverview: React.FC = () => {
         const fetchCourse = async () => {
             setIsLoading(true);
             try {
-                const jsonResponse = await getCourseDetail(Number(id));
-                
+                const jsonData = await getCourseDetail(1);
+
+                // @ts-ignore
                 setCourse({
-                    courseName: jsonResponse.courseName,
-                    teacherName: jsonResponse.teacherName,
-                    taNameList: jsonResponse.taNameList.filter(ta => ta !== null),
-                    studentNum: jsonResponse.studentNum,
-                    createTime: jsonResponse.createTime
+                    courseName: jsonData.courseName,
+                    teacherName: jsonData.teacherName,
+                    taNameList: jsonData.taNameList.filter(ta => ta !== null),
+                    studentNum: jsonData.studentNum,
+                    createTime: jsonData.createTime
                 });
             } catch (error) {
                 console.error('Error fetching course details:', error);
@@ -34,9 +34,11 @@ const CourseOverview: React.FC = () => {
             } finally {
                 setIsLoading(false);
             }
+
         };
         fetchCourse();
     }, [id]);
+
 
     const handleOk = () => {
         // Implement the logic to handle form submission
