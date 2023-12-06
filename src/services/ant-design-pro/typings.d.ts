@@ -204,9 +204,5 @@ declare namespace API {
   export type CourseList = {
     id: bigint;
     courseName: string;
-    teacherId?: number;
-    isDeleted?: boolean;
-    createTime?: Date;
-    updateTime?: Date;
   };
 }

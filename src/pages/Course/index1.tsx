@@ -26,44 +26,14 @@ export default () => {
             <ProTable<API.CourseList>
                 columns={[
                     {
+                        title: '课程ID',
                         dataIndex: 'id',
-                        valueType: 'indexBorder',
-                        width: 48,
-                        hideInTable: true,
+                        key: 'id',
                     },
                     {
-                        title: '标题',
-                        dataIndex: 'title',
-                        sorter: true,
-                    },
-                    {
-                        title: '课程描述',
-                        dataIndex: 'description',
-                    },
-                    {
-                        title: '开始时间',
-                        dataIndex: 'startTime',
-                        valueType: 'dateTime',
-                        sorter: true,
-                    },
-                    {
-                        title: '截止时间',
-                        dataIndex: 'endTime',
-                        valueType: 'dateTime',
-                        sorter: true,
-                    },
-                    {
-                        title: '类型',
-                        dataIndex: 'CourseType',
-                        valueType: 'select',
-                        valueEnum: {
-                            0: {
-                                text: '个人课程'
-                            },
-                            1: {
-                                text: '小组课程'
-                            }
-                        }
+                        title: '课程名称',
+                        dataIndex: 'courseName',
+                        key: 'courseName',
                     },
                     {
                         title: '操作',
@@ -219,7 +189,7 @@ export default () => {
                 }}
             >
                 <ProFormText
-                    name="title"
+                    name="courseName" // Changed from "title" to "courseName"
                     label="课程名称"
                     rules={[
                         {
@@ -230,49 +200,17 @@ export default () => {
                     width="md"
                 />
                 <ProFormText
-                    name="description"
-                    label="课程描述"
+                    name="teacherName" // This remains the same, assuming the backend also expects "description"
+                    label="授课老师"
                     width="md"
                 />
-                <ProFormDateTimePicker
-                    name="startTime"
-                    label="课程开始时间"
+                <ProFormText
+                    name="taIdList" // Changed from "CourseType" to "courseType" for consistency
+                    label="TA"
                     rules={[
                         {
                             required: true,
-                            message: '请选择课程开始时间!',
-                        },
-                    ]}
-                    width="md"
-                />
-                <ProFormDateTimePicker
-                    name="endTime"
-                    label="课程截止时间"
-                    rules={[
-                        {
-                            required: true,
-                            message: '请选择课程截止时间!',
-                        },
-                    ]}
-                    width="md"
-                />
-                <ProFormSelect
-                    name="CourseType"
-                    label="课程类型"
-                    rules={[
-                        {
-                            required: true,
-                            message: '请选择课程类型!',
-                        },
-                    ]}
-                    options={[
-                        {
-                            label: '个人课程',
-                            value: 0,
-                        },
-                        {
-                            label: '小组课程',
-                            value: 1,
+                            message: '请选择TA!',
                         },
                     ]}
                     width="md"
