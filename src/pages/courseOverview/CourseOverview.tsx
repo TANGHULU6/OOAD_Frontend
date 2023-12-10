@@ -7,18 +7,24 @@ import { PlusOutlined } from '@ant-design/icons';
 
 import { getCourseDetail } from '@/services/ant-design-pro/api';
 
-const CourseOverview: React.FC = () => {
+interface CourseOverviewProps {
+    id: number; // 定义传入的 id 属性
+}
+
+const CourseOverview: React.FC<CourseOverviewProps> = ({ id }) => {
     let [course, setCourse] = useState<API.CourseDetail | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
     // const [form] = Form.useForm();
-    const { id } = useParams<{ id: string }>();
+    // const { id } = useParams<{ id: string }>();
+
 
     useEffect(() => {
         const fetchCourse = async () => {
             setIsLoading(true);
             try {
-                const jsonData = await getCourseDetail(1);
+                console.log(id)
+                const jsonData = await getCourseDetail(id);
 
                 // @ts-ignore
                 setCourse({

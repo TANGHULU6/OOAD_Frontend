@@ -27,29 +27,29 @@ export default [
     component: './Assignment/List',
   },
   {
-    name: 'Course List',
+    name: '课程列表',
     icon: 'table',
     path: '/list',
-    component: './Course/courselist',
-  },
-  {
-    name: 'Course List canAdmin',
-    icon: 'table',
-    path: '/list2',
     component: './Course/index1',
   },
+  // {
+  //   name: 'Course List canAdmin',
+  //   icon: 'table',
+  //   path: '/list2',
+  //   component: './Course/courseList',
+  // },
   // {
   //   name: 'Notify Table',
   //   icon: 'table',
   //   path: '/Notification',
   //   component: '@/pages/Notification/Notification',
   // },
-  {
-    name: 'CourseOverview',
-    icon: 'table',
-    path: '/CourseOverview',
-    component: '@/pages/courseOverview/CourseOverview',
-  },
+  // {
+  //   name: 'CourseOverview',
+  //   icon: 'table',
+  //   path: '/CourseOverview/:id',
+  //   component: '@/pages/courseOverview/CourseOverviewWindow',
+  // },
   // {
   //   name: 'Test',
   //   icon: 'table',
