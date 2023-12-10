@@ -152,32 +152,6 @@ declare namespace API {
   };
 
 
-  type ApiResponse = {
-    code?: number;
-    type?: string;
-    message?: string;
-  };
-  type Course = {
-    id?: number;
-    name: string;
-    teacherId: number;
-    taIdList?: number[];
-    studentCount?: number;
-    creationTime?: string;
-  };
-
-  type Teacher = {
-    id: number;
-    name: string;
-    // ... 其他教师相关属性 ...
-  };
-
-  type Student = {
-    id: number;
-    name: string;
-    // ... 其他学生相关属性 ...
-  };
-
   // 教师助理响应类型
   type TAResponse = {
     success: boolean;
@@ -192,6 +166,15 @@ declare namespace API {
     // 可以添加其他响应字段
   };
 
+  export type TeacherList = {
+    id: bigint;
+    teacherName:string;
+  };
+
+  export type StudentList = {
+    id: bigint;
+    taName: string;
+  };
   // 课程详细信息类型
   export type CourseDetail = {
     courseName: string;           // Name of the course
