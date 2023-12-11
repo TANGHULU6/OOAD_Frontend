@@ -383,7 +383,7 @@ export async function removeStudent(courseId: number, studentId: number, options
 
 // 获取所有教师
 export async function getAllTeachers(options?: { [key: string]: any }) {
-  return request<API.BaseResponse<API.TeacherList>>(`/api/user/listAllTeacherName`, {
+  return request<API.BaseResponse<API.TeacherList[]>>(`/api/user/listAllTeacherName`, {
     method: 'GET',
     ...(options || {}),
   });
@@ -391,7 +391,7 @@ export async function getAllTeachers(options?: { [key: string]: any }) {
 
 // 获取所有学生
 export async function getAllStudents(options?: { [key: string]: any }) {
-  return request<API.BaseResponse<API.StudentList>>(`/api/user/listAllStudentName`, {
+  return request<API.BaseResponse<API.StudentList[]>>(`/api/user/listAllStudentName`, {
     method: 'GET',
     ...(options || {}),
   });

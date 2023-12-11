@@ -1,18 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import {Card, Button, Modal, Form, Select, message, Spin, Input} from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
+import React, {useEffect, useState} from 'react';
+import {Button, Card, Form, message, Modal, Select, Spin} from 'antd';
+import {PlusOutlined} from '@ant-design/icons';
 
 // const { Option } = Select;
-
-import {
-    addStudent,
-    appointTA,
-    dismissTA, getAllStudents,
-    getAllTeachers,
-    getCourseDetail,
-    removeStudent
-} from '@/services/ant-design-pro/api';
+import {addStudent, appointTA, dismissTA, getAllStudents, getAllTeachers, getCourseDetail, removeStudent} from '@/services/ant-design-pro/api';
 import {useAccess} from 'umi';
 
 interface CourseOverviewProps {
@@ -20,14 +11,13 @@ interface CourseOverviewProps {
 }
 
 const CourseOverview: React.FC<CourseOverviewProps> = ({ id }) => {
-    let [course, setCourse] = useState<API.CourseDetail | null>(null);
+    let [course, setCourse] = useState<API.CourseDetail>();
     const [teachers, setTeachers] = useState<API.TeacherList[]>([]);
     const [tas, setStudents] = useState<API.StudentList[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [form] = Form.useForm();
     // const { id } = useParams<{ id: string }>();
-
 
     useEffect(() => {
         const fetchCourse = async () => {
@@ -40,7 +30,7 @@ const CourseOverview: React.FC<CourseOverviewProps> = ({ id }) => {
                 setCourse({
                     courseName: jsonData.courseName,
                     teacherName: jsonData.teacherName,
-                    taNameList: jsonData.taNameList.filter(ta => ta !== null),
+                    taNameList: jsonData.taNameList,
                     studentNum: jsonData.studentNum,
                     createTime: jsonData.createTime
                 });
@@ -59,12 +49,8 @@ const CourseOverview: React.FC<CourseOverviewProps> = ({ id }) => {
             setIsLoading(true);
             try {
                 const jsonData = await getAllTeachers();
-
                 // @ts-ignore
-                setTeachers({
-                    id: jsonData.data.id,
-                    teacherName: jsonData.data.teacherName,
-                });
+                setTeachers(jsonData);
             } catch (error) {
                 console.error('Error fetching course details:', error);
                 message.error('获取教师列表失败');
@@ -78,10 +64,8 @@ const CourseOverview: React.FC<CourseOverviewProps> = ({ id }) => {
             setIsLoading(true);
             try {
                 const jsonData = await getAllStudents();
-                setStudents({
-                    id: jsonData.id,
-                    taName: jsonData.taName,
-                });
+                // @ts-ignore
+                setStudents(jsonData);
             } catch (error) {
                 console.error('Error fetching course details:', error);
                 message.error('获取学生列表失败');
@@ -126,7 +110,7 @@ const CourseOverview: React.FC<CourseOverviewProps> = ({ id }) => {
         <Spin spinning={isLoading}>
             <Card title={course?.courseName || '课程详情'}>
                 <p>教师: {course?.teacherName}</p>
-                <p>教师助理: {course?.taNameList.join(', ')}</p>
+                <p>教师助理: {course?.taNameList?.join(', ')}</p>
                 <p>学生人数: {course?.studentNum}</p>
                 <p>创建时间: {course?.createTime}</p>
                 {access.canAdmin && (
