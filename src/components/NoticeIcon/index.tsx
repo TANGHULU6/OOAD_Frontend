@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import { Tag, message } from 'antd';
+import {Tag, message, Modal} from 'antd';
 import { groupBy } from 'lodash';
 import moment from 'moment';
 import { useModel, useRequest } from 'umi';
-import { getNotices } from '@/services/ant-design-pro/api';
+import {getNotices, getNotificationDetail} from '@/services/ant-design-pro/api';
 
 import NoticeIcon from './NoticeIcon';
 import styles from './index.less';
@@ -108,12 +108,32 @@ const NoticeIconView: React.FC = () => {
     message.success(`${'清空了'} ${title}`);
   };
 
+  const showNoticeDetail = async (noticeId: string) => {
+    try {
+      const notificationDetail = await getNotificationDetail(Number(noticeId));
+      Modal.info({
+        title: notificationDetail.title,
+        content: (
+            <div>
+              <p>{notificationDetail.message}</p>
+              {/* 其他详情内容 */}
+            </div>
+        ),
+        onOk() {},
+      });
+    } catch (error) {
+      console.error('Error fetching notification detail:', error);
+    }
+  };
+
   return (
     <NoticeIcon
       className={styles.action}
       count={currentUser && currentUser.unreadCount}
       onItemClick={(item) => {
+        console.log(item.id)
         changeReadState(item.id!);
+        showNoticeDetail(item.id!);
       }}
       onClear={(title: string, key: string) => clearReadState(title, key)}
       loading={false}

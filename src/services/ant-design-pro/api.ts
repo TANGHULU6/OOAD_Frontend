@@ -419,3 +419,10 @@ export async function deleteCourseNotification(notificationId: number, options?:
     ...(options || {}),
   });
 }
+export async function getNotificationDetail(notificationId: number, options?: { [key: string]: any }) {
+  return request<API.BaseResponse<API.NotificationDetail>>('/api/notification', {
+    method: 'GET',
+    params: { notificationId }, // 将 notificationId 作为查询参数传递
+    ...(options || {}),
+  });
+}
