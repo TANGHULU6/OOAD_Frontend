@@ -3,7 +3,7 @@ import {Button, Card, Form, message, Modal, Select, Spin} from 'antd';
 import {PlusOutlined} from '@ant-design/icons';
 
 // const { Option } = Select;
-import {addStudent, appointTA, dismissTA, getAllStudents, getAllTeachers, getCourseDetail, removeStudent} from '@/services/ant-design-pro/api';
+import {addStudent, appointTA, dismissTA, getAllStudents, getAllTAs, getCourseDetail, removeStudent} from '@/services/ant-design-pro/api';
 import {useAccess} from 'umi';
 
 interface CourseOverviewProps {
@@ -12,8 +12,8 @@ interface CourseOverviewProps {
 
 const CourseOverview: React.FC<CourseOverviewProps> = ({ id }) => {
     let [course, setCourse] = useState<API.CourseDetail>();
-    const [teachers, setTeachers] = useState<API.TeacherList[]>([]);
-    const [tas, setStudents] = useState<API.StudentList[]>([]);
+    const [TAs, setTAs] = useState<API.TAList[]>([]);
+    const [students, setStudents] = useState<API.StudentList[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [form] = Form.useForm();
@@ -45,12 +45,12 @@ const CourseOverview: React.FC<CourseOverviewProps> = ({ id }) => {
         fetchCourse();
 
         // 获取所有教师
-        const fetchTeachers = async () => {
+        const fetchTAs = async () => {
             setIsLoading(true);
             try {
-                const jsonData = await getAllTeachers();
+                const jsonData = await getAllTAs();
                 // @ts-ignore
-                setTeachers(jsonData);
+                setTAs(jsonData);
             } catch (error) {
                 console.error('Error fetching course details:', error);
                 message.error('获取教师列表失败');
@@ -60,7 +60,7 @@ const CourseOverview: React.FC<CourseOverviewProps> = ({ id }) => {
         };
 
         // 获取所有学生
-        const fetchStudentTAs = async () => {
+        const fetchStudents = async () => {
             setIsLoading(true);
             try {
                 const jsonData = await getAllStudents();
@@ -74,8 +74,8 @@ const CourseOverview: React.FC<CourseOverviewProps> = ({ id }) => {
             }
         };
 
-        fetchTeachers();
-        // fetchStudentTAs();
+        fetchTAs();
+        // fetchStudents();
     }, [id]);
 
 
@@ -131,9 +131,9 @@ const CourseOverview: React.FC<CourseOverviewProps> = ({ id }) => {
                                 placeholder="选择教师助理"
                                 allowClear
                             >
-                                {teachers.map(teacher => (
-                                    <Select.Option key={teacher.id} value={teacher.teacherName}>
-                                        {teacher.teacherName}
+                                {TAs.map(ta => (
+                                    <Select.Option key={ta.id} value={ta.id}>
+                                        {ta.username}
                                     </Select.Option>
                                 ))}
                             </Select>
@@ -143,9 +143,9 @@ const CourseOverview: React.FC<CourseOverviewProps> = ({ id }) => {
                                 placeholder="选择教师助理"
                                 allowClear
                             >
-                                {teachers.map(teacher => (
-                                    <Select.Option key={teacher.id} value={teacher.teacherName}>
-                                        {teacher.teacherName}
+                                {TAs.map(ta => (
+                                    <Select.Option key={ta.id} value={ta.id}>
+                                        {ta.username}
                                     </Select.Option>
                                 ))}
                             </Select>
@@ -155,7 +155,7 @@ const CourseOverview: React.FC<CourseOverviewProps> = ({ id }) => {
                                 placeholder="选择学生"
                                 allowClear
                             >
-                                {tas.map(student => (
+                                {students.map(student => (
                                     <Select.Option key={student.id} value={student.taName}>
                                         {student.taName}
                                     </Select.Option>
@@ -167,7 +167,7 @@ const CourseOverview: React.FC<CourseOverviewProps> = ({ id }) => {
                                 placeholder="选择学生"
                                 allowClear
                             >
-                                {tas.map(student => (
+                                {students.map(student => (
                                     <Select.Option key={student.id} value={student.taName}>
                                         {student.taName}
                                     </Select.Option>

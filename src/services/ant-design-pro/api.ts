@@ -388,7 +388,13 @@ export async function getAllTeachers(options?: { [key: string]: any }) {
     ...(options || {}),
   });
 }
-
+// 获取所有教师助理
+export async function getAllTAs(options?: { [key: string]: any }) {
+    return request<API.BaseResponse<API.TAList[]>>(`/api/user/listAllTaName`, {
+        method: 'GET',
+        ...(options || {}),
+    });
+}
 // 获取所有学生
 export async function getAllStudents(options?: { [key: string]: any }) {
   return request<API.BaseResponse<API.StudentList[]>>(`/api/user/listAllStudentName`, {
