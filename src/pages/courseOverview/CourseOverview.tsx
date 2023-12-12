@@ -83,19 +83,19 @@ const CourseOverview: React.FC<CourseOverviewProps> = ({ id }) => {
         try {
             const values = await form.validateFields();
             if (values.taId) {
-                await appointTA(id, values.taId);
+                await appointTA(id, [values.taId]);
                 message.success('任命教师助理成功');
             }
             if (values.dismissTaId) {
-                await dismissTA(id, values.dismissTaId);
+                await dismissTA(id, [values.dismissTaId]);
                 message.success('免职教师助理成功');
             }
             if (values.studentId) {
-                await addStudent(id, values.studentId);
+                await addStudent(id, [values.studentId]);
                 message.success('添加学生成功');
             }
             if (values.removeStudentId) {
-                await removeStudent(id, values.removeStudentId);
+                await removeStudent(id, [values.removeStudentId]);
                 message.success('移除学生成功');
             }
             setIsModalVisible(false);

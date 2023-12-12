@@ -334,8 +334,8 @@ export async function getCourseDetail(courseId: number, options?: { [key: string
 }
 
 // 任命教师助理
-export async function appointTA(courseId: number, taId: number, options?: { [key: string]: any }) {
-  return request<API.TAResponse>(`/api/course/add/ta`, {
+export async function appointTA(courseId: number, taId: number[], options?: { [key: string]: any }) {
+  return request<API.BaseResponse<boolean>>(`/api/course/add/ta`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -346,8 +346,8 @@ export async function appointTA(courseId: number, taId: number, options?: { [key
 }
 
 // 免职教师助理
-export async function dismissTA(courseId: number, taId: number, options?: { [key: string]: any }) {
-  return request<API.BaseResponse<API.TAResponse>>(`/api/course/remove/ta`, {
+export async function dismissTA(courseId: number, taId: number[], options?: { [key: string]: any }) {
+  return request<API.BaseResponse<boolean>>(`/api/course/remove/ta`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -358,8 +358,8 @@ export async function dismissTA(courseId: number, taId: number, options?: { [key
 }
 
 // 添加学生
-export async function addStudent(courseId: number, studentId: number, options?: { [key: string]: any }) {
-  return request<API.BaseResponse<API.StudentResponse>>(`/api/course/add/student`, {
+export async function addStudent(courseId: number, studentId: number[], options?: { [key: string]: any }) {
+  return request<API.BaseResponse<boolean>>(`/api/course/add/student`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -370,8 +370,8 @@ export async function addStudent(courseId: number, studentId: number, options?: 
 }
 
 // 移除学生
-export async function removeStudent(courseId: number, studentId: number, options?: { [key: string]: any }) {
-  return request<API.BaseResponse<API.StudentResponse>>(`/api/course/remove/student`, {
+export async function removeStudent(courseId: number, studentId: number[], options?: { [key: string]: any }) {
+  return request<API.BaseResponse<boolean>>(`/api/course/remove/student`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
