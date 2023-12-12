@@ -29,7 +29,7 @@ export default [
   {
     name: '课程列表',
     icon: 'table',
-    path: '/list',
+    path: '/CourseList',
     component: './Course/index1',
   },
   // {
@@ -38,12 +38,20 @@ export default [
   //   path: '/list2',
   //   component: './Course/courseList',
   // },
-  // {
-  //   name: 'Notify Table',
-  //   icon: 'table',
-  //   path: '/Notification',
-  //   component: '@/pages/Notification/Notification',
-  // },
+  {
+    name: 'Notify Table',
+    icon: 'table',
+    path: '/Notification/:courseId',
+    component: '@/pages/Notification/Notification',
+    hideInMenu: true,
+  },
+  {
+    name: 'Notify Table',
+    icon: 'table',
+    path: '/CourseNotification',
+    component: '@/pages/Notification/CourseNotification',
+    hideInMenu: true,
+  },
   // {
   //   name: 'CourseOverview',
   //   icon: 'table',

@@ -1,43 +1,51 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Button, Modal, Form, Input, List, message } from 'antd';
 import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
-import { getCourseNotifications, deleteCourseNotification } from '@/services/ant-design-pro/api'; // Update the import path as necessary
+import { getCourseNotifications, deleteCourseNotification, insertCourseNotification } from '@/services/ant-design-pro/api';
+import {useParams} from "react-router-dom"; // Update the import path as necessary
 
-// 假设的通知类型
-interface Notification {
-    id: number;
-    title: string;
-    message: string;
-}
 
 const CourseNotifications: React.FC = () => {
     const [notifications, setNotifications] = useState<Notification[]>([]);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [form] = Form.useForm();
+    const { courseId } = useParams<{ courseId: string }>();
+    const courseIdBigInt = BigInt(courseId);
 
+    const fetchNotifications = async () => {
+        try {
+            const response = await getCourseNotifications(courseIdBigInt);
+            if (response) {
+                setNotifications(response);
+            }
+        } catch (error) {
+            message.error('获取通知失败');
+        }
+    };
     // 获取通知列表
     useEffect(() => {
-        const fetchNotifications = async () => {
-            try {
-                // Update with the correct parameters if needed
-                const data = await getCourseNotifications();
-                setNotifications(data);
-            } catch (error) {
-                message.error('获取通知失败');
-            }
-        };
         fetchNotifications();
     }, []);
+
 
     const handleAddNotification = () => {
         form
             .validateFields()
             .then(async (values) => {
                 try {
-                    await addNotification(values); // Adjust the parameters as needed
+                    // Assuming 'courseId' and 'receivers' are available in the context
+                    const notificationData = {
+                        courseId: courseId, // Replace with actual courseId
+                        title: values.title,
+                        message: values.message,
+                        receivers: values.receivers||[], // Replace with actual receivers array or leave it out if not needed
+                    };
+                    await insertCourseNotification(notificationData);
                     message.success('通知发布成功');
+                    fetchNotifications(); // Refresh the list
                 } catch (error) {
-                    message.error('发布失败');
+                    console.error('Error during notification creation:', error);
+                    message.error(`发布失败: ${error.message || '未知错误'}`);
                 }
                 setIsModalVisible(false);
                 form.resetFields();
@@ -47,9 +55,10 @@ const CourseNotifications: React.FC = () => {
             });
     };
 
+
     const handleDeleteNotification = async (id: number) => {
         try {
-            await deleteNotification(id); // Adjust the parameters as needed
+            await deleteCourseNotification(id);
             message.success('通知已删除');
             setNotifications(notifications.filter(notification => notification.id !== id));
         } catch (error) {
@@ -108,6 +117,14 @@ const CourseNotifications: React.FC = () => {
                     >
                         <Input.TextArea rows={4} />
                     </Form.Item>
+                    {/*<Form.Item*/}
+                    {/*    name="receivers"*/}
+                    {/*    label="接收者"*/}
+                    {/*    rules={[{ required: true, message: '请输入接收者信息!' }]}*/}
+                    {/*>*/}
+                    {/*    /!* Update this input based on how you want to accept receivers *!/*/}
+                    {/*    <Input />*/}
+                    {/*</Form.Item>*/}
                 </Form>
             </Modal>
         </Card>

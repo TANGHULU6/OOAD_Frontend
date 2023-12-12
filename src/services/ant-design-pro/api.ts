@@ -402,12 +402,27 @@ export async function getAllStudents(options?: { [key: string]: any }) {
     ...(options || {}),
   });
 }
-export async function getCourseNotifications(options?: { [key: string]: any }) {
+//获取课程通知
+export async function getCourseNotifications(courseId: bigint,options?: { [key: string]: any }) {
   return request<API.NoticeIconList>(`/api/course/notification/list`, {
     method: 'GET',
+    params: {courseId},
     ...(options || {}),
   });
 }
+//发布课程通知
+export async function insertCourseNotification(body: API.Notification, options?: { [key: string]: any }) {
+  return request<API.BaseResponse<bigint>>('/api/course/notification/insert', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+
 // 删除课程通知
 export async function deleteCourseNotification(notificationId: number, options?: { [key: string]: any }) {
   return request<API.BaseResponse<boolean>>('/api/course/notification/delete', {

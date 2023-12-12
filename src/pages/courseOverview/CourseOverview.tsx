@@ -75,7 +75,7 @@ const CourseOverview: React.FC<CourseOverviewProps> = ({ id }) => {
         };
 
         fetchTAs();
-        // fetchStudents();
+        fetchStudents();
     }, [id]);
 
 
@@ -156,8 +156,8 @@ const CourseOverview: React.FC<CourseOverviewProps> = ({ id }) => {
                                 allowClear
                             >
                                 {students.map(student => (
-                                    <Select.Option key={student.id} value={student.taName}>
-                                        {student.taName}
+                                    <Select.Option key={student.id} value={student.id}>
+                                        {student.username}
                                     </Select.Option>
                                 ))}
                             </Select>
@@ -168,8 +168,8 @@ const CourseOverview: React.FC<CourseOverviewProps> = ({ id }) => {
                                 allowClear
                             >
                                 {students.map(student => (
-                                    <Select.Option key={student.id} value={student.taName}>
-                                        {student.taName}
+                                    <Select.Option key={student.id} value={student.id}>
+                                        {student.username}
                                     </Select.Option>
                                 ))}
                             </Select>

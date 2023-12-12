@@ -195,15 +195,21 @@ declare namespace API {
   };
 
   // 通知详细信息类型
-    export type NotificationDetail = {
-        id: bigint;            // 通知的唯一标识符
-        senderName: string;    // 发送者名称
-        title: string;         // 通知标题
-        message: string;       // 通知内容
-        courseName?: string;   // 相关课程名称（可选）
-        projectName?: string;  // 相关项目名称（可选）
-        sendTime: string;      // 发送时间
-        isRead: boolean;       // 是否已读标志
-        // 根据需要添加其他字段
-    };
+  export type NotificationDetail = {
+    id: bigint;            // 通知的唯一标识符
+    senderName: string;    // 发送者名称
+    title: string;         // 通知标题
+    message: string;       // 通知内容
+    courseName?: string;   // 相关课程名称（可选）
+    projectName?: string;  // 相关项目名称（可选）
+    sendTime: string;      // 发送时间
+    isRead: boolean;       // 是否已读标志
+    // 根据需要添加其他字段
+  };
+  export type Notification = {
+    courseId: bigint;
+    title: string;
+    message: string;
+    receivers?: number[];
+  };
 }

@@ -4,6 +4,8 @@ import { groupBy } from 'lodash';
 import moment from 'moment';
 import { useModel, useRequest } from 'umi';
 import {getNotices, getNotificationDetail} from '@/services/ant-design-pro/api';
+import { useHistory } from 'react-router-dom';
+
 
 import NoticeIcon from './NoticeIcon';
 import styles from './index.less';
@@ -71,6 +73,7 @@ const getUnreadData = (noticeData: Record<string, API.NoticeIconItem[]>) => {
 };
 
 const NoticeIconView: React.FC = () => {
+  const history = useHistory();
   const { initialState } = useModel('@@initialState');
   const { currentUser } = initialState || {};
   const [notices, setNotices] = useState<API.NoticeIconItem[]>([]);
@@ -115,6 +118,7 @@ const NoticeIconView: React.FC = () => {
         title: notificationDetail.title,
         content: (
             <div>
+              <p>{notificationDetail.courseName}</p>
               <p>{notificationDetail.message}</p>
               {/* 其他详情内容 */}
             </div>
@@ -125,6 +129,13 @@ const NoticeIconView: React.FC = () => {
       console.error('Error fetching notification detail:', error);
     }
   };
+
+  const handleViewMore = (tabProps: NoticeIconTabProps, e: MouseEvent) => {
+    e.preventDefault();
+    // 这里 '/notifications' 是目标路由，根据你的应用程序结构进行调整
+    history.push('/CourseNotification');
+  };
+
 
   return (
     <NoticeIcon
@@ -139,7 +150,7 @@ const NoticeIconView: React.FC = () => {
       loading={false}
       clearText="清空"
       viewMoreText="查看更多"
-      onViewMore={() => message.info('Click on view more')}
+      onViewMore={handleViewMore}
       clearClose
     >
       <NoticeIcon.Tab
