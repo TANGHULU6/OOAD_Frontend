@@ -82,20 +82,21 @@ const CourseOverview: React.FC<CourseOverviewProps> = ({ id }) => {
     const handleSubmit = async () => {
         try {
             const values = await form.validateFields();
-            if (values.taId) {
-                await appointTA(id, [values.taId]);
+            // Updated to handle arrays for taId and studentId
+            if (values.taId && values.taId.length) {
+                await appointTA(id, values.taId);
                 message.success('任命教师助理成功');
             }
-            if (values.dismissTaId) {
-                await dismissTA(id, [values.dismissTaId]);
+            if (values.dismissTaId && values.dismissTaId.length) {
+                await dismissTA(id, values.dismissTaId);
                 message.success('免职教师助理成功');
             }
-            if (values.studentId) {
-                await addStudent(id, [values.studentId]);
+            if (values.studentId && values.studentId.length) {
+                await addStudent(id, values.studentId);
                 message.success('添加学生成功');
             }
-            if (values.removeStudentId) {
-                await removeStudent(id, [values.removeStudentId]);
+            if (values.removeStudentId && values.removeStudentId.length) {
+                await removeStudent(id, values.removeStudentId);
                 message.success('移除学生成功');
             }
             setIsModalVisible(false);
@@ -126,8 +127,10 @@ const CourseOverview: React.FC<CourseOverviewProps> = ({ id }) => {
                 >
                     {/* Form content goes here */}
                     <Form form={form} layout="vertical">
+                        {/* Updated Select components to allow multiple selections */}
                         <Form.Item name="taId" label="任命教师助理">
                             <Select
+                                mode="multiple"
                                 placeholder="选择教师助理"
                                 allowClear
                             >
@@ -140,6 +143,7 @@ const CourseOverview: React.FC<CourseOverviewProps> = ({ id }) => {
                         </Form.Item>
                         <Form.Item name="dismissTaId" label="免职教师助理">
                             <Select
+                                mode="multiple"
                                 placeholder="选择教师助理"
                                 allowClear
                             >
@@ -152,6 +156,7 @@ const CourseOverview: React.FC<CourseOverviewProps> = ({ id }) => {
                         </Form.Item>
                         <Form.Item name="studentId" label="添加学生">
                             <Select
+                                mode="multiple"
                                 placeholder="选择学生"
                                 allowClear
                             >
@@ -164,6 +169,7 @@ const CourseOverview: React.FC<CourseOverviewProps> = ({ id }) => {
                         </Form.Item>
                         <Form.Item name="removeStudentId" label="移除学生">
                             <Select
+                                mode="multiple"
                                 placeholder="选择学生"
                                 allowClear
                             >

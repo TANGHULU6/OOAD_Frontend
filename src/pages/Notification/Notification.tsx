@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Button, Modal, Form, Input, List, message } from 'antd';
+import {Card, Button, Modal, Form, Input, List, message, Select} from 'antd';
 import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
-import { getCourseNotifications, deleteCourseNotification, insertCourseNotification } from '@/services/ant-design-pro/api';
+import {
+    getCourseNotifications,
+    deleteCourseNotification,
+    insertCourseNotification,
+    getAllTAs, getAllTeachers, getAllStudents
+} from '@/services/ant-design-pro/api';
 import {useParams} from "react-router-dom"; // Update the import path as necessary
 
 
@@ -11,6 +16,9 @@ const CourseNotifications: React.FC = () => {
     const [form] = Form.useForm();
     const { courseId } = useParams<{ courseId: string }>();
     const courseIdBigInt = BigInt(courseId);
+    const [TAs, setTAs] = useState([]); // Update the type as necessary
+    const [teachers, setTeachers] = useState([]); // Update the type as necessary
+    const [students, setStudents] = useState([]);
 
     const fetchNotifications = async () => {
         try {
@@ -22,9 +30,22 @@ const CourseNotifications: React.FC = () => {
             message.error('获取通知失败');
         }
     };
+    const fetchData = async () => {
+        try {
+            const tasData = await getAllTAs();
+            const teachersData = await getAllTeachers();
+            const studentsData = await getAllStudents();
+            setTAs(tasData);
+            setTeachers(teachersData);
+            setStudents(studentsData);
+        } catch (error) {
+            message.error('获取数据失败');
+        }
+    };
     // 获取通知列表
     useEffect(() => {
         fetchNotifications();
+        fetchData();
     }, []);
 
 
@@ -117,14 +138,33 @@ const CourseNotifications: React.FC = () => {
                     >
                         <Input.TextArea rows={4} />
                     </Form.Item>
-                    {/*<Form.Item*/}
-                    {/*    name="receivers"*/}
-                    {/*    label="接收者"*/}
-                    {/*    rules={[{ required: true, message: '请输入接收者信息!' }]}*/}
-                    {/*>*/}
-                    {/*    /!* Update this input based on how you want to accept receivers *!/*/}
-                    {/*    <Input />*/}
-                    {/*</Form.Item>*/}
+                    <Form.Item
+                        name="receivers"
+                        label="接收者"
+                        rules={[{ required: false }]}
+                    >
+                        <Select
+                            mode="multiple"
+                            placeholder="选择接收者"
+                            allowClear
+                        >
+                            {TAs.map(ta => (
+                                <Select.Option key={ta.id} value={ta.id}>
+                                    {ta.username} (TA)
+                                </Select.Option>
+                            ))}
+                            {teachers.map(teacher => (
+                                <Select.Option key={teacher.id} value={teacher.id}>
+                                    {teacher.username} (Teacher)
+                                </Select.Option>
+                            ))}
+                            {students.map(student => (
+                                <Select.Option key={student.id} value={student.id}>
+                                    {student.username} (Student)
+                                </Select.Option>
+                            ))}
+                        </Select>
+                    </Form.Item>
                 </Form>
             </Modal>
         </Card>

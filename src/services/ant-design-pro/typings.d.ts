@@ -168,7 +168,7 @@ declare namespace API {
 
   export type TeacherList = {
     id: bigint;
-    teacherName:string;
+    userName:string;
   };
 
   export type TAList = {
