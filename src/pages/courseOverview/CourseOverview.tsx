@@ -44,7 +44,7 @@ const CourseOverview: React.FC<CourseOverviewProps> = ({ id }) => {
         };
         fetchCourse();
 
-        // 获取所有教师
+        // 获取所有TA
         const fetchTAs = async () => {
             setIsLoading(true);
             try {
@@ -53,7 +53,7 @@ const CourseOverview: React.FC<CourseOverviewProps> = ({ id }) => {
                 setTAs(jsonData);
             } catch (error) {
                 console.error('Error fetching course details:', error);
-                message.error('获取教师列表失败');
+                message.error('获取教师助理列表失败');
             } finally {
                 setIsLoading(false);
             }
