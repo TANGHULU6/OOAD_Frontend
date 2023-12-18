@@ -1,6 +1,28 @@
 /* eslint-disable */
 import request from '@/plugins/globalRequest';
 
+//获取通知
+export async function getNotifications(options?: { [key: string]: any }) {
+  return request<API.NoticeIconItem>(`/api/notification/list`, {
+    method: 'GET',
+    ...(options || {}),
+  });
+}
+export async function queryCurrent(options?: { [key: string]: any }) {
+  return request<API.BaseResponse<API.CurrentUser>>('/api/accountSettingCurrentUser', {
+    method: 'GET',
+    ...(options || {}),
+  });
+}
+/** 更新用户信息  */
+export async function currentUserUpdate(body: any, options?: { [key: string]: any }) {
+  return request<API.BaseResponse<API.CurrentUser>>('/api/user/current/update', {
+    method: 'POST',
+    ...(options || {}),
+    data: body,
+  });
+}
+
 /** 获取当前的用户 GET /api/user/current */
 export async function currentUser(options?: { [key: string]: any }) {
   return request<API.BaseResponse<API.CurrentUser>>('/api/user/current', {
@@ -114,7 +136,7 @@ export async function deleteUser(body?: bigint, options?: { [key: string]: any }
 export async function listAssignments(courseId: bigint, options?: { [key: string]: any }) {
   return request<API.BaseResponse<API.AssignmentList[]>>('/api/assignment/list', {
     method: 'GET',
-    params: {courseId},
+    params: { courseId },
     ...(options || {}),
   });
 }
@@ -159,7 +181,7 @@ export async function deleteAssignment(body?: bigint, options?: { [key: string]:
 export async function listProjects(courseId: bigint, options?: { [key: string]: any }) {
   return request<API.BaseResponse<API.ProjectList[]>>('/api/project/list', {
     method: 'GET',
-    params: {courseId},
+    params: { courseId },
     ...(options || {}),
   });
 }
@@ -213,7 +235,7 @@ export async function getNotices(options?: { [key: string]: any }) {
     // 格式化响应数据
     const formattedResponse = {
       // @ts-ignore
-      data: response.map(item => ({
+      data: response?.map((item) => ({
         id: item.id.toString(), // 确保 id 是字符串
         title: item.title, // 使用响应中的 title
         type: 'notification', // 示例类型，根据需要更改
@@ -221,18 +243,16 @@ export async function getNotices(options?: { [key: string]: any }) {
         // 添加或转换其他需要的字段
         // 如 description, status, avatar 等
       })),
-      total: response.length, // 总数为响应数组的长度
+      total: response?.length, // 总数为响应数组的长度
       success: true, // 假设请求总是成功的
     };
-
     console.log('Formatted response:', formattedResponse);
     return formattedResponse;
   } catch (error) {
     console.error('Error fetching notices:', error);
-    throw error;  // 可以选择重新抛出错误
+    throw error; // 可以选择重新抛出错误
   }
 }
-
 
 /** 获取规则列表 GET /api/rule */
 export async function rule(
@@ -322,16 +342,23 @@ export async function insertCourse(body: API.CourseList, options?: { [key: strin
 
 // 获取课程详情
 export async function getCourseDetail(courseId: number, options?: { [key: string]: any }) {
-  return request<API.CourseDetail>('/api/course', {
+  return request<API.BaseResponse<API.CourseDetail>>('/api/course', {
     method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
     params: { courseId }, // 将 courseId 作为查询参数传递
     ...(options || {}),
   });
 }
 
 // 任命教师助理
-export async function appointTA(courseId: number, taId: number, options?: { [key: string]: any }) {
-  return request<API.BaseResponse<API.TAResponse>>(`/api/course/add/ta`, {
+export async function appointTA(
+  courseId: number,
+  taId: number[],
+  options?: { [key: string]: any },
+) {
+  return request<API.BaseResponse<boolean>>(`/api/course/add/ta`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -342,8 +369,12 @@ export async function appointTA(courseId: number, taId: number, options?: { [key
 }
 
 // 免职教师助理
-export async function dismissTA(courseId: number, taId: number, options?: { [key: string]: any }) {
-  return request<API.BaseResponse<API.TAResponse>>(`/api/course/remove/ta`, {
+export async function dismissTA(
+  courseId: number,
+  taId: number[],
+  options?: { [key: string]: any },
+) {
+  return request<API.BaseResponse<boolean>>(`/api/course/remove/ta`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -354,8 +385,12 @@ export async function dismissTA(courseId: number, taId: number, options?: { [key
 }
 
 // 添加学生
-export async function addStudent(courseId: number, studentId: number, options?: { [key: string]: any }) {
-  return request<API.BaseResponse<API.StudentResponse>>(`/api/course/add/student`, {
+export async function addStudent(
+  courseId: number,
+  studentId: number[],
+  options?: { [key: string]: any },
+) {
+  return request<API.BaseResponse<boolean>>(`/api/course/add/student`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -366,8 +401,12 @@ export async function addStudent(courseId: number, studentId: number, options?: 
 }
 
 // 移除学生
-export async function removeStudent(courseId: number, studentId: number, options?: { [key: string]: any }) {
-  return request<API.BaseResponse<API.StudentResponse>>(`/api/course/remove/student`, {
+export async function removeStudent(
+  courseId: number,
+  studentId: number[],
+  options?: { [key: string]: any },
+) {
+  return request<API.BaseResponse<boolean>>(`/api/course/remove/student`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -379,33 +418,69 @@ export async function removeStudent(courseId: number, studentId: number, options
 
 // 获取所有教师
 export async function getAllTeachers(options?: { [key: string]: any }) {
-  return request<API.TeacherList>(`/api/user/listAllTeacherName`, {
+  return request<API.BaseResponse<API.TeacherList[]>>(`/api/user/listAllTeacherName`, {
     method: 'GET',
+    ...(options || {}),
+  });
+}
+// 获取所有教师助理
+export async function getAllTAs(options?: { [key: string]: any }) {
+  return request<API.BaseResponse<API.TAList[]>>(`/api/user/listAllTaName`, {
+    method: 'GET',
+    ...(options || {}),
+  });
+}
+// 获取所有学生
+export async function getAllStudents(options?: { [key: string]: any }) {
+  return request<API.BaseResponse<API.StudentList[]>>(`/api/user/listAllStudentName`, {
+    method: 'GET',
+    ...(options || {}),
+  });
+}
+//获取课程通知
+export async function getCourseNotifications(courseId: bigint, options?: { [key: string]: any }) {
+  return request<API.NoticeIconList>(`/api/course/notification/list`, {
+    method: 'GET',
+    params: { courseId },
+    ...(options || {}),
+  });
+}
+//发布课程通知
+export async function insertCourseNotification(
+  body: API.Notification,
+  options?: { [key: string]: any },
+) {
+  return request<API.BaseResponse<bigint>>('/api/course/notification/insert', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
     ...(options || {}),
   });
 }
 
-// 获取所有学生
-export async function getAllStudents(options?: { [key: string]: any }) {
-  return request<API.StudentList>(`/api/user/listAllStudentName`, {
-    method: 'GET',
-    ...(options || {}),
-  });
-}
-export async function getCourseNotifications(options?: { [key: string]: any }) {
-  return request<API.NoticeIconList>(`/api/course/notification/list`, {
-    method: 'GET',
-    ...(options || {}),
-  });
-}
 // 删除课程通知
-export async function deleteCourseNotification(notificationId: number, options?: { [key: string]: any }) {
+export async function deleteCourseNotification(
+  notificationId: number,
+  options?: { [key: string]: any },
+) {
   return request<API.BaseResponse<boolean>>('/api/course/notification/delete', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     data: { notificationId },
+    ...(options || {}),
+  });
+}
+export async function getNotificationDetail(
+  notificationId: number,
+  options?: { [key: string]: any },
+) {
+  return request<API.BaseResponse<API.NotificationDetail>>('/api/notification', {
+    method: 'GET',
+    params: { notificationId }, // 将 notificationId 作为查询参数传递
     ...(options || {}),
   });
 }

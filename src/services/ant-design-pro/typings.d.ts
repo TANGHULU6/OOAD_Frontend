@@ -3,11 +3,11 @@
 
 declare namespace API {
   type BaseResponse<T> = {
-    code: number
-    data: T
-    message: string
-    description: string
-  }
+    code: number;
+    data: T;
+    message: string;
+    description: string;
+  };
 
   type CurrentUser = {
     id: bigint;
@@ -72,21 +72,21 @@ declare namespace API {
   };
 
   type ProjectList = {
-    id: bigint
-    projectName: string
-    description?: string
-    groupDeadline?: Date
-    endDeadline?: Date
-  }
+    id: bigint;
+    projectName: string;
+    description?: string;
+    groupDeadline?: Date;
+    endDeadline?: Date;
+  };
 
   type AssignmentList = {
-    id: bigint
-    title: string
-    description?: string
-    startTime?: Date
-    endTime?: Date
-    assignmentType: number
-  }
+    id: bigint;
+    title: string;
+    description?: string;
+    startTime?: Date;
+    endTime?: Date;
+    assignmentType: number;
+  };
 
   type PageParams = {
     current?: number;
@@ -151,33 +151,17 @@ declare namespace API {
     type?: NoticeIconItemType;
   };
 
-
-  type ApiResponse = {
-    code?: number;
-    type?: string;
+  type NoticeIcons = {
+    courseId?: string;
+    createTime?: string;
+    id?: string;
+    isDeleted?: string;
     message?: string;
+    projectId?: string;
+    senderId?: string;
+    title?: string;
+    updateTime?: string;
   };
-  type Course = {
-    id?: number;
-    name: string;
-    teacherId: number;
-    taIdList?: number[];
-    studentCount?: number;
-    creationTime?: string;
-  };
-
-  type Teacher = {
-    id: number;
-    name: string;
-    // ... 其他教师相关属性 ...
-  };
-
-  type Student = {
-    id: number;
-    name: string;
-    // ... 其他学生相关属性 ...
-  };
-
   // 教师助理响应类型
   type TAResponse = {
     success: boolean;
@@ -192,21 +176,50 @@ declare namespace API {
     // 可以添加其他响应字段
   };
 
+  export type TeacherList = {
+    id: bigint;
+    userName: string;
+  };
+
+  export type TAList = {
+    id: bigint;
+    username: string;
+  };
+
+  export type StudentList = {
+    id: bigint;
+    username: string;
+  };
   // 课程详细信息类型
-  type CourseDetail = {
-    courseName: string;           // Name of the course
-    teacherName: string;          // Name of the teacher
-    taNameList: (string | null)[]; // List of teaching assistant names, which may include null
-    studentNum: number;           // Number of students
-    createTime: string;           // Creation time of the course
+  export type CourseDetail = {
+    courseName: string; // Name of the course
+    teacherName?: string; // Name of the teacher
+    taNameList?: string[]; // List of teaching assistant names, which may include null
+    studentNum: number; // Number of students
+    createTime: string; // Creation time of the course
     // Add other fields if necessary
   };
   export type CourseList = {
     id: bigint;
     courseName: string;
-    teacherId?: number;
-    isDeleted?: boolean;
-    createTime?: Date;
-    updateTime?: Date;
+  };
+
+  // 通知详细信息类型
+  export type NotificationDetail = {
+    id: bigint; // 通知的唯一标识符
+    senderName: string; // 发送者名称
+    title: string; // 通知标题
+    message: string; // 通知内容
+    courseName?: string; // 相关课程名称（可选）
+    projectName?: string; // 相关项目名称（可选）
+    sendTime: string; // 发送时间
+    isRead: boolean; // 是否已读标志
+    // 根据需要添加其他字段
+  };
+  export type Notification = {
+    courseId: bigint;
+    title: string;
+    message: string;
+    receivers?: number[];
   };
 }

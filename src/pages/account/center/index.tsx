@@ -16,7 +16,7 @@ const operationTabList = [
     key: 'articles',
     tab: (
       <span>
-        文章 <span style={{ fontSize: 14 }}>(8)</span>
+        文章<span style={{ fontSize: 14 }}>(812)</span>
       </span>
     ),
   },
@@ -100,7 +100,6 @@ const Center: React.FC<RouteChildrenProps> = () => {
   const { data: currentUser, loading } = useRequest(() => {
     return queryCurrent();
   });
-
   //  渲染用户信息
   const renderUserInfo = ({ title, group, geographic }: Partial<CurrentUser>) => {
     return (

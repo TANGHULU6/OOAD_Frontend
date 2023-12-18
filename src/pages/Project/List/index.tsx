@@ -3,7 +3,13 @@ import {ActionType, ModalForm, PageContainer, ProFormDateTimePicker, ProFormText
 import {Button, message, Modal} from 'antd';
 import {useRef, useState} from 'react';
 import {history, useAccess} from 'umi';
-import {deleteProject, insertProject, listProjects, updateProject} from "@/services/ant-design-pro/api";
+import {
+  deleteProject,
+  getCourseDetail,
+  insertProject,
+  listProjects,
+  updateProject
+} from "@/services/ant-design-pro/api";
 
 export const waitTimePromise = async (time: number = 100) => {
   return new Promise((resolve) => {
@@ -115,6 +121,8 @@ export default () => {
           // console.log(sort, filter);
           // await waitTime(2000);
           const projectList = await listProjects(1n);
+          const json = await getCourseDetail(1);
+          console.log({data:json})
           return {
             data: projectList
           }

@@ -1,73 +1,189 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom'; // 引入 useParams
-import { Card, Button, Modal, Form, Select, message } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
+import React, {useEffect, useState} from 'react';
+import {Button, Card, Form, message, Modal, Select, Spin} from 'antd';
+import {PlusOutlined} from '@ant-design/icons';
 
-const { Option } = Select;
+// const { Option } = Select;
+import {addStudent, appointTA, dismissTA, getAllStudents, getAllTAs, getCourseDetail, removeStudent} from '@/services/ant-design-pro/api';
+import {useAccess} from 'umi';
 
-import {
-    getCourseDetail, // Function to get course details
-} from '@/services/ant-design-pro/api';
-
-// Course information type
-interface Course {
-    id: number;
-    name: string;
-    teacher: string;
-    teachingAssistants: string[];
-    students: string[]; // Assuming this is the correct structure
-    creationTime: string;
+interface CourseOverviewProps {
+    id: number; // 定义传入的 id 属性
 }
 
-const CourseOverview: React.FC = () => {
-    const [course, setCourse] = useState<Course | null>(null);
+const CourseOverview: React.FC<CourseOverviewProps> = ({ id }) => {
+    let [course, setCourse] = useState<API.CourseDetail>();
+    const [TAs, setTAs] = useState<API.TAList[]>([]);
+    const [students, setStudents] = useState<API.StudentList[]>([]);
+    const [isLoading, setIsLoading] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [form] = Form.useForm();
+    // const { id } = useParams<{ id: string }>();
 
-    // Fetch course details
     useEffect(() => {
         const fetchCourse = async () => {
+            setIsLoading(true);
             try {
-                const jsonResponse = await getCourseDetail(1); // Directly await the result of getCourseDetail
-                // Directly use jsonResponse as course data
+                console.log(id)
+                const jsonData = await getCourseDetail(id);
+
+                // @ts-ignore
                 setCourse({
-                    id: 1, // Assuming you have the course ID
-                    name: jsonResponse.courseName,
-                    teacher: jsonResponse.teacherName,
-                    teachingAssistants: jsonResponse.taNameList.filter(ta => ta !== null),
-                    students: [], // Placeholder, replace with actual data if available
-                    creationTime: jsonResponse.createTime,
+                    courseName: jsonData.courseName,
+                    teacherName: jsonData.teacherName,
+                    taNameList: jsonData.taNameList,
+                    studentNum: jsonData.studentNum,
+                    createTime: jsonData.createTime
                 });
             } catch (error) {
                 console.error('Error fetching course details:', error);
                 message.error('获取课程信息失败');
+            } finally {
+                setIsLoading(false);
             }
+
         };
         fetchCourse();
-    }, []);
 
-    const handleOk = () => {
-        // Implement the logic to handle form submission
+        // 获取所有TA
+        const fetchTAs = async () => {
+            setIsLoading(true);
+            try {
+                const jsonData = await getAllTAs();
+                // @ts-ignore
+                setTAs(jsonData);
+            } catch (error) {
+                console.error('Error fetching course details:', error);
+                message.error('获取教师助理列表失败');
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        // 获取所有学生
+        const fetchStudents = async () => {
+            setIsLoading(true);
+            try {
+                const jsonData = await getAllStudents();
+                // @ts-ignore
+                setStudents(jsonData);
+            } catch (error) {
+                console.error('Error fetching course details:', error);
+                message.error('获取学生列表失败');
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchTAs();
+        fetchStudents();
+    }, [id]);
+
+
+    const handleSubmit = async () => {
+        try {
+            const values = await form.validateFields();
+            // Updated to handle arrays for taId and studentId
+            if (values.taId && values.taId.length) {
+                await appointTA(id, values.taId);
+                message.success('任命教师助理成功');
+            }
+            if (values.dismissTaId && values.dismissTaId.length) {
+                await dismissTA(id, values.dismissTaId);
+                message.success('免职教师助理成功');
+            }
+            if (values.studentId && values.studentId.length) {
+                await addStudent(id, values.studentId);
+                message.success('添加学生成功');
+            }
+            if (values.removeStudentId && values.removeStudentId.length) {
+                await removeStudent(id, values.removeStudentId);
+                message.success('移除学生成功');
+            }
+            setIsModalVisible(false);
+        } catch (error) {
+            message.error('操作失败');
+        }
     };
 
+
+    const access = useAccess();
     return (
-        <Card title={course?.name}>
-            <p>教师: {course?.teacher}</p>
-            <p>教师助理: {course?.teachingAssistants.join(', ')}</p>
-            <p>学生人数: {course?.students.length}</p>
-            <p>创建时间: {course?.creationTime}</p>
-            <Button icon={<PlusOutlined />} onClick={() => setIsModalVisible(true)}>
-                管理教师助理和学生
-            </Button>
-            <Modal
-                title="管理教师助理和学生"
-                visible={isModalVisible}
-                onOk={handleOk}
-                onCancel={() => setIsModalVisible(false)}
-            >
-                {/* Form content goes here */}
-            </Modal>
-        </Card>
+        <Spin spinning={isLoading}>
+            <Card title={course?.courseName || '课程详情'}>
+                <p>教师: {course?.teacherName}</p>
+                <p>教师助理: {course?.taNameList?.join(', ')}</p>
+                <p>学生人数: {course?.studentNum}</p>
+                <p>创建时间: {course?.createTime}</p>
+                {access.canAdmin && (
+                    <Button icon={<PlusOutlined />} onClick={() => setIsModalVisible(true)}>
+                        管理教师助理和学生
+                    </Button>
+                )}
+                <Modal
+                    title="管理教师助理和学生"
+                    visible={isModalVisible}
+                    onOk={handleSubmit}
+                    onCancel={() => setIsModalVisible(false)}
+                >
+                    {/* Form content goes here */}
+                    <Form form={form} layout="vertical">
+                        {/* Updated Select components to allow multiple selections */}
+                        <Form.Item name="taId" label="任命教师助理">
+                            <Select
+                                mode="multiple"
+                                placeholder="选择教师助理"
+                                allowClear
+                            >
+                                {TAs.map(ta => (
+                                    <Select.Option key={ta.id} value={ta.id}>
+                                        {ta.username}
+                                    </Select.Option>
+                                ))}
+                            </Select>
+                        </Form.Item>
+                        <Form.Item name="dismissTaId" label="免职教师助理">
+                            <Select
+                                mode="multiple"
+                                placeholder="选择教师助理"
+                                allowClear
+                            >
+                                {TAs.map(ta => (
+                                    <Select.Option key={ta.id} value={ta.id}>
+                                        {ta.username}
+                                    </Select.Option>
+                                ))}
+                            </Select>
+                        </Form.Item>
+                        <Form.Item name="studentId" label="添加学生">
+                            <Select
+                                mode="multiple"
+                                placeholder="选择学生"
+                                allowClear
+                            >
+                                {students.map(student => (
+                                    <Select.Option key={student.id} value={student.id}>
+                                        {student.username}
+                                    </Select.Option>
+                                ))}
+                            </Select>
+                        </Form.Item>
+                        <Form.Item name="removeStudentId" label="移除学生">
+                            <Select
+                                mode="multiple"
+                                placeholder="选择学生"
+                                allowClear
+                            >
+                                {students.map(student => (
+                                    <Select.Option key={student.id} value={student.id}>
+                                        {student.username}
+                                    </Select.Option>
+                                ))}
+                            </Select>
+                        </Form.Item>
+                    </Form>
+                </Modal>
+            </Card>
+        </Spin>
     );
 };
 
