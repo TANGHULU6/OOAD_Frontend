@@ -7,10 +7,12 @@ import {
     insertCourseNotification,
     getAllTAs, getAllTeachers, getAllStudents
 } from '@/services/ant-design-pro/api';
-import {useParams} from "react-router-dom"; // Update the import path as necessary
+import {useParams} from "react-router-dom";
+import {useAccess} from "umi"; // Update the import path as necessary
 
 
 const CourseNotifications: React.FC = () => {
+    const access = useAccess();
     const [notifications, setNotifications] = useState<Notification[]>([]);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [form] = Form.useForm();
@@ -45,7 +47,9 @@ const CourseNotifications: React.FC = () => {
     // 获取通知列表
     useEffect(() => {
         fetchNotifications();
-        fetchData();
+        if(access.canTA){
+            fetchData();
+        }
     }, []);
 
 
@@ -89,25 +93,29 @@ const CourseNotifications: React.FC = () => {
 
     return (
         <Card title="课程通知">
-            <Button
-                type="primary"
-                icon={<PlusOutlined />}
-                onClick={() => setIsModalVisible(true)}
-            >
-                发布通知
-            </Button>
+            {access.canTA && (
+                <Button
+                    type="primary"
+                    icon={<PlusOutlined />}
+                    onClick={() => setIsModalVisible(true)}
+                >
+                    发布通知
+                </Button>
+            )}
             <List
                 itemLayout="horizontal"
                 dataSource={notifications}
                 renderItem={item => (
                     <List.Item
                         actions={[
-                            <Button
-                                icon={<DeleteOutlined />}
-                                onClick={() => handleDeleteNotification(item.id)}
-                            >
-                                删除
-                            </Button>,
+                            (access.canTA) && (
+                                <Button
+                                    icon={<DeleteOutlined />}
+                                    onClick={() => handleDeleteNotification(item.id)}
+                                >
+                                    删除
+                                </Button>
+                            ),
                         ]}
                     >
                         <List.Item.Meta
