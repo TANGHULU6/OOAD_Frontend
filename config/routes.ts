@@ -32,6 +32,12 @@ export default [
     path: '/CourseList',
     component: './Course/index1',
   },
+  {
+    name: '小组信息',
+    icon: 'table',
+    path: '/group',
+    component: './Group/group',
+  },
   // {
   //   name: 'Course List canAdmin',
   //   icon: 'table',

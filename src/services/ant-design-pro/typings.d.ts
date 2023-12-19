@@ -222,4 +222,22 @@ declare namespace API {
         message: string;
         receivers?: number[];
     };
+    export type GroupDetail = {
+        id: bigint; // Unique identifier for the group
+        groupName: string; // Name of the group
+        groupLeader: string; // Name of the group leader
+        defenceTeacher?: string; // Name of the defence teacher (optional)
+        presentationTime?: string; // Time of presentation (optional)
+        publicInfo?: string; // Publicly available information about the group (optional)
+        memberList?: MemberList[]; // List of members in the group
+        projectDetails?: ProjectList; // Details of the project associated with the group
+        // Add other relevant fields as necessary
+    };
+
+    export type MemberList = {
+        id: bigint; // Unique identifier for the member
+        username: string; // Name of the member
+        role: string; // Role of the member in the group
+        // Add other relevant fields as necessary
+    };
 }

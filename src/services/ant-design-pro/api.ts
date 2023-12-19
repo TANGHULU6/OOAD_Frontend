@@ -484,3 +484,40 @@ export async function getNotificationDetail(
         ...(options || {}),
     });
 }
+export async function getGroupDetails(groupId: number, options?: { [key: string]: any }) {
+    return request<API.BaseResponse<API.GroupDetail>>(`/api/group`, {
+        method: 'GET',
+        params: { groupId },
+        ...(options || {}),
+    });
+}
+export async function updateGroupDetails(body: API.GroupDetail, options?: { [key: string]: any }) {
+    return request<API.BaseResponse<boolean>>(`/api/group/detail/update`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        data: body,
+        ...(options || {}),
+    });
+}
+export async function joinGroup(groupId: number, options?: { [key: string]: any }) {
+    return request<API.BaseResponse<boolean>>(`/api/group/join`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        data: { groupId },
+        ...(options || {}),
+    });
+}
+export async function leaveGroup(groupId: number, options?: { [key: string]: any }) {
+    return request<API.BaseResponse<boolean>>(`/api/group/leave`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        data: { groupId },
+        ...(options || {}),
+    });
+}
