@@ -1,16 +1,8 @@
 import {PlusOutlined} from '@ant-design/icons';
-import {
-  ActionType,
-  ModalForm,
-  PageContainer,
-  ProFormDateTimePicker,
-  ProFormSelect,
-  ProFormText,
-  ProTable
-} from '@ant-design/pro-components';
+import {ActionType, ModalForm, PageContainer, ProFormText, ProTable} from '@ant-design/pro-components';
 import {Button, message, Modal} from 'antd';
 import {useRef, useState} from 'react';
-import {history, useAccess} from 'umi';
+import {useAccess} from 'umi';
 import {deleteCourse, insertCourse, listCourses, updateCourse} from "@/services/ant-design-pro/api";
 import CourseOverview from '@/pages/courseOverview/CourseOverview';
 

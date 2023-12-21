@@ -1,44 +1,41 @@
-import React, { useEffect, useState } from 'react';
-import { UploadOutlined } from '@ant-design/icons';
-import { Button, Input, Upload, message } from 'antd';
-import ProForm, {
-  ProFormDependency,
-  ProFormFieldSet,
-  ProFormSelect,
-  ProFormText,
-  ProFormTextArea,
-} from '@ant-design/pro-form';
-import { currentUser as currentUserApi, currentUserUpdate } from '@/services/ant-design-pro/api';
-import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
+import React, {useEffect, useRef, useState} from 'react';
+import {UploadOutlined} from '@ant-design/icons';
+import {Button, message, Upload} from 'antd';
+import ProForm, {ProFormSelect, ProFormText,} from '@ant-design/pro-form';
+import {currentUser as currentUserApi, currentUserUpdate} from '@/services/ant-design-pro/api';
+import type {RcFile, UploadFile, UploadProps} from 'antd/es/upload/interface';
 import styles from './BaseView.less';
+import {ActionType} from "@ant-design/pro-components";
 
 const BaseView: React.FC = () => {
   const [userInfo, setUserInfo] = useState<any>({});
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const [uploading, setUploading] = useState(false);
+  const actionRef = useRef<ActionType>();
 
   const handleUpload = () => {
     const formData = new FormData();
     fileList.forEach((file) => {
       formData.append('file[]', file as RcFile);
     });
+    console.log(formData)
     setUploading(true);
     // You can use any AJAX library you like
     fetch('http://localhost:8080/api/upload/img', {
       method: 'POST',
       body: formData,
     })
-      .then((res) => res.json())
-      .then(() => {
-        setFileList([]);
-        message.success('upload successfully.');
-      })
-      .catch(() => {
-        message.error('upload failed.');
-      })
-      .finally(() => {
-        setUploading(false);
-      });
+    .then((res) => res.json())
+    .then(() => {
+      setFileList([]);
+      message.success('upload successfully.');
+    })
+    .catch(() => {
+      message.error('upload failed.');
+    })
+    .finally(() => {
+      setUploading(false);
+    });
   };
   const customRequest = (option: any) => {
     // const reader = new FileReader();
@@ -48,68 +45,67 @@ const BaseView: React.FC = () => {
     const formData = new FormData();
 
     formData.append('file', option.file);
-    fetch('http://localhost:8080/api/upload/img', {
+    fetch('http://localhost:8000/api/user/avatar/upload', {
       method: 'POST',
       body: formData,
     })
-      .then((res) => res.json())
-      .then((res) => {
-        console.log(res)
-        setUserInfo({avatarUrl:res.data})
-        setFileList([]);
-        option.onSuccess();
-      })
-      .catch(() => {
-        message.error('upload failed.');
-      })
-      .finally(() => {
-        setUploading(false);
-      });
+    .then((res) => res.json())
+    .then((res) => {
+      setUserInfo({avatarUrl: res.data})
+      setFileList([]);
+      option.onSuccess();
+      actionRef.current?.reload()
+    })
+    .catch(() => {
+      message.error('upload failed.');
+    })
+    .finally(() => {
+      setUploading(false);
+    });
 
 
-   
-}
-const beforeUpload = (file: any) => {
-  console.debug("file type:", file.type);
-  const allowFormat = file.type === 'image/jpeg' || file.type === 'image/png';
-  if (!allowFormat) {
-      // present('只允许 JPG/PNG 文件!', 1000)
   }
-  const fileSize = file.size / 1024 / 1024 < 5;
-  if (!fileSize) {
-      // present('图片应当小于5MB!', 1000)
+  const beforeUpload = (file: any) => {
+    console.debug("file type:", file.type);
+    const allowFormat = file.type === 'image/jpeg' || file.type === 'image/png';
+    if (!allowFormat) {
+      message.error('只允许 JPG/PNG 文件!', 1000)
+    }
+    const fileSize = file.size / 1024 / 1024 < 5;
+    if (!fileSize) {
+      message.error('图片应当小于5MB!', 1000)
+    }
+    return allowFormat && fileSize;
   }
-  return allowFormat && fileSize;
-}
-const handleChange = (info: any) => {
-  console.debug("info:", info)
-  if (info.file.status === 'done') {
+  const handleChange = (info: any) => {
+    console.debug("info:", info)
+    if (info.file.status === 'done') {
       message.success('上传成功');
-  }
-  if (info.file.status === 'error') {
+    }
+    if (info.file.status === 'error') {
       message.error('上传失败');
-  }
-};
+    }
+  };
 
   const props: UploadProps = {
-    accept:".jpg , .png",	//文件类型
-    maxCount:1,
-    showUploadList:false,
-    beforeUpload:beforeUpload,	//上传前的钩子
-    onChange:handleChange,	//上传中、完成、失败都会调用这个函数
-    customRequest:customRequest,	//覆盖默认的上传行为，自定义上传实现
+    accept: ".jpg , .png",	//文件类型
+    maxCount: 1,
+    showUploadList: false,
+    beforeUpload: beforeUpload,	//上传前的钩子
+    onChange: handleChange,	//上传中、完成、失败都会调用这个函数
+    customRequest: customRequest,	//覆盖默认的上传行为，自定义上传实现
   };
   // 头像组件 方便以后独立，增加裁剪之类的功能
-  const AvatarView = ({ avatar }: { avatar: string }) => (
+  const AvatarView = ({avatar}: { avatar: string }) => (
     <>
       <div className={styles.avatar_title}>头像</div>
       <div className={styles.avatar}>
-        <img src={avatar} alt="avatar" />
+        <img src={avatar} alt="avatar"/>
       </div>
       <Upload {...props}>
         <div className={styles.button_view}>
           <Button>
-            <UploadOutlined />
+            <UploadOutlined/>
             更换头像
           </Button>
         </div>
@@ -123,17 +119,6 @@ const handleChange = (info: any) => {
     //   setUserInfo(res);
     // })();
   }, []);
-
-  const getAvatarURL = () => {
-    if (currentUser) {
-      if (currentUser.avatar) {
-        return currentUser.avatar;
-      }
-      const url = 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png';
-      return url;
-    }
-    return '';
-  };
 
   const handleFinish = async () => {
     message.success('更新基本信息成功');
@@ -153,7 +138,7 @@ const handleChange = (info: any) => {
               }}
               onFinish={async (values) => {
                 console.log(values);
-                await currentUserUpdate({ ...userInfo, ...values });
+                await currentUserUpdate({...userInfo, ...values});
                 // console.log(values);
                 message.success('提交成功');
               }}
@@ -165,8 +150,8 @@ const handleChange = (info: any) => {
                 };
               }}
             >
-              <ProFormText width="md" name="userAccount" label="账户" disabled />
-              <ProFormText width="md" name="username" label="姓名" disabled />
+              <ProFormText width="md" name="userAccount" label="账户" disabled/>
+              <ProFormText width="md" name="username" label="姓名" disabled/>
               <ProFormSelect
                 disabled
                 options={[
@@ -190,14 +175,14 @@ const handleChange = (info: any) => {
                 name="userRole"
                 label="身份"
               />
-              <ProFormText disabled width="md" name="email" label="邮箱" placeholder={''} />
+              <ProFormText disabled width="md" name="email" label="邮箱" placeholder={''}/>
               <ProFormText
                 width="md"
                 name="age"
                 label="年龄"
                 rules={[
                   {
-                    required: true,
+                    // required: true,
                     message: '请输入您的年龄!',
                   },
                 ]}
@@ -209,7 +194,7 @@ const handleChange = (info: any) => {
                 label="技术栈"
                 rules={[
                   {
-                    required: true,
+                    // required: true,
                     message: '请输入技术栈!',
                   },
                 ]}
@@ -219,7 +204,7 @@ const handleChange = (info: any) => {
                 label="编程技能"
                 rules={[
                   {
-                    required: true,
+                    // required: true,
                     message: '请输入编程技能!',
                   },
                 ]}
@@ -229,7 +214,7 @@ const handleChange = (info: any) => {
                 label="意向队友"
                 rules={[
                   {
-                    required: true,
+                    // required: true,
                     message: '请输入意向队友!',
                   },
                 ]}
@@ -237,7 +222,7 @@ const handleChange = (info: any) => {
             </ProForm>
           </div>
           <div className={styles.right}>
-            <AvatarView avatar={userInfo.avatarUrl} />
+            <AvatarView avatar={userInfo.avatarUrl}/>
           </div>
         </>
       }
