@@ -114,7 +114,7 @@ const CourseOverview: React.FC<CourseOverviewProps> = ({ id }) => {
                 <p>教师助理: {course?.taNameList?.join(', ')}</p>
                 <p>学生人数: {course?.studentNum}</p>
                 <p>创建时间: {course?.createTime}</p>
-                {access.canAdmin && (
+                {access.canTA && (
                     <Button icon={<PlusOutlined />} onClick={() => setIsModalVisible(true)}>
                         管理教师助理和学生
                     </Button>
@@ -128,32 +128,36 @@ const CourseOverview: React.FC<CourseOverviewProps> = ({ id }) => {
                     {/* Form content goes here */}
                     <Form form={form} layout="vertical">
                         {/* Updated Select components to allow multiple selections */}
-                        <Form.Item name="taId" label="任命教师助理">
-                            <Select
-                                mode="multiple"
-                                placeholder="选择教师助理"
-                                allowClear
-                            >
-                                {TAs.map(ta => (
-                                    <Select.Option key={ta.id} value={ta.id}>
-                                        {ta.username}
-                                    </Select.Option>
-                                ))}
-                            </Select>
-                        </Form.Item>
-                        <Form.Item name="dismissTaId" label="免职教师助理">
-                            <Select
-                                mode="multiple"
-                                placeholder="选择教师助理"
-                                allowClear
-                            >
-                                {TAs.map(ta => (
-                                    <Select.Option key={ta.id} value={ta.id}>
-                                        {ta.username}
-                                    </Select.Option>
-                                ))}
-                            </Select>
-                        </Form.Item>
+                        {access.canTeacher && (
+                            <Form.Item name="taId" label="任命教师助理">
+                                <Select
+                                    mode="multiple"
+                                    placeholder="选择教师助理"
+                                    allowClear
+                                >
+                                    {TAs.map(ta => (
+                                        <Select.Option key={ta.id} value={ta.id}>
+                                            {ta.username}
+                                        </Select.Option>
+                                    ))}
+                                </Select>
+                            </Form.Item>
+                        )}
+                        {access.canTeacher && (
+                            <Form.Item name="dismissTaId" label="免职教师助理">
+                                <Select
+                                    mode="multiple"
+                                    placeholder="选择教师助理"
+                                    allowClear
+                                >
+                                    {TAs.map(ta => (
+                                        <Select.Option key={ta.id} value={ta.id}>
+                                            {ta.username}
+                                        </Select.Option>
+                                    ))}
+                                </Select>
+                            </Form.Item>
+                        )}
                         <Form.Item name="studentId" label="添加学生">
                             <Select
                                 mode="multiple"
