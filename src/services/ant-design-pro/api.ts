@@ -521,3 +521,42 @@ export async function leaveGroup(groupId: number, options?: { [key: string]: any
         ...(options || {}),
     });
 }
+
+//获取作业详情
+export async function getHomeworksDetails(assignmentId: number, options?: { [key: string]: any }) {
+  return request<API.BaseResponse<API.HomeworkDetail>>(`/api/assignment`, {
+    method: 'GET',
+    params: { assignmentId },
+    ...(options || {}),
+  });
+}
+
+//更新作业详情
+export async function updateHomeworkDetails(assignmentId: number, body: API.HomeworkDetail, options?: { [key: string]: any }) {
+  return request<API.BaseResponse<boolean>>(`/api/assignment/update`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: { assignmentId, ...body },
+    ...(options || {}),
+  });
+}
+
+//提交作业
+export async function submitHomework(assignmentId: number, files: File[], options?: { [key: string]: any }) {
+  const formData = new FormData();
+  files.forEach(file => formData.append('files[]', file));
+
+  return request<API.BaseResponse<boolean>>(`/api/assignment/submit`, {
+    method: 'POST',
+    headers: {
+      // 需要根据后端要求设置正确的 Content-Type
+      // 'Content-Type': 'multipart/form-data',
+    },
+    params: { assignmentId },
+    data: formData,
+    ...(options || {}),
+  });
+}
+
