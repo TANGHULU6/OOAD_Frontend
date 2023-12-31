@@ -2,9 +2,9 @@ import {PlusOutlined} from '@ant-design/icons';
 import {ActionType, ModalForm, PageContainer, ProFormText, ProTable} from '@ant-design/pro-components';
 import {Button, message, Modal} from 'antd';
 import {useRef, useState} from 'react';
-import {useAccess} from 'umi';
+import {history, useAccess} from 'umi';
 import {deleteCourse, insertCourse, listCourses, updateCourse} from "@/services/ant-design-pro/api";
-import CourseOverview from '@/pages/courseOverview/CourseOverview';
+// import CourseOverview from '@/pages/Course/Detail/CourseOverview';
 
 export const waitTimePromise = async (time: number = 100) => {
   return new Promise((resolve) => {
@@ -21,14 +21,14 @@ export const waitTime = async (time: number = 100) => {
 export default () => {
   const actionRef = useRef<ActionType>();
   const [createModalVisible, handleModalVisible] = useState<boolean>(false);
-  const [viewModalVisible, setViewModalVisible] = useState<boolean>(false);
-  const [selectedCourseId, setSelectedCourseId] = useState<number | null>(null);
+  // const [viewModalVisible, setViewModalVisible] = useState<boolean>(false);
+  // const [selectedCourseId, setSelectedCourseId] = useState<number | null>(null);
   const access = useAccess();
 
-  const handleViewCourse = (record) => {
-    setSelectedCourseId(record.id);
-    setViewModalVisible(true);
-  };
+  // const handleViewCourse = (record) => {
+  //   setSelectedCourseId(record.id);
+  //   setViewModalVisible(true);
+  // };
   return (
     <PageContainer>
       <ProTable<API.CourseList>
@@ -52,8 +52,8 @@ export default () => {
                 key="view"
                 onClick={() => {
                   // 这里添加你的查看详情逻辑，比如跳转到详情页面
-                  // history.push(`/CourseOverview/${record.id}`);
-                  handleViewCourse(record)
+                  history.push(`/course/${record.id}`);
+                  // handleViewCourse(record)
                 }}
               >
                 查看
@@ -174,14 +174,14 @@ export default () => {
         ]}
       />
 
-      <Modal
-        title="课程详情"
-        visible={viewModalVisible}
-        footer={null}
-        onCancel={() => setViewModalVisible(false)}
-      >
-        {selectedCourseId && <CourseOverview id={selectedCourseId} />}
-      </Modal>
+      {/*<Modal*/}
+      {/*  title="课程详情"*/}
+      {/*  visible={viewModalVisible}*/}
+      {/*  footer={null}*/}
+      {/*  onCancel={() => setViewModalVisible(false)}*/}
+      {/*>*/}
+      {/*  {selectedCourseId && <CourseOverview id={selectedCourseId} />}*/}
+      {/*</Modal>*/}
 
       <ModalForm
         title="发布课程"
@@ -225,12 +225,6 @@ export default () => {
         <ProFormText
           name="taIdList" // Changed from "CourseType" to "courseType" for consistency
           label="TA"
-          rules={[
-            {
-              required: true,
-              message: '请选择TA!',
-            },
-          ]}
           width="md"
         />
       </ModalForm>

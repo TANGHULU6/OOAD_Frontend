@@ -1,17 +1,23 @@
 export default [
   {
-    path: '/user',
+    name: '登录',
     layout: false,
-    routes: [
-      { path: '/user/login', name: '登录', component: './User/Login' },
-      { path: '/user/register', name: '注册', component: './User/Register' },
-    ],
+    hideInMenu: true,
+    path: '/user/login',
+    component: './User/Login',
+  },
+  {
+    name: '注册',
+    layout: false,
+    hideInMenu: true,
+    path: '/user/register',
+    component: './User/Register',
   },
   {
     name: '用户管理',
     access: 'canAdmin',
     icon: 'crown',
-    path: '/user-manage',
+    path: '/user/manage',
     component: './User/Manage',
   },
   {
@@ -27,10 +33,28 @@ export default [
     component: './Assignment/List',
   },
   {
+    name: '提交详情页',
+    icon: 'form',
+    path: '/assignment/submission',
+    component: './Assignment/Submission',
+  },
+  {
     name: '课程列表',
     icon: 'table',
-    path: '/CourseList',
-    component: './Course/index1',
+    path: '/course/list',
+    component: './Course/List',
+  },
+  {
+    name: '课程详情页',
+    icon: 'profile',
+    path: '/course/:courseId',
+    component: './Course/Detail',
+    hideInMenu: true,
+    layout: {
+      hideMenu: false,
+      hideNav: false,
+      hideFooter: false,
+    },
   },
   {
     name: '小组信息',
@@ -38,12 +62,6 @@ export default [
     path: '/group',
     component: './Group/group',
   },
-  // {
-  //   name: 'Course List canAdmin',
-  //   icon: 'table',
-  //   path: '/list2',
-  //   component: './Course/courseList',
-  // },
   {
     name: 'Notify Table',
     icon: 'table',
@@ -58,47 +76,26 @@ export default [
     component: '@/pages/Notification/CourseNotification',
     hideInMenu: true,
   },
-  // {
-  //   name: 'CourseOverview',
-  //   icon: 'table',
-  //   path: '/CourseOverview/:id',
-  //   component: '@/pages/courseOverview/CourseOverviewWindow',
-  // },
-  // {
-  //   name: 'Test',
-  //   icon: 'table',
-  //   path: '/NotificationContent',
-  //   component: '@/pages/Notification/NotificationContent',
-  // },
+  {
+    name: '个人中心',
+    icon: 'user',
+    path: '/account',
+    hideInMenu: true,
+    routes: [
+      {
+        path: '/account',
+        redirect: '/account/settings',
+      },
+      {
+        name: 'settings',
+        icon: 'smile',
+        path: '/account/settings',
+        component: './account/settings',
+      },
+    ],
+  },
+  // -----------------------------------分界线--------------------------------
   { path: '/welcome', name: '欢迎', icon: 'smile', component: './Welcome' },
-  // {
-  //   path: '/admin',
-  //   name: '管理页',
-  //   icon: 'crown',
-  //   access: 'canAdmin',
-  //   component: './Admin',
-  //   routes: [
-  //     { path: '/admin/sub-page', name: '二级管理页', icon: 'smile', component: './Welcome' },
-  //     { component: './404' },
-  //   ],
-  // },
-  // {
-  //   path: '/admin',
-  //   name: 'teacher',
-  //   icon: 'crown',
-  //   access: 'canTeacher',
-  //   routes: [
-  //     {
-  //       path: '/admin/sub-page',
-  //       name: 'sub-page',
-  //       icon: 'smile',
-  //       component: './Welcome',
-  //     },
-  //     {
-  //       component: './404',
-  //     },
-  //   ],
-  // },
   {
     path: '/dashboard',
     name: 'dashboard',
@@ -291,30 +288,6 @@ export default [
     ],
   },
   {
-    name: 'account',
-    icon: 'user',
-    path: '/account',
-    hideInMenu: true,
-    routes: [
-      {
-        path: '/account',
-        redirect: '/account/center',
-      },
-      {
-        name: 'center',
-        icon: 'smile',
-        path: '/account/center',
-        component: './account/center',
-      },
-      {
-        name: 'settings',
-        icon: 'smile',
-        path: '/account/settings',
-        component: './account/settings',
-      },
-    ],
-  },
-  {
     name: 'editor',
     icon: 'highlight',
     path: '/editor',
@@ -343,6 +316,7 @@ export default [
       },
     ],
   },
+  // -----------------------分割线---------------------------
   {
     path: '/',
     redirect: '/dashboard/analysis',

@@ -6,17 +6,15 @@ import {Divider, FormInstance, message, Tabs} from 'antd';
 import React, {useRef, useState} from 'react';
 import {history, Link} from 'umi';
 import styles from './index.less';
-import {SYSTEM_LOGO} from "@/constants";
+import {SYSTEM_LOGO, SYSTEM_TITLE} from "@/constants";
 import {useModel} from "@@/plugin-model/useModel";
 import {ProFormCaptcha} from "@ant-design/pro-form";
-
 const Login: React.FC = () => {
   // const [setUserLoginState] = useState<API.LoginResult>({});
   const [type, setType] = useState<string>('account');
   const {initialState, setInitialState} = useModel('@@initialState');
   const formRef = useRef<FormInstance>();
   const mailRegex = /^[A-Za-z0-9+_.-]+@([A-Za-z0-9-]+\.)+[A-Za-z]{2,8}$/;
-
   const fetchUserInfo = async () => {
     const userInfo = await initialState?.fetchUserInfo?.();
     if (userInfo) {
@@ -60,7 +58,7 @@ const Login: React.FC = () => {
       <div className={styles.content}>
         <LoginForm
           logo={<img alt="logo" src={SYSTEM_LOGO}/>}
-          title="Project Helper"
+          title={SYSTEM_TITLE}
           subTitle={<a>Project Helper是您最好的Project助手</a>}
           formRef={formRef}
           onFinish={async (values: any) => {
@@ -181,7 +179,7 @@ const Login: React.FC = () => {
             }}
           >
             <a>
-              忘记密码?那就忘了吧
+              忘记密码请联系管理员
             </a>
             <Divider type={"vertical"}/>
             <Link

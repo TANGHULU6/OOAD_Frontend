@@ -1,1 +1,2 @@
-export const SYSTEM_LOGO = "https://pic.616pic.com/ys_img/00/05/09/8LfaQcDrWd.jpg"
+export const SYSTEM_LOGO = "https://p.qqan.com/up/2020-9/16010876389657332.jpg"
+export const SYSTEM_TITLE = "Project Helper"
