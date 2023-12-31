@@ -1,29 +1,15 @@
 import {PlusOutlined} from '@ant-design/icons';
 import {ActionType, ModalForm, PageContainer, ProFormDateTimePicker, ProFormText, ProTable} from '@ant-design/pro-components';
 import {Button, message, Modal} from 'antd';
-import {useRef, useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {history, useAccess} from 'umi';
-import {
-  deleteProject,
-  getCourseDetail,
-  insertProject,
-  listProjects,
-  updateProject
-} from "@/services/ant-design-pro/api";
+import {deleteProject, insertProject, listProjects, updateProject} from "@/services/ant-design-pro/api";
 
-export const waitTimePromise = async (time: number = 100) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(true);
-    }, time);
-  });
-};
+interface ProjectListProps {
+  courseId: number; // 定义传入的 id 属性
+}
 
-export const waitTime = async (time: number = 100) => {
-  await waitTimePromise(time);
-};
-
-export default () => {
+const ProjectList: React.FC<ProjectListProps> = ({courseId}) => {
   const actionRef = useRef<ActionType>();
   const [createModalVisible, handleModalVisible] = useState<boolean>(false);
   const access = useAccess();
@@ -67,7 +53,7 @@ export default () => {
                 key="view"
                 onClick={() => {
                   // 这里添加你的查看详情逻辑，比如跳转到详情页面
-                  history.push(`/project-page/${record.id}`);
+                  history.push(`/project/${record.id}`);
                 }}
               >
                 查看
@@ -120,9 +106,7 @@ export default () => {
         request={async (params = {}, sort, filter) => {
           // console.log(sort, filter);
           // await waitTime(2000);
-          const projectList = await listProjects(1n);
-          const json = await getCourseDetail(1);
-          console.log({data:json})
+          const projectList = await listProjects(BigInt(courseId));
           return {
             data: projectList
           }
@@ -254,4 +238,6 @@ export default () => {
       </ModalForm>
     </PageContainer>
   );
-};
+}
+
+export default ProjectList;

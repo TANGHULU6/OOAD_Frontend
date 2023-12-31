@@ -21,18 +21,6 @@ export default [
     component: './User/Manage',
   },
   {
-    name: '项目列表',
-    icon: 'profile',
-    path: '/project/list',
-    component: './Project/List',
-  },
-  {
-    name: '作业列表',
-    icon: 'form',
-    path: '/assignment/list',
-    component: './Assignment/List',
-  },
-  {
     name: '提交详情页',
     icon: 'form',
     path: '/assignment/submission',
@@ -45,10 +33,31 @@ export default [
     component: './Course/List',
   },
   {
-    name: '课程详情页',
-    icon: 'profile',
+    name: '课程详情',
     path: '/course/:courseId',
     component: './Course/Detail',
+    hideInMenu: true,
+    layout: {
+      hideMenu: false,
+      hideNav: false,
+      hideFooter: false,
+    },
+  },
+  {
+    name: '项目详情',
+    path: '/project/:projectId',
+    component: './Project/Detail',
+    hideInMenu: true,
+    layout: {
+      hideMenu: false,
+      hideNav: false,
+      hideFooter: false,
+    },
+  },
+  {
+    name: '作业详情',
+    path: '/assignment/:assignmentId',
+    component: './Assignment/Detail',
     hideInMenu: true,
     layout: {
       hideMenu: false,
@@ -80,19 +89,7 @@ export default [
     name: '个人中心',
     icon: 'user',
     path: '/account',
-    hideInMenu: true,
-    routes: [
-      {
-        path: '/account',
-        redirect: '/account/settings',
-      },
-      {
-        name: 'settings',
-        icon: 'smile',
-        path: '/account/settings',
-        component: './account/settings',
-      },
-    ],
+    component: './account/settings',
   },
   // -----------------------------------分界线--------------------------------
   { path: '/welcome', name: '欢迎', icon: 'smile', component: './Welcome' },

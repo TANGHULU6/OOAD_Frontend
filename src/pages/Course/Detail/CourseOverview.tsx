@@ -1,16 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import {Button, Card, Form, message, Modal, Select, Spin} from 'antd';
 import {PlusOutlined} from '@ant-design/icons';
-
-// const { Option } = Select;
 import {addStudent, appointTA, dismissTA, getAllStudents, getAllTAs, getCourseDetail, removeStudent} from '@/services/ant-design-pro/api';
 import {useAccess} from 'umi';
 
 interface CourseOverviewProps {
-  id: number; // 定义传入的 id 属性
+  courseId: number; // 定义传入的 id 属性
 }
 
-const CourseOverview: React.FC<CourseOverviewProps> = ({id}) => {
+const CourseOverview: React.FC<CourseOverviewProps> = ({courseId}) => {
   let [course, setCourse] = useState<API.CourseDetail>();
   const [TAs, setTAs] = useState<API.TAList[]>([]);
   const [students, setStudents] = useState<API.StudentList[]>([]);
@@ -23,8 +21,8 @@ const CourseOverview: React.FC<CourseOverviewProps> = ({id}) => {
     const fetchCourse = async () => {
       setIsLoading(true);
       try {
-        console.log(id)
-        const jsonData = await getCourseDetail(id);
+        console.log(courseId)
+        const jsonData = await getCourseDetail(courseId);
 
         // @ts-ignore
         setCourse({
@@ -81,7 +79,7 @@ const CourseOverview: React.FC<CourseOverviewProps> = ({id}) => {
 
     fetchTAs();
     fetchStudents();
-  }, [id]);
+  }, [courseId]);
 
 
   const handleSubmit = async () => {
@@ -89,19 +87,19 @@ const CourseOverview: React.FC<CourseOverviewProps> = ({id}) => {
       const values = await form.validateFields();
       // Updated to handle arrays for taId and studentId
       if (values.taId && values.taId.length) {
-        await appointTA(id, values.taId);
+        await appointTA(courseId, values.taId);
         message.success('任命教师助理成功');
       }
       if (values.dismissTaId && values.dismissTaId.length) {
-        await dismissTA(id, values.dismissTaId);
+        await dismissTA(courseId, values.dismissTaId);
         message.success('免职教师助理成功');
       }
       if (values.studentId && values.studentId.length) {
-        await addStudent(id, values.studentId);
+        await addStudent(courseId, values.studentId);
         message.success('添加学生成功');
       }
       if (values.removeStudentId && values.removeStudentId.length) {
-        await removeStudent(id, values.removeStudentId);
+        await removeStudent(courseId, values.removeStudentId);
         message.success('移除学生成功');
       }
       setIsModalVisible(false);
