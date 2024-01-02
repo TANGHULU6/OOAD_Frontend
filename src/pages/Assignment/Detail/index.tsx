@@ -7,10 +7,16 @@ import { getHomeworksDetails, updateHomeworkDetails, submitHomework } from '@/se
 import {history, useAccess, useParams} from 'umi';
 
 const HomeworkDetailsPage = () => {
-  const [homeworkDetails, setHomeworkDetails] = useState({});
+  // const [homeworkDetails, setHomeworkDetails] = useState({});
   const [fileList, setFileList] = useState([]);
   const {assignmentId} = useParams();
-
+  const [homeworkDetails, setHomeworkDetails] = useState({
+    title: 'default',
+    description: 'default',
+    startTime: null,  // Use appropriate default for date-time fields
+    endTime: null,
+    assignmentType: 0, // Assuming a default value
+  });
   async function fetchHomeworkDetails() {
     try {
       const response = await getHomeworksDetails(assignmentId);
@@ -81,10 +87,26 @@ const HomeworkDetailsPage = () => {
 
       {access.canTeacher && (
         <ProForm initialValues={homeworkDetails} onFinish={handleHomeworkUpdate}>
-          <ProFormText name="title" label="作业标题" />
-          <ProFormText name="description" label="作业描述" />
-          <ProFormDateTimePicker name="startTime" label="开始时间" />
-          <ProFormDateTimePicker name="endTime" label="截止时间" />
+          <ProFormText
+            name="title"
+            label="作业标题"
+            rules={[{ required: true, message: '请输入作业标题' }]}
+          />
+          <ProFormText
+            name="description"
+            label="作业描述"
+            rules={[{ required: true, message: '请输入作业描述' }]}
+          />
+          <ProFormDateTimePicker
+            name="startTime"
+            label="开始时间"
+            rules={[{ required: true, message: '请选择开始时间' }]}
+          />
+          <ProFormDateTimePicker
+            name="endTime"
+            label="截止时间"
+            rules={[{ required: true, message: '请选择截止时间' }]}
+          />
           <ProFormSelect
             name="assignmentType"
             label="作业类型"
@@ -92,6 +114,7 @@ const HomeworkDetailsPage = () => {
               { label: '个人作业', value: 0 },
               { label: '小组作业', value: 1 },
             ]}
+            rules={[{ required: true, message: '请选择作业类型' }]}
           />
           <Button type="primary" htmlType="submit">更新作业</Button>
         </ProForm>
