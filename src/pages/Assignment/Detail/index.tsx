@@ -4,7 +4,7 @@ import { Upload, Button, message } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import ProForm, { ProFormText, ProFormDateTimePicker, ProFormSelect } from '@ant-design/pro-form';
 import { getHomeworkDetails, updateHomeworkDetails, submitHomework } from '@/services/ant-design-pro/api';
-import { useAccess } from 'umi';
+import {history, useAccess} from 'umi';
 
 const HomeworkDetailsPage = () => {
   const [homeworkDetails, setHomeworkDetails] = useState({});
@@ -42,14 +42,15 @@ const HomeworkDetailsPage = () => {
       await submitHomework(assignmentId, fileList);
       message.success('作业提交成功');
       // 跳转到提交详情页
-      // history.push('/submission-details');
+      // history.push(`/submission/${record.id}`);
+      history.push('/submission/1');
     } catch (error) {
       message.error('提交作业失败');
     }
   };
 
   return (
-    <div>
+    <div style={{paddingLeft: '200px', paddingRight: '200px'}}>
       <h1>作业详情</h1>
       <div>
         <p>标题: {homeworkDetails.title}</p>

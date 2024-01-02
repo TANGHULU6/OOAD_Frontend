@@ -120,9 +120,6 @@ const BaseView: React.FC = () => {
     // })();
   }, []);
 
-  const handleFinish = async () => {
-    message.success('更新基本信息成功');
-  };
   return (
     <div className={styles.baseView}>
       {

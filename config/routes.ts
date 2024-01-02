@@ -21,12 +21,6 @@ export default [
     component: './User/Manage',
   },
   {
-    name: '提交详情页',
-    icon: 'form',
-    path: '/assignment/submission',
-    component: './Assignment/Submission',
-  },
-  {
     name: '课程列表',
     icon: 'table',
     path: '/course/list',
@@ -58,6 +52,17 @@ export default [
     name: '作业详情',
     path: '/assignment/:assignmentId',
     component: './Assignment/Detail',
+    hideInMenu: true,
+    layout: {
+      hideMenu: false,
+      hideNav: false,
+      hideFooter: false,
+    },
+  },
+  {
+    name: '提交详情',
+    path: '/submission/:submissionId',
+    component: './Assignment/Submission',
     hideInMenu: true,
     layout: {
       hideMenu: false,

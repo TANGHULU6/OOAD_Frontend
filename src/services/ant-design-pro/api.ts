@@ -222,6 +222,39 @@ export async function deleteProject(body?: bigint, options?: { [key: string]: an
     });
 }
 
+export async function getSubmissionById(body?: bigint, options?: { [key: string]: any }) {
+  return request<API.BaseResponse<API.Submission>>('/api/submission', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+export async function getAssignmentById(param?: bigint, options?: { [key: string]: any }) {
+  return request<API.BaseResponse<API.Assignment>>('/api/assignment', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    params: {assignmentId: param},
+    ...(options || {}),
+  });
+}
+
+export async function getUserBaseInformationById(param?: bigint, options?: { [key: string]: any }) {
+  return request<API.BaseResponse<API.BaseInformation>>('/api/user/getBaseInformationById', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    params: {id: param},
+    ...(options || {}),
+  });
+}
+
 /** 此处后端没有提供注释 GET /api/notices */
 export async function getNotices(options?: { [key: string]: any }) {
     console.log('Fetching notices with options:', options);
