@@ -3,27 +3,46 @@ import React, { useState, useEffect } from 'react';
 import { Upload, Button, message } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import ProForm, { ProFormText, ProFormDateTimePicker, ProFormSelect } from '@ant-design/pro-form';
-import { getHomeworkDetails, updateHomeworkDetails, submitHomework } from '@/services/ant-design-pro/api';
-import {history, useAccess} from 'umi';
+import { getHomeworksDetails, updateHomeworkDetails, submitHomework } from '@/services/ant-design-pro/api';
+import {history, useAccess, useParams} from 'umi';
 
 const HomeworkDetailsPage = () => {
   const [homeworkDetails, setHomeworkDetails] = useState({});
   const [fileList, setFileList] = useState([]);
-  const assignmentId = 1; // 假设的作业ID，应从路由或状态管理中获取
+  const {assignmentId} = useParams();
 
-  useEffect(() => {
-    async function fetchHomeworkDetails() {
-      try {
-        const response = await getHomeworkDetails(assignmentId);
-        setHomeworkDetails(response.data);
-        // 根据响应设置isTeacherOrAdmin状态
-        // setIsTeacherOrAdmin(response.data.isTeacherOrAdmin);
-      } catch (error) {
-        message.error('获取作业详情失败');
-      }
+  async function fetchHomeworkDetails() {
+    try {
+      const response = await getHomeworksDetails(assignmentId);
+      setHomeworkDetails({
+          // @ts-ignore
+          assignmentId: assignmentId,
+          // @ts-ignore
+          title: response.title,
+          // @ts-ignore
+          startTime: response.startTime,
+          // @ts-ignore
+          endTime: response.endTime,
+          // @ts-ignore
+          description: response.description,
+          // @ts-ignore
+          assignmentType: response.assignmentType
+        }
+      );
+      // 根据响应设置isTeacherOrAdmin状态
+      // setIsTeacherOrAdmin(response.data.isTeacherOrAdmin);
+    } catch (error) {
+      message.error('获取作业详情失败');
     }
-    fetchHomeworkDetails();
+  }
+  useEffect(() => {
+    console.log("Current assignmentId:", assignmentId);
+    if (assignmentId) {
+      fetchHomeworkDetails();
+    }
   }, [assignmentId]);
+
+
   const access = useAccess();
   const handleHomeworkUpdate = async (values) => {
     try {
