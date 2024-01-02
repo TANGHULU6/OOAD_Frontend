@@ -187,13 +187,13 @@ export async function listProjects(courseId: bigint, options?: { [key: string]: 
 }
 
 /** 新增项目 POST /api/project/insert */
-export async function insertProject(body: API.ProjectList, options?: { [key: string]: any }) {
+export async function insertProject(courseId: number, body: API.ProjectList, options?: { [key: string]: any }) {
     return request<API.BaseResponse<bigint>>('/api/project/insert', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        data: body,
+        data: {...body, courseId: courseId},
         ...(options || {}),
     });
 }

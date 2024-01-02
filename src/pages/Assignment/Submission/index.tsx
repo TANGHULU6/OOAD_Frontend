@@ -39,7 +39,12 @@ const Submission = () => {
             renderPdf(submissionRes.content);
             break;
           case 'MD':
-            setContent(marked(submissionRes.content));
+            fetch(submissionRes.content)
+            .then(response => response.text())
+            .then(text => {
+              setContent(marked(text));
+            })
+            .catch(error => console.error('Error fetching markdown:', error));
             break;
           case 'DOCX':
             renderDocx(submissionRes.content);
@@ -51,6 +56,7 @@ const Submission = () => {
         message.error('获取提交详情失败！');
       }
     }
+
     fetchDetails();
   }, [submissionId]);
 
@@ -63,21 +69,22 @@ const Submission = () => {
   };
 
   return (
-    <PageContainer>
-      <Descriptions title="提交详情" bordered>
-        <Descriptions.Item label="提交id">{submission.id}</Descriptions.Item>
-        <Descriptions.Item label="作业名称">{assignment.title}</Descriptions.Item>
-        <Descriptions.Item label="提交者学工号">{submitter.sid}</Descriptions.Item>
-        <Descriptions.Item label="提交者姓名">{submitter.name}</Descriptions.Item>
-        <Descriptions.Item label="提交时间">{new Date(submission.submitTime).toLocaleString()}</Descriptions.Item>
-        <Descriptions.Item label="评分状态">{submission.score ? <Badge status="success" text="已评分" /> : <Badge status="error" text="未评分" />}</Descriptions.Item>
-        <Descriptions.Item label="评分时间">{submission.scoreTime ? new Date(submission.scoreTime).toLocaleString() : "-"}</Descriptions.Item>
-        <Descriptions.Item label="评分教师">{teacher && teacher.name ? teacher.name : "-"}</Descriptions.Item>
-        <Descriptions.Item label="分数">{submission.score ? submission.score : "-"}</Descriptions.Item>
-        <Descriptions.Item label="教师评论" span={3}>{submission.teacherComment ? submission.teacherComment : "-"}</Descriptions.Item>
-        <Descriptions.Item label="提交内容" span={3}>{content}</Descriptions.Item>
-      </Descriptions>
-    </PageContainer>
+      <PageContainer>
+        <Descriptions title="提交详情" bordered>
+          <Descriptions.Item label="提交id">{submission.id}</Descriptions.Item>
+          <Descriptions.Item label="作业名称">{assignment.title}</Descriptions.Item>
+          <Descriptions.Item label="提交者学工号">{submitter.sid}</Descriptions.Item>
+          <Descriptions.Item label="提交者姓名">{submitter.name}</Descriptions.Item>
+          <Descriptions.Item label="提交时间">{new Date(submission.submitTime).toLocaleString()}</Descriptions.Item>
+          <Descriptions.Item label="评分状态">{submission.score ? <Badge status="success" text="已评分"/> :
+              <Badge status="error" text="未评分"/>}</Descriptions.Item>
+          <Descriptions.Item label="评分时间">{submission.scoreTime ? new Date(submission.scoreTime).toLocaleString() : "-"}</Descriptions.Item>
+          <Descriptions.Item label="评分教师">{teacher && teacher.name ? teacher.name : "-"}</Descriptions.Item>
+          <Descriptions.Item label="分数">{submission.score ? submission.score : "-"}</Descriptions.Item>
+          <Descriptions.Item label="教师评论" span={3}>{submission.teacherComment ? submission.teacherComment : "-"}</Descriptions.Item>
+          <Descriptions.Item label="提交内容" span={3}><div dangerouslySetInnerHTML={{ __html: content }} /></Descriptions.Item>
+        </Descriptions>
+      </PageContainer>
   );
 }
 

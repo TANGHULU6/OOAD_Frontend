@@ -182,7 +182,7 @@ const ProjectList: React.FC<ProjectListProps> = ({courseId}) => {
         onFinish={async (value) => {
           console.log(value)
           try {
-            const result = await insertProject(value as API.ProjectList);
+            const result = await insertProject(courseId, (value as API.ProjectList));
             // @ts-ignore
             if (result) {
               message.success("添加成功！")
