@@ -517,6 +517,16 @@ export async function getNotificationDetail(
         ...(options || {}),
     });
 }
+export async function getCurrentUserGroupInProject(projectId: number, options?: { [key: string]: any }) {
+  return request<API.BaseResponse<API.GroupDetail>>(`/api/project/group`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: { projectId },
+    ...(options || {}),
+  });
+}
 export async function getGroupDetails(groupId: number, options?: { [key: string]: any }) {
     return request<API.BaseResponse<API.GroupDetail>>(`/api/group`, {
         method: 'GET',
@@ -585,7 +595,7 @@ export async function submitHomework(assignmentId: number, files: File[], option
     method: 'POST',
     headers: {
       // 需要根据后端要求设置正确的 Content-Type
-      // 'Content-Type': 'multipart/form-data',
+      'Content-Type': 'multipart/form-data',
     },
     params: { assignmentId },
     data: formData,

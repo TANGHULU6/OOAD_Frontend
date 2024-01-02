@@ -68,7 +68,7 @@ const HomeworkDetailsPage = () => {
       message.success('作业提交成功');
       // 跳转到提交详情页
       // history.push(`/submission/${record.id}`);
-      history.push('/submission/1');
+      history.push(`/submission/${assignmentId}`);
     } catch (error) {
       message.error('提交作业失败');
     }

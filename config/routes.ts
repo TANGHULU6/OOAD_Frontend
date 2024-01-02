@@ -70,11 +70,24 @@ export default [
       hideFooter: false,
     },
   },
+  // {
+  //   name: '小组信息',
+  //   icon: 'table',
+  //   path: '/group',
+  //   component: './Group/group',
+  // },
+  // {
+  //   name: '小组信息1',
+  //   icon: 'table',
+  //   path: '/group1',
+  //   component: './Group/ProjectSelector',
+  // },
   {
     name: '小组信息',
     icon: 'table',
     path: '/group',
-    component: './Group/group',
+    component: './Group/UserGroup',
+    // hideInMenu: true,
   },
   {
     name: 'Notify Table',
