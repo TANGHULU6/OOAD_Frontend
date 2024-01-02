@@ -9,6 +9,7 @@ import {history, useAccess, useParams} from 'umi';
 const HomeworkDetailsPage = () => {
   const [homeworkDetails, setHomeworkDetails] = useState({});
   const [fileList, setFileList] = useState([]);
+  // @ts-ignore
   const {assignmentId} = useParams();
 
   async function fetchHomeworkDetails() {
