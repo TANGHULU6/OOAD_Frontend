@@ -142,13 +142,13 @@ export async function listAssignments(courseId: bigint, options?: { [key: string
 }
 
 /** 新增作业 POST /api/assignment/insert */
-export async function insertAssignment(body: API.AssignmentList, options?: { [key: string]: any }) {
+export async function insertAssignment(courseId: number, body: API.AssignmentList, options?: { [key: string]: any }) {
     return request<API.BaseResponse<bigint>>('/api/assignment/insert', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        data: body,
+        data: {...body, courseId: courseId},
         ...(options || {}),
     });
 }

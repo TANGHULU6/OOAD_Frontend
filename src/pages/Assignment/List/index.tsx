@@ -194,7 +194,7 @@ const AssignmentList: React.FC<AssignmentListProps> = ({courseId}) => {
             onFinish={async (value) => {
               console.log(value)
               try {
-                const result = await insertAssignment(value as API.AssignmentList);
+                const result = await insertAssignment(courseId, (value as API.AssignmentList));
                 // @ts-ignore
                 if (result) {
                   message.success("添加成功！")
