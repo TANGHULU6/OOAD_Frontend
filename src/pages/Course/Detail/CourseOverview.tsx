@@ -78,7 +78,7 @@ const CourseOverview: React.FC<CourseOverviewProps> = ({courseId}) => {
     };
 
     fetchTAs();
-    fetchStudents();
+    access.canTA && fetchStudents();
   }, [courseId]);
 
 
