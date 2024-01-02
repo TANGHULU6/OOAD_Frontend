@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
 import {useParams} from 'umi';
-// import * as pdfjsLib from 'pdfjs-dist';
+import * as pdfjsLib from 'pdfjs-dist';
 import {getAssignmentById, getSubmissionById, getUserBaseInformationById} from "@/services/ant-design-pro/api";
 import {Badge, Descriptions, message} from "antd";
 import {PageContainer} from "@ant-design/pro-components";
@@ -60,10 +60,6 @@ const Submission = () => {
     fetchDetails();
   }, [submissionId]);
 
-  const renderPdf = async (pdfData) => {
-    // 使用 pdfjs-dist 渲染 PDF
-  };
-
   const renderDocx = async (docxData) => {
     // 使用 mammoth 渲染 Word 文档
   };
@@ -76,8 +72,7 @@ const Submission = () => {
           <Descriptions.Item label="提交者学工号">{submitter.sid}</Descriptions.Item>
           <Descriptions.Item label="提交者姓名">{submitter.name}</Descriptions.Item>
           <Descriptions.Item label="提交时间">{new Date(submission.submitTime).toLocaleString()}</Descriptions.Item>
-          <Descriptions.Item label="评分状态">{submission.score ? <Badge status="success" text="已评分"/> :
-              <Badge status="error" text="未评分"/>}</Descriptions.Item>
+          <Descriptions.Item label="评分状态">{submission.score ? <Badge status="success" text="已评分"/> : <Badge status="error" text="未评分"/>}</Descriptions.Item>
           <Descriptions.Item label="评分时间">{submission.scoreTime ? new Date(submission.scoreTime).toLocaleString() : "-"}</Descriptions.Item>
           <Descriptions.Item label="评分教师">{teacher && teacher.name ? teacher.name : "-"}</Descriptions.Item>
           <Descriptions.Item label="分数">{submission.score ? submission.score : "-"}</Descriptions.Item>
