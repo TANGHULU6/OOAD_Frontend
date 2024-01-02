@@ -80,8 +80,8 @@ const HomeworkDetailsPage = () => {
       <div>
         <p>标题: {homeworkDetails.title}</p>
         <p>描述: {homeworkDetails.description}</p>
-        <p>开始时间: {homeworkDetails.startTime}</p>
-        <p>截止时间: {homeworkDetails.endTime}</p>
+        <p>开始时间: {new Date(homeworkDetails.startTime).toLocaleString()}</p>
+        <p>截止时间: {new Date(homeworkDetails.endTime).toLocaleString()}</p>
         <p>类型: {homeworkDetails.assignmentType === 0 ? '个人作业' : '小组作业'}</p>
       </div>
 
