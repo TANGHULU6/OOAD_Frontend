@@ -59,17 +59,17 @@ export default [
       hideFooter: false,
     },
   },
-  // {
-  //   name: '提交详情',
-  //   path: '/submission/:submissionId',
-  //   component: './Assignment/Submission',
-  //   hideInMenu: true,
-  //   layout: {
-  //     hideMenu: false,
-  //     hideNav: false,
-  //     hideFooter: false,
-  //   },
-  // },
+  {
+    name: '提交详情',
+    path: '/submission/:submissionId',
+    component: './Assignment/Submission',
+    hideInMenu: true,
+    layout: {
+      hideMenu: false,
+      hideNav: false,
+      hideFooter: false,
+    },
+  },
   {
     name: '评阅',
     path: '/review/:assignmentId',

@@ -6,14 +6,18 @@ import ProjectOverview from '@/pages/Project/Detail/ProjectOverview';
 import GroupOverview from '@/pages/Project/Detail/GroupOverview';
 import { useHistory, useLocation } from 'react-router-dom';
 import UserGroup from "@/pages/Group/UserGroup";
+import {toNumber} from "lodash";
 const ProjectDetails = () => {
   // @ts-ignore
   const { projectId } = useParams();
-  console.log('🚀 ~ file: index.tsx:11 ~ ProjectDetails ~ projectId:', projectId);
+  // console.log('🚀 ~ file: index.tsx:11 ~ ProjectDetails ~ projectId:', projectId);
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-  const courseId = searchParams.get('courseId');
-  console.log('🚀 ~ file: index.tsx:12 ~ ProjectDetails ~ courseId:', courseId);
+  const courseId = toNumber(searchParams.get('courseId'));
+
+  // console.log('🚀 ~ file: index.tsx:12 ~ ProjectDetails ~ courseId:', courseId);
+
+  console.log(courseId)
   const { Sider } = Layout;
   const [selectedMenuItem, setSelectMenuItem] = useState('projectDetail');
 

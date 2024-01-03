@@ -77,7 +77,7 @@ const CourseOverview: React.FC<CourseOverviewProps> = ({courseId}) => {
       }
     };
 
-    access.canTA && fetchTAs();
+    access.canTeacher && fetchTAs();
     access.canTA && fetchStudents();
   }, [courseId]);
 
@@ -116,7 +116,7 @@ const CourseOverview: React.FC<CourseOverviewProps> = ({courseId}) => {
         <p>教师: {course?.teacherName}</p>
         <p>教师助理: {course?.taNameList?.join(', ')}</p>
         <p>学生人数: {course?.studentNum}</p>
-        <p>创建时间: {course?.createTime}</p>
+        <p>创建时间: {new Date(course?.createTime).toLocaleString()}</p>
         {access.canTA && (
           <Button icon={<PlusOutlined/>} onClick={() => setIsModalVisible(true)}>
             管理教师助理和学生

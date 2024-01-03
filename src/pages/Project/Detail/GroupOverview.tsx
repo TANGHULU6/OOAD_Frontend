@@ -1,19 +1,13 @@
-import { useParams } from 'react-router-dom';
-import React, { useEffect, useState } from 'react';
-import { Modal, Space, Table, Button, List, Form, Input } from 'antd';
-import type { ColumnsType } from 'antd/es/table';
-import { ProForm, ProFormText, ProFormDateTimePicker } from '@ant-design/pro-components';
-import {
-  getProjectDelGroups, //获取小组列表 参数projectId
-  getProjectDelGroups2, //查询用户在哪个小组内 参数projectId
-  getGroupDetails,
-  joinGroups, //用户加入小组 参数groupId
-  leaveGroups, //用户退出小组 参数groupId
-} from '@/services/ant-design-pro/api';
+import React, {useEffect, useState} from 'react';
+import {Button, Space, Table} from 'antd';
+import type {ColumnsType} from 'antd/es/table';
+import {getProjectDelGroups, joinGroups, leaveGroups,} from '@/services/ant-design-pro/api';
 import styles from './index.less';
-import { history, useAccess } from 'umi';
+import {history, useAccess} from 'umi';
+import {toNumber} from "lodash";
 
 interface DataType {
+  groupId: number;
   name: string;
   groupCurrentNumber: string;
   groupMaxNumber: string;
@@ -78,12 +72,12 @@ const GroupOverview: React.FC<GroupOverviewProps> = ({ projectId }) => {
 //加入小组
   const handleJoin = async (record: DataType, projectId: number) => {
     console.log('加入 clicked for record:', record);
-    await joinGroups({ projectId: projectId, groupId: 1 });
+    await joinGroups({ projectId: projectId, groupId: record.groupId });
   };
 //退出小组
   const handleExit = async (record: DataType) => {
     console.log('退出 clicked for record:', record);
-    await leaveGroups({ groupId: 1 });
+    await leaveGroups({ groupId: record.groupId });
   };
 
 

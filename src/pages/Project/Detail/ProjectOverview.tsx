@@ -17,7 +17,7 @@ interface ProjectOverviewProps {
   projectId: number; // 传入的 projectId 属性
   courseId: number; // 传入的 courseId 属性
 }
-const NotificationModal = ({ courseId }) => {
+const NotificationModal = ({ courseId, projectId }) => {
   console.log('🚀 ~ file: ProjectOverview.tsx:21 ~ NotificationModal ~ courseId:', courseId);
   const [isModalVisible, setIsModalVisible] = useState(false); // 控制对话框显示状态的变量
   const [form] = Form.useForm(); // Form 实例
@@ -36,7 +36,8 @@ const NotificationModal = ({ courseId }) => {
         values.receivers = null;
         values.courseId = parseInt(courseId, 10);
         // 在这里处理表单提交，例如发送请求到服务器
-        await insertGroupNot(values);
+        console.log(courseId)
+        await insertGroupNot(values, projectId);
         // 关闭对话框
         form.resetFields();
         setIsModalVisible(false);
@@ -297,11 +298,11 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ projectId, courseId }
                     </div>,
                   ]}
                 >
-                  <List.Item.Meta title={<div>通知标题:{item.title}</div>} />
+                  <List.Item.Meta title={<div>通知:{item.title}<br></br>{item.message}</div>} />
                 </List.Item>
               )}
             />
-            <NotificationModal courseId={courseId} />
+            <NotificationModal courseId={courseId} projectId={projectId}/>
           </div>
         </>
       }

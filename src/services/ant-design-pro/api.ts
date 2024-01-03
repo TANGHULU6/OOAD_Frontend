@@ -683,11 +683,11 @@ export async function getGroupNot(projectId: any, options?: { [key: string]: any
   });
 }
 /** 发布项目通知  */
-export async function insertGroupNot(body: any, options?: { [key: string]: any }) {
+export async function insertGroupNot(body: any, courseId: any, options?: { [key: string]: any }) {
   return request<API.BaseResponse<API.ProjectList>>('/api/project/notification/insert', {
     method: 'POST',
     ...(options || {}),
-    data: body,
+    data: {...body, courseId: courseId},
   });
 }
 /** 根据通知ID删除通知  */
