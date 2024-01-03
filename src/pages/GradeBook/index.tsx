@@ -120,7 +120,7 @@ const GradeBook = ({courseId}) => {
             valueType: 'option',
             key: 'option',
             render: (text, record, _, action) => [
-              <a
+              record.id > 0 && <a
                 key="view"
                 onClick={() => {
                   // 这里添加你的查看详情逻辑，比如跳转到详情页面

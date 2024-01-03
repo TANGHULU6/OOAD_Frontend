@@ -1,10 +1,12 @@
 // HomeworkDetailsPage 组件
-import React, { useState, useEffect } from 'react';
-import { Upload, Button, message } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
-import ProForm, { ProFormText, ProFormDateTimePicker, ProFormSelect } from '@ant-design/pro-form';
-import { getHomeworksDetails, updateHomeworkDetails, submitHomework } from '@/services/ant-design-pro/api';
+import React, {useEffect, useState} from 'react';
+import {Button, Descriptions, Form, message, Upload} from 'antd';
+import {UploadOutlined} from '@ant-design/icons';
+import {ProFormDateTimePicker, ProFormSelect, ProFormText} from '@ant-design/pro-form';
+import {getHomeworksDetails, submitHomework, updateHomeworkDetails} from '@/services/ant-design-pro/api';
 import {history, useAccess, useParams} from 'umi';
+import {UploadProps} from "antd/es/upload/interface";
+import styles from "@/pages/account/settings/components/BaseView.less";
 
 const HomeworkDetailsPage = () => {
   // const [homeworkDetails, setHomeworkDetails] = useState({});
@@ -74,19 +76,71 @@ const HomeworkDetailsPage = () => {
     }
   };
 
+  const customRequest = (option: any) => {
+    const formData = new FormData();
+
+    formData.append('file', option.file);
+    fetch('http://localhost:8000/api/assignment/upload?assignmentId=' + assignmentId, {
+      method: 'POST',
+      body: formData,
+    })
+    .then((res) => res.json())
+    .then((res) => {
+      // setUserInfo({avatarUrl: res.data})
+      setFileList([]);
+      option.onSuccess();
+      history.push(`/submission/${res.data}`);
+    })
+    .catch(() => {
+      message.error('upload failed.');
+    })
+  }
+
+  const beforeUpload = (file: any) => {
+    console.debug("file type:", file.type);
+    // const allowFormat = file.type === 'csv';
+    // if (!allowFormat) {
+    //   message.error('只允许 CSV 文件!', 1000)
+    // }
+    const fileSize = file.size / 1024 / 1024 < 20;
+    if (!fileSize) {
+      message.error('作业文件应当小于20MB!', 1000)
+    }
+    // return allowFormat && fileSize;
+    return fileSize;
+  }
+
+  const handleChange = (info: any) => {
+    // console.debug("info:", info)
+    if (info.file.status === 'done') {
+      message.success('上传成功');
+    }
+    if (info.file.status === 'error') {
+      message.error('上传失败');
+    }
+  };
+
+  const props: UploadProps = {
+    accept: ".pdf, .md",	//文件类型
+    maxCount: 1,
+    showUploadList: false,
+    beforeUpload: beforeUpload,	//上传前的钩子
+    onChange: handleChange,	//上传中、完成、失败都会调用这个函数
+    customRequest: customRequest,	//覆盖默认的上传行为，自定义上传实现
+  };
+
   return (
     <div style={{paddingLeft: '200px', paddingRight: '200px'}}>
-      <h1>作业详情</h1>
-      <div>
-        <p>标题: {homeworkDetails.title}</p>
-        <p>描述: {homeworkDetails.description}</p>
-        <p>开始时间: {new Date(homeworkDetails.startTime).toLocaleString()}</p>
-        <p>截止时间: {new Date(homeworkDetails.endTime).toLocaleString()}</p>
-        <p>类型: {homeworkDetails.assignmentType === 0 ? '个人作业' : '小组作业'}</p>
-      </div>
-
+      <Descriptions title="作业详情" bordered>
+        <Descriptions.Item label="标题" span={3}>{homeworkDetails.title}</Descriptions.Item>
+        <Descriptions.Item label="描述" span={3}>{homeworkDetails.description}</Descriptions.Item>
+        <Descriptions.Item label="开始时间" span={3}>{new Date(homeworkDetails.startTime).toLocaleString()}</Descriptions.Item>
+        <Descriptions.Item label="截止时间" span={3}>{new Date(homeworkDetails.endTime).toLocaleString()}</Descriptions.Item>
+        <Descriptions.Item label="类型" span={3}>{homeworkDetails.assignmentType === 0 ? '个人作业' : '小组作业'}</Descriptions.Item>
+      </Descriptions>
+      <Descriptions title="更新作业信息" style={{borderTop: 60}}></Descriptions>
       {access.canTeacher && (
-        <ProForm initialValues={homeworkDetails} onFinish={handleHomeworkUpdate}>
+        <Form initialValues={homeworkDetails} onFinish={handleHomeworkUpdate}>
           <ProFormText
             name="title"
             label="作业标题"
@@ -116,16 +170,24 @@ const HomeworkDetailsPage = () => {
             ]}
             rules={[{ required: true, message: '请选择作业类型' }]}
           />
-          <Button type="primary" htmlType="submit">更新作业</Button>
-        </ProForm>
+          <Button htmlType="submit">更新作业信息</Button>
+        </Form>
       )}
 
-      <div>
-        <Upload onChange={handleFileChange} multiple={true} fileList={fileList}>
-          <Button icon={<UploadOutlined />}>上传作业文件</Button>
-        </Upload>
-        <Button type="primary" onClick={handleSubmit} disabled={fileList.length === 0}>提交作业</Button>
-      </div>
+      <Upload {...props}>
+        <div className={styles.button_view}>
+          <Button type="primary">
+            <UploadOutlined/>
+            上传作业文件并提交
+          </Button>
+        </div>
+      </Upload>
+      {/*<div>*/}
+        {/*<Upload onChange={handleFileChange} multiple={false} fileList={fileList}>*/}
+        {/*  <Button type="primary" icon={<UploadOutlined />}>上传作业</Button>*/}
+        {/*</Upload>*/}
+        {/*<Button type="primary" onClick={handleSubmit} disabled={fileList.length === 0}>提交作业</Button>*/}
+      {/*</div>*/}
     </div>
   );
 };
