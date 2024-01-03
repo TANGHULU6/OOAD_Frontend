@@ -124,6 +124,12 @@ declare namespace API {
     isReviewed: boolean;
   }
 
+  type ReviewSubmit = {
+    submissionId: bigint;
+    score: number;
+    comment?: boolean;
+  }
+
   type PageParams = {
     current?: number;
     pageSize?: number;

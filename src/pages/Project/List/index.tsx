@@ -66,7 +66,7 @@ const ProjectList: React.FC<ProjectListProps> = ({ courseId }) => {
                   key="view"
                   onClick={() => {
                     // 这里添加你的查看详情逻辑，比如跳转到详情页面
-                    history.push(`/project/${record.id}`);
+                    history.push(`/project/${record.id}?courseId=${courseId}`);
                   }}
                 >
                   查看

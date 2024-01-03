@@ -270,6 +270,17 @@ export async function listReviews(assignmentId: bigint, options?: { [key: string
   });
 }
 
+export async function submitReview(body: API.ReviewSubmit, options?: { [key: string]: any }) {
+  return request<API.BaseResponse<boolean>>('/api/submission/review/submit', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
 /** 此处后端没有提供注释 GET /api/notices */
 export async function getNotices(options?: { [key: string]: any }) {
   console.log('Fetching notices with options:', options);

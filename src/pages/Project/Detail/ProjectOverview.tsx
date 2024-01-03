@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
-import React, { useEffect, useState } from 'react';
-import { Modal, Space, Table, Button, List, Form, Input } from 'antd';
+import React, { useState } from 'react';
+import { Modal, Button, List, Form, Input, message } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { ProForm, ProFormText, ProFormDateTimePicker } from '@ant-design/pro-components';
 import {
@@ -15,8 +15,10 @@ import { history, useAccess } from 'umi';
 
 interface ProjectOverviewProps {
   projectId: number; // 传入的 projectId 属性
+  courseId: number; // 传入的 courseId 属性
 }
-const NotificationModal = () => {
+const NotificationModal = ({ courseId }) => {
+  console.log('🚀 ~ file: ProjectOverview.tsx:21 ~ NotificationModal ~ courseId:', courseId);
   const [isModalVisible, setIsModalVisible] = useState(false); // 控制对话框显示状态的变量
   const [form] = Form.useForm(); // Form 实例
   const access = useAccess();
@@ -31,8 +33,8 @@ const NotificationModal = () => {
       .validateFields()
       .then(async (values: any) => {
         console.log('Received values of form: ', values);
-        values.receivers = '';
-        values.courseId = 1;
+        values.receivers = null;
+        values.courseId = parseInt(courseId, 10);
         // 在这里处理表单提交，例如发送请求到服务器
         await insertGroupNot(values);
         // 关闭对话框
@@ -58,7 +60,7 @@ const NotificationModal = () => {
       <Modal
         title="发布通知"
         visible={isModalVisible}
-        onOk={handleOk}
+        onOk={() => handleOk()}
         onCancel={handleCancel}
         okText="发布"
         cancelText="取消"
@@ -87,11 +89,11 @@ const NotificationModal = () => {
 const goNotDel = async (item: any) => {
   console.log('🚀 ~ file: index.tsx:103 ~ goNotDel ~ item:', item);
 };
-const ProjectOverview: React.FC<ProjectOverviewProps> = ({ projectId }) => {
+
+const ProjectOverview: React.FC<ProjectOverviewProps> = ({ projectId, courseId }) => {
+  console.log('🚀 ~ file: ProjectOverview.tsx:92 ~ courseId:', courseId);
   const [projectDel, setProjectDel] = useState<any>({});
   const [GroupNot, setGroupNot] = useState<any[]>([]);
-  console.log('🚀 ~ file: ProjectOverview.tsx:111 ~ GroupNot:', GroupNot);
-
   // useEffect(() => {
   //   // 定义一个异步函数来获取分组列表
   //   async function fetchGroupList() {
@@ -131,20 +133,40 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ projectId }) => {
               }}
               onFinish={async (values) => {
                 console.log(values);
-                await projectDelUpdate({
-                  ...projectDel,
-                  ...values,
-                  projectId: parseInt(projectId.toString(), 10),
-                });
-                // console.log(values);
-                // message.success('修改成功');
+                const numberProps = ['groupNumber', 'maxNumber'];
+
+                // 循环遍历对象的属性
+                for (const prop in values) {
+                  if (numberProps.includes(prop)) {
+                    // 如果属性名在指定的数组中，将其值转换为数字类型
+                    values[prop] = Number(values[prop]);
+                  }
+                }
+                console.log(values);
+                try {
+                  const result = await projectDelUpdate({
+                    ...projectDel,
+                    ...values,
+                    projectId: parseInt(projectId.toString(), 10),
+                  });
+
+                  if (result && result === true) {
+                    message.success('修改成功');
+                    return Promise.resolve();
+                  } else {
+                    throw new Error();
+                  }
+                } catch (error) {
+                  message.error('修改失败，请重试！');
+                  return Promise.reject();
+                }
               }}
               request={async () => {
                 const projectDel = await getProjectDel(projectId);
                 setProjectDel(projectDel);
                 // 使用从异步请求获取的数据更新状态
                 const groupNot = await getGroupNot(projectId);
-                setGroupNot(groupNot);
+                setGroupNot(groupNot || []);
                 return {
                   ...projectDel,
                 };
@@ -226,6 +248,7 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ projectId }) => {
           </div>
           <div className={styles.mymy}>
             <div className={styles.right}>项目通知</div>
+
             <List
               itemLayout="horizontal"
               dataSource={GroupNot}
@@ -237,26 +260,47 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ projectId }) => {
                   }}
                   style={{ cursor: 'pointer' }}
                   actions={[
-                    <Button
-                      type="link"
-                      disabled={!access.canTA}
-                      onClick={async (e) => {
+                    <div
+                      key={'delete'}
+                      style={{ color: 'red' }}
+                      onClick={(e) => {
                         e.stopPropagation(); // 阻止点击事件冒泡到 List.Item
-                        console.log(item);
-                        await delGroupNot({
-                          notificationId: item.id,
+                        Modal.confirm({
+                          title: '删除通知',
+                          content: '确定删除该通知吗？',
+                          okText: '确认',
+                          cancelText: '取消',
+                          onOk: async () => {
+                            try {
+                              const result = await delGroupNot({
+                                notificationId: item.id,
+                              });
+
+                              if (result && result === true) {
+                                message.success('删除成功！');
+                                const groupNot = await getGroupNot(projectId);
+                                setGroupNot(groupNot || []);
+                                return Promise.resolve();
+                              } else {
+                                throw new Error();
+                              }
+                            } catch (error) {
+                              message.error('删除失败，请重试！');
+                              return Promise.reject();
+                            }
+                          },
                         });
                       }}
                     >
                       删除
-                    </Button>,
+                    </div>,
                   ]}
                 >
                   <List.Item.Meta title={<div>通知标题:{item.title}</div>} />
                 </List.Item>
               )}
             />
-            <NotificationModal />
+            <NotificationModal courseId={courseId} />
           </div>
         </>
       }

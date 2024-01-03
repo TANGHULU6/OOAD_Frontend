@@ -91,20 +91,16 @@ interface GroupOverviewProps {
 }
 
 const GroupOverview: React.FC<GroupOverviewProps> = ({ projectId }) => {
-  console.log('🚀 ~ file: GroupOverview.tsx:183 ~ projectId:', projectId);
-  const [groupList, setGroupList] = useState<any>({});
-
-  //   const groupList = await getProjectDelGroups(projectId);
-  //   setGroupList(groupList);
+  const [groupList, setGroupList] = useState<any>([]);
   useEffect(() => {
     // 定义一个异步函数来获取分组列表
     async function fetchGroupList() {
       try {
         // 发起异步请求获取分组列表
-        const data = await getProjectDelGroups(projectId);
+        const mydata = await getProjectDelGroups(projectId);
 
         // 使用从异步请求获取的数据更新状态
-        setGroupList(data);
+        setGroupList(mydata);
       } catch (error) {
         // 如果有错误发生，你可以在这里处理它(例如，设置错误状态或者打印到控制台)
         console.error('Failed to fetch group list:', error);
@@ -133,7 +129,7 @@ const GroupOverview: React.FC<GroupOverviewProps> = ({ projectId }) => {
                   },
                 };
               }}
-              dataSource={data}
+              dataSource={groupList}
             />
           </div>
         </>
