@@ -6,6 +6,7 @@ import { ProForm, ProFormText, ProFormDateTimePicker } from '@ant-design/pro-com
 import {
   getProjectDelGroups, //获取小组列表 参数projectId
   getProjectDelGroups2, //查询用户在哪个小组内 参数projectId
+  getGroupDetails,
   joinGroups, //用户加入小组 参数groupId
   leaveGroups, //用户退出小组 参数groupId
 } from '@/services/ant-design-pro/api';
@@ -17,65 +18,11 @@ interface DataType {
   groupCurrentNumber: string;
   groupMaxNumber: string;
   publicInfo: string;
+  projectId: number;
 }
 
-const columns: ColumnsType<DataType> = [
-  {
-    title: '小组名称',
-    dataIndex: 'groupName',
-    key: 'groupName',
-  },
-  {
-    title: '小组当前人数',
-    dataIndex: 'groupCurrentNumber',
-    key: 'groupCurrentNumber',
-  },
-  {
-    title: '小组最大人数',
-    dataIndex: 'groupMaxNumber',
-    key: 'groupMaxNumber',
-  },
-  {
-    title: '小组公开信息',
-    key: 'publicInfo',
-    dataIndex: 'publicInfo',
-  },
-  {
-    title: '操作',
-    key: 'action',
-    render: (_, record) => (
-      <Space size="middle">
-        <Button
-          onClick={(e) => {
-            e.stopPropagation(); // 阻止事件冒泡
-            handleJoin(record);
-          }}
-        >
-          加入
-        </Button>
-        <Button
-          onClick={(e) => {
-            e.stopPropagation(); // 阻止事件冒泡
-            handleExit(record);
-          }}
-        >
-          退出
-        </Button>
-      </Space>
-    ),
-  },
-];
 
-//加入小组
-const handleJoin = async (record: DataType) => {
-  console.log('加入 clicked for record:', record);
-  await joinGroups({ groupId: 1 });
-};
-//退出小组
-const handleExit = async (record: DataType) => {
-  console.log('退出 clicked for record:', record);
-  await leaveGroups({ groupId: 1 });
-};
+
 
 const data: DataType[] = [
   {
@@ -86,19 +33,80 @@ const data: DataType[] = [
   },
 ];
 
+
+
 interface GroupOverviewProps {
   projectId: number; // 传入的 projectId 属性
 }
 
 const GroupOverview: React.FC<GroupOverviewProps> = ({ projectId }) => {
   const [groupList, setGroupList] = useState<any>([]);
+
+  const columns: ColumnsType<DataType> = [
+    {
+      title: '小组名称',
+      dataIndex: 'groupName',
+      key: 'groupName',
+    },
+    {
+      title: '小组当前人数',
+      dataIndex: 'groupCurrentNumber',
+      key: 'groupCurrentNumber',
+    },
+    {
+      title: '小组最大人数',
+      dataIndex: 'groupMaxNumber',
+      key: 'groupMaxNumber',
+    },
+    {
+      title: '小组公开信息',
+      key: 'publicInfo',
+      dataIndex: 'publicInfo',
+    },
+    {
+      title: '操作',
+      key: 'action',
+      render: (_, record) => (
+          <Space size="middle">
+            <Button
+                onClick={(e) => {
+                  e.stopPropagation(); // 阻止事件冒泡
+                  handleJoin(record, projectId);
+                }}
+            >
+              加入
+            </Button>
+            <Button
+                onClick={(e) => {
+                  e.stopPropagation(); // 阻止事件冒泡
+                  handleExit(record);
+                }}
+            >
+              退出
+            </Button>
+          </Space>
+      ),
+    },
+  ];
+
+//加入小组
+  const handleJoin = async (record: DataType, projectId: number) => {
+    console.log('加入 clicked for record:', record);
+    await joinGroups({ projectId: projectId, groupId: 1 });
+  };
+//退出小组
+  const handleExit = async (record: DataType) => {
+    console.log('退出 clicked for record:', record);
+    await leaveGroups({ groupId: 1 });
+  };
+
+
   useEffect(() => {
     // 定义一个异步函数来获取分组列表
     async function fetchGroupList() {
       try {
         // 发起异步请求获取分组列表
         const mydata = await getProjectDelGroups(projectId);
-
         // 使用从异步请求获取的数据更新状态
         setGroupList(mydata);
       } catch (error) {
