@@ -554,6 +554,18 @@ export async function getNotificationDetail(
     ...(options || {}),
   });
 }
+
+export async function getCurrentUserGroupInProject(
+    projectId: number,
+    options?: { [key: string]: any },
+) {
+  return request<API.BaseResponse<bigint>>('/api/project/group', {
+    method: 'GET',
+    params: { projectId: projectId }, // Sending projectId and groupId in the request body
+    ...(options || {}),
+  });
+}
+
 export async function getGroupDetails(groupId: number, options?: { [key: string]: any }) {
   return request<API.BaseResponse<API.GroupDetail>>(`/api/group`, {
     method: 'GET',

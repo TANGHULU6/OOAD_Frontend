@@ -5,6 +5,7 @@ import { BookTwoTone, HddTwoTone } from '@ant-design/icons';
 import ProjectOverview from '@/pages/Project/Detail/ProjectOverview';
 import GroupOverview from '@/pages/Project/Detail/GroupOverview';
 import { useHistory, useLocation } from 'react-router-dom';
+import UserGroup from "@/pages/Group/UserGroup";
 const ProjectDetails = () => {
   // @ts-ignore
   const { projectId } = useParams();
@@ -47,6 +48,7 @@ const ProjectDetails = () => {
   const items: MenuProps['items'] = [
     getItem('项目详情', 'projectDetail', <BookTwoTone />),
     getItem('小组列表', 'groupList', <HddTwoTone />),
+    getItem('我的小组', 'UserGroup', <HddTwoTone />),
     getItem('返回上一级', 'return', <HddTwoTone />),
   ];
 
@@ -66,6 +68,9 @@ const ProjectDetails = () => {
         )}
         {selectedMenuItem === 'groupList' && (
           <GroupOverview projectId={projectId} courseId={courseId} />
+        )}
+        {selectedMenuItem === 'UserGroup' && (
+            <UserGroup projectId={projectId} courseId={courseId} />
         )}
       </Layout>
     </Layout>

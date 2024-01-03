@@ -14,26 +14,12 @@ import styles from './index.less';
 import { history, useAccess } from 'umi';
 
 interface DataType {
-  groupName: string;
+  name: string;
   groupCurrentNumber: string;
   groupMaxNumber: string;
   publicInfo: string;
   projectId: number;
 }
-
-
-
-
-const data: DataType[] = [
-  {
-    groupName: '小组名称',
-    groupCurrentNumber: '10',
-    groupMaxNumber: '100',
-    publicInfo: '公开信息',
-  },
-];
-
-
 
 interface GroupOverviewProps {
   projectId: number; // 传入的 projectId 属性
@@ -45,8 +31,8 @@ const GroupOverview: React.FC<GroupOverviewProps> = ({ projectId }) => {
   const columns: ColumnsType<DataType> = [
     {
       title: '小组名称',
-      dataIndex: 'groupName',
-      key: 'groupName',
+      dataIndex: 'name',
+      key: 'name',
     },
     {
       title: '小组当前人数',
