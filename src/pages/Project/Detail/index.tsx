@@ -4,7 +4,7 @@ import { useParams } from 'umi';
 import { BookTwoTone, HddTwoTone } from '@ant-design/icons';
 import ProjectOverview from '@/pages/Project/Detail/ProjectOverview';
 import GroupOverview from '@/pages/Project/Detail/GroupOverview';
-
+import { useHistory } from 'react-router-dom';
 const ProjectDetails = () => {
   // @ts-ignore
   const { projectId } = useParams();
@@ -12,10 +12,15 @@ const ProjectDetails = () => {
   const [selectedMenuItem, setSelectMenuItem] = useState('projectDetail');
 
   type MenuItem = Required<MenuProps>['items'][number];
-
+  const history = useHistory();
   const onClick: MenuProps['onClick'] = (e) => {
     console.log('click ', e);
-    setSelectMenuItem(e.key);
+    if (e.key === 'return') {
+      history.goBack(); // 返回上一级
+    } else {
+      // 其他菜单项的处理逻辑
+      setSelectMenuItem(e.key);
+    }
   };
 
   function getItem(
