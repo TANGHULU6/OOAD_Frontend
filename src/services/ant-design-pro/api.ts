@@ -281,6 +281,17 @@ export async function submitReview(body: API.ReviewSubmit, options?: { [key: str
   });
 }
 
+export async function getGradeBook(courseId: bigint, options?: { [key: string]: any }) {
+  return request<API.BaseResponse<API.GradeBook[]>>('/api/gradeBook', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    params: { courseId: courseId },
+    ...(options || {}),
+  });
+}
+
 /** 此处后端没有提供注释 GET /api/notices */
 export async function getNotices(options?: { [key: string]: any }) {
   console.log('Fetching notices with options:', options);

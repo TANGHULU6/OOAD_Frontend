@@ -2,9 +2,10 @@ import React, {useState} from 'react';
 import {Layout, Menu, MenuProps} from 'antd';
 import {useParams} from 'umi';
 import CourseOverview from "@/pages/Course/Detail/CourseOverview";
-import {BookTwoTone, EditTwoTone, HddTwoTone} from "@ant-design/icons";
+import {BookTwoTone, EditTwoTone, FundTwoTone, HddTwoTone} from "@ant-design/icons";
 import ProjectList from "@/pages/Project/List";
 import AssignmentList from "@/pages/Assignment/List";
+import GradeBook from "@/pages/GradeBook";
 
 const CourseDetails = () => {
   // @ts-ignore
@@ -39,6 +40,7 @@ const CourseDetails = () => {
     getItem('课程详情', 'courseDetail', <BookTwoTone/>),
     getItem('项目列表', 'projectList', <HddTwoTone/>),
     getItem('作业列表', 'assignmentList', <EditTwoTone/>),
+    getItem('成绩册', 'gradeBook', <FundTwoTone/>),
 
     // getItem('Navigation One', 'sub1', <MailOutlined/>, [
     //   getItem('Item 1', 'g1', null, [getItem('Option 1', '1'), getItem('Option 2', '2')], 'group'),
@@ -79,6 +81,7 @@ const CourseDetails = () => {
         {selectedMenuItem === 'courseDetail' && <CourseOverview courseId={courseId}/>}
         {selectedMenuItem === 'projectList' && <ProjectList courseId={courseId}/>}
         {selectedMenuItem === 'assignmentList' && <AssignmentList courseId={courseId}/>}
+        {selectedMenuItem === 'gradeBook' && <GradeBook courseId={courseId}/>}
       </Layout>
     </Layout>
   );
