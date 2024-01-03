@@ -1,12 +1,10 @@
-import {useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useParams} from 'umi';
-import * as pdfjsLib from 'pdfjs-dist';
 import {getAssignmentById, getSubmissionById, getUserBaseInformationById} from "@/services/ant-design-pro/api";
-import {Badge, Descriptions, message} from "antd";
+import {Badge, Button, Button, Descriptions, message} from "antd";
 import {PageContainer} from "@ant-design/pro-components";
 import {marked} from "marked";
 import PdfViewer from "@/pages/Assignment/Submission/PdfViewer";
-// import mammoth from 'mammoth';
 
 const Submission = () => {
   // @ts-ignore
@@ -15,7 +13,7 @@ const Submission = () => {
   const [assignment, setAssignment] = useState({});
   const [submitter, setSubmitter] = useState({});
   const [teacher, setTeacher] = useState({});
-  const [content, setContent] = useState('');
+  const [content, setContent] = useState(<></>);
 
   useEffect(() => {
     async function fetchDetails() {
@@ -34,24 +32,21 @@ const Submission = () => {
         // 根据提交内容的文件类型不同进行渲染
         switch (submissionRes.contentType) {
           case 'TEXT':
-            setContent(submissionRes.content);
+            setContent(<div dangerouslySetInnerHTML={{ __html: submissionRes.content }} />);
             break;
           case 'PDF':
-            renderPdf(submissionRes.content);
+            setContent(<PdfViewer url={submissionRes.content} />)
             break;
           case 'MD':
             fetch(submissionRes.content)
             .then(response => response.text())
             .then(text => {
-              setContent(marked(text));
+              setContent(<div dangerouslySetInnerHTML={{ __html: marked(text) }} />);
             })
             .catch(error => console.error('Error fetching markdown:', error));
             break;
-          case 'DOCX':
-            renderDocx(submissionRes.content);
-            break;
           default:
-            setContent('不支持的文件类型');
+            setContent(<p>不支持的文件类型</p>);
         }
       } catch (error) {
         message.error('获取提交详情失败！');
@@ -60,10 +55,6 @@ const Submission = () => {
 
     fetchDetails();
   }, [submissionId]);
-
-  const renderDocx = async (docxData) => {
-    // 使用 mammoth 渲染 Word 文档
-  };
 
   return (
       <PageContainer>
@@ -79,7 +70,7 @@ const Submission = () => {
           <Descriptions.Item label="分数">{submission.score ? submission.score : "-"}</Descriptions.Item>
           <Descriptions.Item label="教师评论" span={3}>{submission.teacherComment ? submission.teacherComment : "-"}</Descriptions.Item>
           {/*<Descriptions.Item label="提交内容" span={3}><div dangerouslySetInnerHTML={{ __html: content }} /></Descriptions.Item>*/}
-          <Descriptions.Item label="提交内容" span={3}><PdfViewer url="https://file-examples.com/storage/fe3666494365908ae9beb40/2017/10/file-example_PDF_1MB.pdf" /></Descriptions.Item>
+          <Descriptions.Item label="提交内容" span={3}>{content}</Descriptions.Item>
         </Descriptions>
       </PageContainer>
   );
