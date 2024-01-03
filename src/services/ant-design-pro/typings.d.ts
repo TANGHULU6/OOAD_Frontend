@@ -82,10 +82,10 @@ declare namespace API {
   type AssignmentList = {
     id: bigint;
     title: string;
-    description?: string;
-    startTime?: Date;
-    endTime?: Date;
-    assignmentType: number;
+    // description?: string;
+    // startTime?: Date;
+    // endTime?: Date;
+    // assignmentType: number;
   };
 
   type Submission = {
@@ -269,17 +269,17 @@ declare namespace API {
   };
 
   export type HomeworkDetail = {
-    assignmentId: bigint; // Unique identifier for the homework assignment
+    assignmentId: string; // Unique identifier for the homework assignment
     title: string; // Title of the homework assignment
     description: string; // Detailed description of the homework
     startTime: string; // Start time for the homework assignment
     endTime: string; // End time for the homework assignment
     assignmentType: number; // Type of the assignment (e.g., 0 for individual, 1 for group)
-    courseId: bigint; // ID of the course this homework is associated with
-    courseName?: string; // Name of the course (optional)
-    submissionStatus?: boolean; // Submission status (true if submitted)
-    grade?: number; // Grade received for the homework (optional)
-    feedback?: string; // Teacher's feedback on the homework (optional)
+    // courseId: bigint; // ID of the course this homework is associated with
+    // courseName?: string; // Name of the course (optional)
+    // submissionStatus?: boolean; // Submission status (true if submitted)
+    // grade?: number; // Grade received for the homework (optional)
+    // feedback?: string; // Teacher's feedback on the homework (optional)
     // Add other relevant fields as necessary
   };
 

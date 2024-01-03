@@ -188,9 +188,9 @@ export async function listProjects(courseId: bigint, options?: { [key: string]: 
 
 /** 新增项目 POST /api/project/insert */
 export async function insertProject(
-  courseId: number,
-  body: API.ProjectList,
-  options?: { [key: string]: any },
+    courseId: number,
+    body: API.ProjectList,
+    options?: { [key: string]: any },
 ) {
   return request<API.BaseResponse<bigint>>('/api/project/insert', {
     method: 'POST',
@@ -293,14 +293,14 @@ export async function getNotices(options?: { [key: string]: any }) {
 
 /** 获取规则列表 GET /api/rule */
 export async function rule(
-  params: {
-    // query
-    /** 当前的页码 */
-    current?: number;
-    /** 页面的容量 */
-    pageSize?: number;
-  },
-  options?: { [key: string]: any },
+    params: {
+      // query
+      /** 当前的页码 */
+      current?: number;
+      /** 页面的容量 */
+      pageSize?: number;
+    },
+    options?: { [key: string]: any },
 ) {
   return request<API.RuleList>('/api/rule', {
     method: 'GET',
@@ -391,9 +391,9 @@ export async function getCourseDetail(courseId: number, options?: { [key: string
 
 // 任命教师助理
 export async function appointTA(
-  courseId: number,
-  taId: number[],
-  options?: { [key: string]: any },
+    courseId: number,
+    taId: number[],
+    options?: { [key: string]: any },
 ) {
   return request<API.BaseResponse<boolean>>(`/api/course/add/ta`, {
     method: 'POST',
@@ -407,9 +407,9 @@ export async function appointTA(
 
 // 免职教师助理
 export async function dismissTA(
-  courseId: number,
-  taId: number[],
-  options?: { [key: string]: any },
+    courseId: number,
+    taId: number[],
+    options?: { [key: string]: any },
 ) {
   return request<API.BaseResponse<boolean>>(`/api/course/remove/ta`, {
     method: 'POST',
@@ -423,9 +423,9 @@ export async function dismissTA(
 
 // 添加学生
 export async function addStudent(
-  courseId: number,
-  studentId: number[],
-  options?: { [key: string]: any },
+    courseId: number,
+    studentId: number[],
+    options?: { [key: string]: any },
 ) {
   return request<API.BaseResponse<boolean>>(`/api/course/add/student`, {
     method: 'POST',
@@ -439,9 +439,9 @@ export async function addStudent(
 
 // 移除学生
 export async function removeStudent(
-  courseId: number,
-  studentId: number[],
-  options?: { [key: string]: any },
+    courseId: number,
+    studentId: number[],
+    options?: { [key: string]: any },
 ) {
   return request<API.BaseResponse<boolean>>(`/api/course/remove/student`, {
     method: 'POST',
@@ -484,8 +484,8 @@ export async function getCourseNotifications(courseId: bigint, options?: { [key:
 }
 //发布课程通知
 export async function insertCourseNotification(
-  body: API.Notification,
-  options?: { [key: string]: any },
+    body: API.Notification,
+    options?: { [key: string]: any },
 ) {
   return request<API.BaseResponse<bigint>>('/api/course/notification/insert', {
     method: 'POST',
@@ -499,8 +499,8 @@ export async function insertCourseNotification(
 
 // 删除课程通知
 export async function deleteCourseNotification(
-  notificationId: number,
-  options?: { [key: string]: any },
+    notificationId: number,
+    options?: { [key: string]: any },
 ) {
   return request<API.BaseResponse<boolean>>('/api/course/notification/delete', {
     method: 'POST',
@@ -512,8 +512,8 @@ export async function deleteCourseNotification(
   });
 }
 export async function getNotificationDetail(
-  notificationId: number,
-  options?: { [key: string]: any },
+    notificationId: number,
+    options?: { [key: string]: any },
 ) {
   return request<API.BaseResponse<API.NotificationDetail>>('/api/notification', {
     method: 'GET',
@@ -570,9 +570,9 @@ export async function getHomeworksDetails(assignmentId: number, options?: { [key
 
 //更新作业详情
 export async function updateHomeworkDetails(
-  assignmentId: number,
-  body: API.HomeworkDetail,
-  options?: { [key: string]: any },
+    assignmentId: number,
+    body: API.HomeworkDetail,
+    options?: { [key: string]: any },
 ) {
   return request<API.BaseResponse<boolean>>(`/api/assignment/update`, {
     method: 'POST',
@@ -586,9 +586,9 @@ export async function updateHomeworkDetails(
 
 //提交作业
 export async function submitHomework(
-  assignmentId: number,
-  files: File[],
-  options?: { [key: string]: any },
+    assignmentId: number,
+    files: File[],
+    options?: { [key: string]: any },
 ) {
   const formData = new FormData();
   files.forEach((file) => formData.append('files[]', file));
@@ -623,7 +623,7 @@ export async function getProjectDelGroups(projectId: any, options?: { [key: stri
 }
 /** 查询当前用户在当前项目哪个小组内  */
 export async function getProjectDelGroups2(body: any, options?: { [key: string]: any }) {
-  return request<API.BaseResponse<API.ProjectList>>('/api/project/groups', {
+  return request<API.BaseResponse<API.ProjectList>>('/api/project/group', {
     method: 'POST',
     ...(options || {}),
     data: body,
