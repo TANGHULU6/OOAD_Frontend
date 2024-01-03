@@ -122,7 +122,7 @@ const ProjectList: React.FC<ProjectListProps> = ({ courseId }) => {
         request={async (params = {}, sort, filter) => {
           // console.log(sort, filter);
           // await waitTime(2000);
-          const projectList = await listProjects(BigInt(1));
+          const projectList = await listProjects(BigInt(courseId));
           return {
             data: projectList,
           };
