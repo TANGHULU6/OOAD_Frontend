@@ -566,7 +566,7 @@ export async function joinGroup(groupId: number, options?: { [key: string]: any 
     headers: {
       'Content-Type': 'application/json',
     },
-    data: { groupId },
+    data: { groupId: groupId },
     ...(options || {}),
   });
 }
@@ -601,7 +601,7 @@ export async function updateHomeworkDetails(
     headers: {
       'Content-Type': 'application/json',
     },
-    data: { assignmentId, ...body },
+    data: { ...body },
     ...(options || {}),
   });
 }

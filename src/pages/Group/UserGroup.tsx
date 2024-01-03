@@ -23,6 +23,7 @@ const UserGroup = () => {
     try {
       const response = await getCurrentUserGroupInProject(1);
       const data = await getGroupDetails(response.groupId)
+      // @ts-ignored
       setGroupDetails({
         groupName: data.groupName,
         groupLeader: data.groupLeader,
