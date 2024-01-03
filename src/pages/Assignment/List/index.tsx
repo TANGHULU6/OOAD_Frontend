@@ -80,6 +80,15 @@ const AssignmentList: React.FC<AssignmentListProps> = ({courseId}) => {
                       编辑
                   </a>,
                   access.canTA && <a
+                    key="review"
+                    style={{color: 'green'}}
+                    onClick={() => {
+                      history.push(`/review/${record.id}`);
+                    }}
+                  >
+                    评阅
+                  </a>,
+                  access.canTA && <a
                       key={"delete"}
                       style={{color: 'red'}}
                       onClick={() => {

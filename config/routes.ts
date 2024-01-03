@@ -70,6 +70,17 @@ export default [
       hideFooter: false,
     },
   },
+  {
+    name: '评阅',
+    path: '/review/:assignmentId',
+    component: './Assignment/Review',
+    hideInMenu: true,
+    layout: {
+      hideMenu: false,
+      hideNav: false,
+      hideFooter: false,
+    },
+  },
   // {
   //   name: '小组信息',
   //   icon: 'table',
