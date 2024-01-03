@@ -93,13 +93,13 @@ export default [
   //   path: '/group1',
   //   component: './Group/ProjectSelector',
   // },
-  {
-    name: '小组信息',
-    icon: 'table',
-    path: '/group',
-    component: './Group/UserGroup',
-    // hideInMenu: true,
-  },
+  // {
+  //   name: '小组信息',
+  //   icon: 'table',
+  //   path: '/group',
+  //   component: './Group/UserGroup',
+  //   // hideInMenu: true,
+  // },
   {
     name: 'Notify Table',
     icon: 'table',
