@@ -281,8 +281,8 @@ declare namespace API {
     defenceTeacher?: string; // Name of the defence teacher (optional)
     presentationTime?: string; // Time of presentation (optional)
     publicInfo?: string; // Publicly available information about the group (optional)
-    memberList?: MemberList[]; // List of members in the group
-    projectDetails?: ProjectList; // Details of the project associated with the group
+    // memberList?: MemberList[]; // List of members in the group
+    // projectDetails?: ProjectList; // Details of the project associated with the group
     // Add other relevant fields as necessary
   };
 

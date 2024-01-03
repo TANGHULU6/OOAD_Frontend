@@ -722,3 +722,11 @@ export async function projectDelUpdate(body: any, options?: { [key: string]: any
     data: body,
   });
 }
+
+export async function GroupUpdate(body: any, options?: { [key: string]: any }) {
+  return request<API.BaseResponse<API.GroupDetail>>('/api/group/detail/update', {
+    method: 'POST',
+    ...(options || {}),
+    data: body,
+  });
+}
