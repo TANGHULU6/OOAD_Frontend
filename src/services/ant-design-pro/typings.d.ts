@@ -130,6 +130,16 @@ declare namespace API {
     comment?: boolean;
   }
 
+  type GradeBook = {
+    id: bigint;
+    title: string;
+    submitterSid: string;
+    submitterName: string;
+    submitTime: Date;
+    score?: number;
+    isReviewed: boolean;
+  }
+
   type PageParams = {
     current?: number;
     pageSize?: number;
