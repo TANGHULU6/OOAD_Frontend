@@ -1,41 +1,29 @@
-import React, { useEffect, useRef } from 'react';
-import { pdfjs } from 'react-pdf';
+import React, { useState } from 'react';
+import { Document, Page, pdfjs } from 'react-pdf';
+import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 const PdfViewer = ({ url }) => {
-  const canvasRef = useRef();
+  const [numPages, setNumPages] = useState(null);
 
-  useEffect(() => {
-    const fetchPdf = async () => {
-      try {
-        const loadingTask = pdfjs.getDocument(url);
-        const pdf = await loadingTask.promise;
+  function onDocumentLoadSuccess({ numPages }) {
+    setNumPages(numPages);
+  }
 
-        // 假设我们只渲染第一页
-        const page = await pdf.getPage(1);
-        const scale = 1.5;
-        const viewport = page.getViewport({ scale: scale });
-
-        const canvas = canvasRef.current;
-        canvas.height = viewport.height;
-        canvas.width = viewport.width;
-
-        const renderContext = {
-          canvasContext: canvas.getContext('2d'),
-          viewport: viewport
-        };
-
-        await page.render(renderContext);
-      } catch (error) {
-        console.error('Error while loading and rendering PDF:', error);
-      }
-    };
-
-    fetchPdf();
-  }, [url]);
-
-  return <canvas ref={canvasRef}></canvas>;
+  return (
+      <Document
+          file={url}
+          onLoadSuccess={onDocumentLoadSuccess}
+      >
+        {Array.from(
+            new Array(numPages),
+            (el, index) => (
+                <Page key={`page_${index + 1}`} pageNumber={index + 1} />
+            ),
+        )}
+      </Document>
+  );
 };
 
 export default PdfViewer;

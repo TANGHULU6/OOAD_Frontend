@@ -1,15 +1,27 @@
-import {PlusOutlined} from '@ant-design/icons';
-import {ActionType, ModalForm, PageContainer, ProFormDateTimePicker, ProFormText, ProTable} from '@ant-design/pro-components';
-import {Button, message, Modal} from 'antd';
-import React, {useRef, useState} from 'react';
-import {history, useAccess} from 'umi';
-import {deleteProject, insertProject, listProjects, updateProject} from "@/services/ant-design-pro/api";
+import { PlusOutlined } from '@ant-design/icons';
+import {
+  ActionType,
+  ModalForm,
+  PageContainer,
+  ProFormDateTimePicker,
+  ProFormText,
+  ProTable,
+} from '@ant-design/pro-components';
+import { Button, message, Modal } from 'antd';
+import React, { useRef, useState } from 'react';
+import { history, useAccess } from 'umi';
+import {
+  deleteProject,
+  insertProject,
+  listProjects,
+  updateProject,
+} from '@/services/ant-design-pro/api';
 
 interface ProjectListProps {
   courseId: number; // 定义传入的 id 属性
 }
 
-const ProjectList: React.FC<ProjectListProps> = ({courseId}) => {
+const ProjectList: React.FC<ProjectListProps> = ({ courseId }) => {
   const actionRef = useRef<ActionType>();
   const [createModalVisible, handleModalVisible] = useState<boolean>(false);
   const access = useAccess();
@@ -48,70 +60,73 @@ const ProjectList: React.FC<ProjectListProps> = ({courseId}) => {
             title: '操作',
             valueType: 'option',
             key: 'option',
-            render: (text, record, _, action) => [
-              <a
-                key="view"
-                onClick={() => {
-                  // 这里添加你的查看详情逻辑，比如跳转到详情页面
-                  history.push(`/project/${record.id}`);
-                }}
-              >
-                查看
-              </a>,
-              access.canTA && <a
-                key="editable"
-                onClick={() => {
-                  action?.startEditable?.(record.id.toString());
-                }}
-              >
-                编辑
-              </a>,
-              access.canTA && <a
-                key={"delete"}
-                style={{color: 'red'}}
-                onClick={() => {
-                  Modal.confirm({
-                    title: '删除项目',
-                    content: '确定删除该项目吗？',
-                    okText: '确认',
-                    cancelText: '取消',
-                    onOk: async () => {
-                      try {
-                        const result = await deleteProject(record.id);
-                        // @ts-ignore
-                        if (result && result === true) {
-                          message.success("删除成功！")
-                          action?.reload()
-                          return Promise.resolve()
-                        } else {
-                          throw new Error();
-                        }
-                      } catch (error) {
-                        message.error('删除失败，请重试！');
-                        return Promise.reject()
-                      }
-                    },
-                  });
-                }}
-              >
-                删除
-              </a>
-            ].filter(Boolean),
+            render: (text, record, _, action) =>
+              [
+                <a
+                  key="view"
+                  onClick={() => {
+                    // 这里添加你的查看详情逻辑，比如跳转到详情页面
+                    history.push(`/project/${record.id}`);
+                  }}
+                >
+                  查看
+                </a>,
+                access.canTA && (
+                  <a
+                    key="editable"
+                    onClick={() => {
+                      action?.startEditable?.(record.id.toString());
+                    }}
+                  >
+                    编辑
+                  </a>
+                ),
+                access.canTA && (
+                  <a
+                    key={'delete'}
+                    style={{ color: 'red' }}
+                    onClick={() => {
+                      Modal.confirm({
+                        title: '删除项目',
+                        content: '确定删除该项目吗？',
+                        okText: '确认',
+                        cancelText: '取消',
+                        onOk: async () => {
+                          try {
+                            const result = await deleteProject(record.id);
+                            // @ts-ignore
+                            if (result && result === true) {
+                              message.success('删除成功！');
+                              action?.reload();
+                              return Promise.resolve();
+                            } else {
+                              throw new Error();
+                            }
+                          } catch (error) {
+                            message.error('删除失败，请重试！');
+                            return Promise.reject();
+                          }
+                        },
+                      });
+                    }}
+                  >
+                    删除
+                  </a>
+                ),
+              ].filter(Boolean),
           },
         ]}
-
         actionRef={actionRef}
         cardBordered
         // @ts-ignore
         request={async (params = {}, sort, filter) => {
           // console.log(sort, filter);
           // await waitTime(2000);
-          const projectList = await listProjects(BigInt(courseId));
+          const projectList = await listProjects(BigInt(1));
           return {
-            data: projectList
-          }
+            data: projectList,
+          };
         }}
-
         editable={{
           type: 'single',
           onSave: async (key, record, originRow, newLineConfig) => {
@@ -119,15 +134,15 @@ const ProjectList: React.FC<ProjectListProps> = ({courseId}) => {
               const result = await updateProject(record);
               // @ts-ignore
               if (result && result === true) {
-                message.success("保存成功！")
-                actionRef.current?.reload()
-                return Promise.resolve()
+                message.success('保存成功！');
+                actionRef.current?.reload();
+                return Promise.resolve();
               } else {
                 throw new Error();
               }
             } catch (error) {
               message.error('保存失败，请重试！');
-              return Promise.reject()
+              return Promise.reject();
             }
           },
           onDelete: async (key, row) => {
@@ -135,19 +150,18 @@ const ProjectList: React.FC<ProjectListProps> = ({courseId}) => {
               const result = await deleteProject(row.id);
               // @ts-ignore
               if (result && result === true) {
-                message.success("删除成功！")
-                actionRef.current?.reload()
-                return Promise.resolve()
+                message.success('删除成功！');
+                actionRef.current?.reload();
+                return Promise.resolve();
               } else {
                 throw new Error();
               }
             } catch (error) {
               message.error('删除失败，请重试！');
-              return Promise.reject()
+              return Promise.reject();
             }
-          }
+          },
         }}
-
         columnsState={{
           persistenceKey: 'pro-table-singe-demos',
           persistenceType: 'localStorage',
@@ -161,16 +175,18 @@ const ProjectList: React.FC<ProjectListProps> = ({courseId}) => {
         dateFormatter="string"
         headerTitle="项目列表"
         toolBarRender={() => [
-          access.canTA && <Button
-            key="button"
-            icon={<PlusOutlined/>}
-            onClick={() => {
-              handleModalVisible(true)
-            }}
-            type="primary"
-          >
-            新建
-          </Button>
+          access.canTA && (
+            <Button
+              key="button"
+              icon={<PlusOutlined />}
+              onClick={() => {
+                handleModalVisible(true);
+              }}
+              type="primary"
+            >
+              新建
+            </Button>
+          ),
         ]}
       />
 
@@ -180,20 +196,20 @@ const ProjectList: React.FC<ProjectListProps> = ({courseId}) => {
         visible={createModalVisible}
         onVisibleChange={handleModalVisible}
         onFinish={async (value) => {
-          console.log(value)
+          console.log(value);
           try {
-            const result = await insertProject(courseId, (value as API.ProjectList));
+            const result = await insertProject(value as API.ProjectList);
             // @ts-ignore
             if (result) {
-              message.success("添加成功！")
-              actionRef.current?.reload()
-              return true
+              message.success('添加成功！');
+              actionRef.current?.reload();
+              return true;
             } else {
               throw new Error();
             }
           } catch (error) {
             message.error('添加失败，请重试！');
-            return true
+            return true;
           }
         }}
       >
@@ -208,11 +224,7 @@ const ProjectList: React.FC<ProjectListProps> = ({courseId}) => {
           ]}
           width="md"
         />
-        <ProFormText
-          name="description"
-          label="项目描述"
-          width="md"
-        />
+        <ProFormText name="description" label="项目描述" width="md" />
         <ProFormDateTimePicker
           name="groupDeadline"
           label="组队截止时间"
@@ -238,6 +250,6 @@ const ProjectList: React.FC<ProjectListProps> = ({courseId}) => {
       </ModalForm>
     </PageContainer>
   );
-}
+};
 
 export default ProjectList;

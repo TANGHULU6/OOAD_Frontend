@@ -5,6 +5,7 @@ import {getAssignmentById, getSubmissionById, getUserBaseInformationById} from "
 import {Badge, Descriptions, message} from "antd";
 import {PageContainer} from "@ant-design/pro-components";
 import {marked} from "marked";
+import PdfViewer from "@/pages/Assignment/Submission/PdfViewer";
 // import mammoth from 'mammoth';
 
 const Submission = () => {
@@ -77,7 +78,8 @@ const Submission = () => {
           <Descriptions.Item label="评分教师">{teacher && teacher.name ? teacher.name : "-"}</Descriptions.Item>
           <Descriptions.Item label="分数">{submission.score ? submission.score : "-"}</Descriptions.Item>
           <Descriptions.Item label="教师评论" span={3}>{submission.teacherComment ? submission.teacherComment : "-"}</Descriptions.Item>
-          <Descriptions.Item label="提交内容" span={3}><div dangerouslySetInnerHTML={{ __html: content }} /></Descriptions.Item>
+          {/*<Descriptions.Item label="提交内容" span={3}><div dangerouslySetInnerHTML={{ __html: content }} /></Descriptions.Item>*/}
+          <Descriptions.Item label="提交内容" span={3}><PdfViewer url="https://file-examples.com/storage/fe3666494365908ae9beb40/2017/10/file-example_PDF_1MB.pdf" /></Descriptions.Item>
         </Descriptions>
       </PageContainer>
   );

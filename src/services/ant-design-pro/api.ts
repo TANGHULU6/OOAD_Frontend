@@ -595,7 +595,7 @@ export async function submitHomework(assignmentId: number, files: File[], option
     method: 'POST',
     headers: {
       // 需要根据后端要求设置正确的 Content-Type
-      'Content-Type': 'multipart/form-data',
+      // 'Content-Type': 'multipart/form-data',
     },
     params: { assignmentId },
     data: formData,
@@ -603,3 +603,75 @@ export async function submitHomework(assignmentId: number, files: File[], option
   });
 }
 
+/** 根据项目ID获取项目详情 GET*/
+export async function getProjectDel(projectId: any, options?: { [key: string]: any }) {
+  return request<API.BaseResponse<API.ProjectList[]>>('/api/project', {
+    method: 'GET',
+    params: { projectId },
+    ...(options || {}),
+  });
+}
+/** 根据项目ID获取项目详情下的小组列表 GET */
+export async function getProjectDelGroups(projectId: any, options?: { [key: string]: any }) {
+  return request<API.BaseResponse<API.ProjectList[]>>('/api/project/groups', {
+    method: 'GET',
+    params: { projectId },
+    ...(options || {}),
+  });
+}
+/** 查询当前用户在当前项目哪个小组内  */
+export async function getProjectDelGroups2(body: any, options?: { [key: string]: any }) {
+  return request<API.BaseResponse<API.ProjectList>>('/api/project/groups', {
+    method: 'POST',
+    ...(options || {}),
+    data: body,
+  });
+}
+/** 根据项目ID获取当前项目通知列表  */
+export async function getGroupNot(projectId: any, options?: { [key: string]: any }) {
+  return request<API.BaseResponse<API.ProjectList>>('/api/project/notification/list', {
+    method: 'GET',
+    params: { projectId },
+    ...(options || {}),
+  });
+}
+/** 发布项目通知  */
+export async function insertGroupNot(body: any, options?: { [key: string]: any }) {
+  return request<API.BaseResponse<API.ProjectList>>('/api/project/notification/insert', {
+    method: 'POST',
+    ...(options || {}),
+    data: body,
+  });
+}
+/** 根据通知ID删除通知  */
+export async function delGroupNot(body: any, options?: { [key: string]: any }) {
+  return request<API.BaseResponse<API.ProjectList>>('/api/project/notification/delete', {
+    method: 'POST',
+    ...(options || {}),
+    data: body,
+  });
+}
+/** 用户加入小组  */
+export async function joinGroups(body: any, options?: { [key: string]: any }) {
+  return request<API.BaseResponse<API.ProjectList>>('/api/group/join', {
+    method: 'POST',
+    ...(options || {}),
+    data: body,
+  });
+}
+/** 用户退出小组  */
+export async function leaveGroups(body: any, options?: { [key: string]: any }) {
+  return request<API.BaseResponse<API.ProjectList>>('/api/group/leave', {
+    method: 'POST',
+    ...(options || {}),
+    data: body,
+  });
+}
+/** 更新项目详情  */
+export async function projectDelUpdate(body: any, options?: { [key: string]: any }) {
+  return request<API.BaseResponse<API.ProjectList>>('/api/project/detail/update', {
+    method: 'POST',
+    ...(options || {}),
+    data: body,
+  });
+}
