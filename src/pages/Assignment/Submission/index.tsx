@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useParams} from 'umi';
 import {getAssignmentById, getSubmissionById, getUserBaseInformationById} from "@/services/ant-design-pro/api";
-import {Badge, Button, Button, Descriptions, message} from "antd";
+import {Badge, Descriptions, message} from "antd";
 import {PageContainer} from "@ant-design/pro-components";
 import {marked} from "marked";
 import PdfViewer from "@/pages/Assignment/Submission/PdfViewer";
