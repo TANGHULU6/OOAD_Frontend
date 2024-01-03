@@ -259,6 +259,17 @@ export async function getUserBaseInformationById(param?: bigint, options?: { [ke
   });
 }
 
+export async function listReviews(assignmentId: bigint, options?: { [key: string]: any }) {
+  return request<API.BaseResponse<API.ReviewList[]>>('/api/submission/review/list', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    params: { assignmentId: assignmentId },
+    ...(options || {}),
+  });
+}
+
 /** 此处后端没有提供注释 GET /api/notices */
 export async function getNotices(options?: { [key: string]: any }) {
   console.log('Fetching notices with options:', options);

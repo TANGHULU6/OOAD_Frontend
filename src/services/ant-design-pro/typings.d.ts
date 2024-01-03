@@ -115,6 +115,15 @@ declare namespace API {
     name?: string;
   }
 
+  type ReviewList = {
+    submissionId: bigint;
+    submitterSid: string;
+    submitterName: string;
+    submitTime: Date;
+    score?: number;
+    isReviewed: boolean;
+  }
+
   type PageParams = {
     current?: number;
     pageSize?: number;

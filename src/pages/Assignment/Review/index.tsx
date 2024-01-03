@@ -1,54 +1,57 @@
 import {useRef} from 'react';
-import {Button, message, Modal} from 'antd';
-import {PlusOutlined} from '@ant-design/icons';
-import {deleteAssignment, listAssignments} from '@/services/ant-design-pro/api';
-import {history, useAccess} from 'umi';
+import {listReviews} from '@/services/ant-design-pro/api';
+import {history} from 'umi';
 import {ActionType, PageContainer, ProTable} from "@ant-design/pro-components";
+import {useParams} from "react-router-dom";
 
-const ReviewPage = ({assignmentId}) => {
+const ReviewPage = () => {
   const actionRef = useRef<ActionType>();
-  const access = useAccess();
+  // @ts-ignore
+  const {assignmentId} = useParams()
   return (
     <PageContainer>
-      <ProTable<API.AssignmentList>
+      <ProTable<API.ReviewList>
         columns={[
           {
-            dataIndex: 'id',
+            dataIndex: 'submissionId',
             valueType: 'indexBorder',
             width: 48,
             hideInTable: true,
           },
           {
-            title: '标题',
-            dataIndex: 'title',
+            title: '提交者学工号',
+            dataIndex: 'submitterSid',
             sorter: true,
           },
           {
-            title: '作业描述',
-            dataIndex: 'description',
+            title: '提交者姓名',
+            dataIndex: 'submitterName',
+            sorter: true,
           },
           {
-            title: '开始时间',
-            dataIndex: 'startTime',
+            title: '提交时间',
+            dataIndex: 'submitTime',
             valueType: 'dateTime',
             sorter: true,
           },
           {
-            title: '截止时间',
-            dataIndex: 'endTime',
-            valueType: 'dateTime',
+            title: '分数',
+            dataIndex: 'score',
             sorter: true,
           },
           {
-            title: '类型',
-            dataIndex: 'assignmentType',
+            title: '评阅状态',
+            dataIndex: 'isReviewed',
+            sorter: true,
             valueType: 'select',
             valueEnum: {
-              0: {
-                text: '个人作业'
+              true: {
+                status: 'success',
+                text: '已评阅'
               },
-              1: {
-                text: '小组作业'
+              false: {
+                status: 'error',
+                text: '未评阅'
               }
             }
           },
@@ -61,58 +64,11 @@ const ReviewPage = ({assignmentId}) => {
                 key="view"
                 onClick={() => {
                   // 这里添加你的查看详情逻辑，比如跳转到详情页面
-                  history.push(`/assignment/${record.id}`);
-                }}
-              >
-                查看
-              </a>,
-              access.canTA && <a
-                key="editable"
-                onClick={() => {
-                  action?.startEditable?.(record.id.toString());
-                }}
-              >
-                编辑
-              </a>,
-              access.canTA && <a
-                key="review"
-                style={{color: 'green'}}
-                onClick={() => {
-                  history.push(`/review/${record.id}`);
+                  history.push(`/submission/${record.submissionId}`);
                 }}
               >
                 评阅
               </a>,
-              access.canTA && <a
-                key={"delete"}
-                style={{color: 'red'}}
-                onClick={() => {
-                  Modal.confirm({
-                    title: '删除作业',
-                    content: '确定删除该作业吗？',
-                    okText: '确认',
-                    cancelText: '取消',
-                    onOk: async () => {
-                      try {
-                        const result = await deleteAssignment(record.id);
-                        // @ts-ignore
-                        if (result && result === true) {
-                          message.success("删除成功！")
-                          action?.reload()
-                          return Promise.resolve()
-                        } else {
-                          throw new Error();
-                        }
-                      } catch (error) {
-                        message.error('删除失败，请重试！');
-                        return Promise.reject()
-                      }
-                    },
-                  });
-                }}
-              >
-                删除
-              </a>
             ].filter(Boolean),
           },
         ]}
@@ -121,8 +77,7 @@ const ReviewPage = ({assignmentId}) => {
         cardBordered
         // @ts-ignore
         request={async (params = {}, sort, filter) => {
-          // await waitTime(2000);
-          const assignmentList = await listAssignments(BigInt(courseId));
+          const assignmentList = await listReviews(assignmentId);
           return {
             data: assignmentList
           }
@@ -132,26 +87,12 @@ const ReviewPage = ({assignmentId}) => {
           persistenceKey: 'pro-table-singe-demos',
           persistenceType: 'localStorage',
         }}
-        rowKey="id"
-        // search={{
-        //   labelWidth: 'auto',
-        // }}
+        rowKey="submissionId"
         search={false}
         pagination={false}
         dateFormatter="string"
-        headerTitle="作业列表"
-        toolBarRender={() => [
-          access.canTA && <Button
-            key="button"
-            icon={<PlusOutlined/>}
-            onClick={() => {
-              handleModalVisible(true)
-            }}
-            type="primary"
-          >
-            新建
-          </Button>
-        ]}
+        headerTitle="评阅列表"
+        toolBarRender={() => []}
       />
     </PageContainer>
   );
